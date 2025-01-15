@@ -2,6 +2,8 @@
 
 public class GameState
 {
+    public int Dimension = 100;
+    
     public List<Unit> Units {get;set;}
 
     public GameState()

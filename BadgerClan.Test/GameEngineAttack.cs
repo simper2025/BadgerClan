@@ -1,7 +1,4 @@
-﻿
-
-using System.Security.Cryptography;
-using BadgerClab.Logic;
+﻿using BadgerClab.Logic;
 
 namespace BadgerClan.Test;
 

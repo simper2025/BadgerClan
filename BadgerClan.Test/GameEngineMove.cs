@@ -1,7 +1,4 @@
-﻿
-
-using System.Security.Cryptography;
-using BadgerClab.Logic;
+﻿using BadgerClab.Logic;
 
 namespace BadgerClan.Test;
 
@@ -55,16 +52,30 @@ public class GameEngineMove
     }
 
     [Fact]
-    public void CantMoveOffGrid(){
+    public void CantMoveOffGridBottom(){
         var state = new GameState();
         var knight = Unit.Factory("Knight", Coordinate.Offset(1, 1));
         state.AddUnit(knight);
         var moves = new List<Move> {
-            new Move(MoveType.Walk, knight.Id, knight.Location.MoveSouthWest(-1)),
-            new Move(MoveType.Walk, knight.Id, knight.Location.MoveSouthWest(-2)),
+            new Move(MoveType.Walk, knight.Id, knight.Location.MoveNorthEast(1)),
+            new Move(MoveType.Walk, knight.Id, knight.Location.MoveNorthEast(2)),
         };
         var state2 = engine.ProcessTurn(state, moves);
-        //Assert.Equal(0, knight.Location.Row);
+        Assert.Equal(0, knight.Location.Row);
+    }
+
+[Fact]
+    public void CantMoveOffGridSide(){
+        var state = new GameState();
+        state.Dimension = 6;
+        var knight = Unit.Factory("Knight", Coordinate.Offset(5, 5));
+        state.AddUnit(knight);
+        var moves = new List<Move> {
+            new Move(MoveType.Walk, knight.Id, knight.Location.MoveSouthWest(1)),
+            new Move(MoveType.Walk, knight.Id, knight.Location.MoveSouthWest(2)),
+        };
+        var state2 = engine.ProcessTurn(state, moves);
+        Assert.Equal(6, knight.Location.Row);
     }
 
 }

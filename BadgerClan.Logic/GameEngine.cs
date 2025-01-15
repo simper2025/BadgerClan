@@ -22,9 +22,12 @@ public class GameEngine
             switch (move.Type)
             {
                 case MoveType.Walk:
-                    if (distance <= unit.Moves)
+                    var movedLocation = new Coordinate(move.target.Q, move.target.R);
+                    if (distance <= unit.Moves && 
+                        movedLocation.Col >= 0 && movedLocation.Row >= 0 &&
+                        movedLocation.Col <= state.Dimension && movedLocation.Row <= state.Dimension)
                     {
-                        unit.Location = new Coordinate(move.target.Q, move.target.R);
+                        unit.Location = movedLocation;
                         unit.Moves -= distance;
                     }
                     break;
