@@ -18,12 +18,12 @@ public class GameEngine
             {
                 continue;
             }
-                    var distance = unit.Location.Distance(move.target);
+            var distance = unit.Location.Distance(move.target);
             switch (move.Type)
             {
                 case MoveType.Walk:
                     var movedLocation = new Coordinate(move.target.Q, move.target.R);
-                    if (distance <= unit.Moves && 
+                    if (distance <= unit.Moves &&
                         movedLocation.Col >= 0 && movedLocation.Row >= 0 &&
                         movedLocation.Col <= state.Dimension && movedLocation.Row <= state.Dimension)
                     {
@@ -41,6 +41,7 @@ public class GameEngine
                     if (defender != null)
                     {
                         defender.Health = defender.Health - unit.Attack;
+                        unit.Moves = unit.Moves - (unit.MaxMoves / 2);
                     }
                     break;
             }

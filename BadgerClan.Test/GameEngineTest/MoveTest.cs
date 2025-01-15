@@ -4,7 +4,7 @@ namespace BadgerClan.Test.GameEngineTest;
 
 public class MoveTest
 {
-    private BadgerClan.Logic.GameEngine engine;
+    private GameEngine engine;
 
     public MoveTest()
     {
