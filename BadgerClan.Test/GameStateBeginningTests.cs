@@ -18,7 +18,7 @@ public class GameStateBeginningTests
     public void Test1()
     {
         var state = new GameState();
-        var knight = new Unit(2,2);
+        var knight = Unit.Factory("Knight", new Coordinate(2,2));
         state.AddUnit(knight);
         var moves = new List<Move> { new Move(MoveType.Walk, knight.Id, new Coordinate(3, 2))};
         var state2 = engine.ProcessTurn(state, moves);
