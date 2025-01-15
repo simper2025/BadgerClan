@@ -9,7 +9,8 @@ public class Unit
 
     public string Type { get; set; }
     public Coordinate Location { get; set; }
-    public int Movement { get; set; }
+    public double MaxMoves { get; set; }
+    public double Moves { get; set; }
     public int Attack { get; set; }
     public int Health { get; set; }
 
@@ -18,9 +19,10 @@ public class Unit
         var unit = new Unit
         {
             Location = loc,
-            Movement = 1,
             Attack = 1,
             Health = 5,
+            MaxMoves = 1,
+            Moves = 1,
         };
 
         switch (name)
@@ -28,8 +30,16 @@ public class Unit
             case "Knight":
                 unit.Type = "Knight";
                 unit.Attack = 4;
-                unit.Movement = 2;
                 unit.Health = 10;
+                unit.MaxMoves = 2;
+                unit.Moves = 2;
+                break;
+            case "Archer":
+                unit.Type = "Archer";
+                unit.Attack = 2;
+                unit.Health = 9;
+                unit.MaxMoves = 3;
+                unit.Moves = 3;
                 break;
         }
 
@@ -40,6 +50,6 @@ public class Unit
     {
         Id = Next_Id++;
         Type = "Peasent";
-        Location = new Coordinate(0,0);
+        Location = new Coordinate(0, 0);
     }
 }

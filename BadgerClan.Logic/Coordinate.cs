@@ -39,6 +39,22 @@ public class Coordinate
         }
     }
 
+    public Coordinate MoveEast(int distance)
+    {
+        return new Coordinate(q + distance, r, true); ;
+    }
+
+    public Coordinate MoveSouthEast(int distance)
+    {
+        return new Coordinate(q, r + distance, true);
+    }
+
+    public Coordinate MoveSouthWest(int distance)
+    {
+        return new Coordinate(q - 1, r + 1);
+    }
+
+
     public int Distance(Coordinate right)
     {
         var vec = Subtract(this, right);

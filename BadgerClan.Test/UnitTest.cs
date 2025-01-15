@@ -14,4 +14,10 @@ public class UnitTest
         var unit = Unit.Factory(knight, new Coordinate(1,1));
         Assert.Equal(knight, unit.Type);
     }
+
+    [Fact]
+    public void DefaultFactoryTest(){
+        var unit = Unit.Factory("Unknown", new Coordinate(1,1));
+        Assert.Equal("Peasent", unit.Type);        
+    }
 }
