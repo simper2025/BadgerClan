@@ -1,12 +1,12 @@
-﻿using BadgerClab.Logic;
+﻿using BadgerClan.Logic;
 
-namespace BadgerClan.Test;
+namespace BadgerClan.Test.GameEngineTest;
 
-public class GameEngineMove
+public class MoveTest
 {
-    private GameEngine engine;
+    private BadgerClan.Logic.GameEngine engine;
 
-    public GameEngineMove()
+    public MoveTest()
     {
         engine = new GameEngine();
     }

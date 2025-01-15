@@ -1,5 +1,5 @@
 
-using BadgerClab.Logic;
+using BadgerClan.Logic;
 
 namespace BadgerClan.Test;
 

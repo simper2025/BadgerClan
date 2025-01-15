@@ -1,3 +1,4 @@
+namespace BadgerClan.Logic;
 
 
 // https://www.redblobgames.com/grids/hexagons/

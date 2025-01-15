@@ -1,4 +1,4 @@
-﻿namespace BadgerClab.Logic;
+﻿namespace BadgerClan.Logic;
 
 public class GameEngine
 {
