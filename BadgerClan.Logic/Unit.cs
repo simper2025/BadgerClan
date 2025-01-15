@@ -12,6 +12,7 @@ public class Unit
     public double MaxMoves { get; set; }
     public double Moves { get; set; }
     public int Attack { get; set; }
+    public int AttackDistance { get; set; }
     public int Health { get; set; }
 
     public static Unit Factory(string name, Coordinate loc)
@@ -22,6 +23,7 @@ public class Unit
             Attack = 1,
             Health = 5,
             MaxMoves = 1,
+            AttackDistance = 1,
             Moves = 1,
         };
 
@@ -39,6 +41,7 @@ public class Unit
                 unit.Attack = 2;
                 unit.Health = 9;
                 unit.MaxMoves = 3;
+                unit.AttackDistance = 3;
                 unit.Moves = 3;
                 break;
         }
@@ -50,6 +53,6 @@ public class Unit
     {
         Id = Next_Id++;
         Type = "Peasent";
-        Location = new Coordinate(0, 0);
+        Location = Coordinate.Offset(0, 0);
     }
 }

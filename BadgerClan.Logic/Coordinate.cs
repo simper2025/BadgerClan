@@ -6,52 +6,49 @@ odd-r layout with axial underpinnings
 */
 public class Coordinate
 {
-    private int q;
-    private int r;
+    public int Q;
+    public int R;
 
     public int Col
     {
         get
         {
-            return q + (r - (r & 1)) / 2;
+            return Q + (R - (R & 1)) / 2;
         }
     }
-    public int Row { get { return r; } }
+    public int Row { get { return R; } }
 
-    public Coordinate(int col, int row)
+    public static Coordinate Offset(int col, int row)
     {
-        q = col - (row - (row & 1)) / 2;
-        r = row;
-
+        var q = col - (row - (row & 1)) / 2;
+        var r = row;
+        return new Coordinate(q, r);
     }
 
-    private Coordinate(int qq, int rr, bool axial)
+    public Coordinate(int q, int r)
     {
-        if (axial)
-        {
-            q = qq;
-            r = rr;
-        }
-        else
-        {
-            q = qq - (rr - (qq & 1)) / 2;
-            r = rr;
-        }
+        Q = q;
+        R = r;
     }
 
+    public Coordinate MoveWest(int distance) => MoveEast(-1 * distance);
     public Coordinate MoveEast(int distance)
     {
-        return new Coordinate(q + distance, r, true); ;
+        return new Coordinate(Q + distance, R); ;
     }
 
+
+    public Coordinate MoveNorthWest(int distance) => MoveSouthEast(-1 * distance);
     public Coordinate MoveSouthEast(int distance)
     {
-        return new Coordinate(q, r + distance, true);
+        return new Coordinate(Q, R + distance);
     }
 
+
+    public Coordinate MoveNorthEast(int distance) => MoveSouthWest(-1 * distance);
     public Coordinate MoveSouthWest(int distance)
     {
-        return new Coordinate(q - 1, r + 1);
+        return new Coordinate(Q - distance, R + distance);
     }
 
 
@@ -59,11 +56,11 @@ public class Coordinate
     {
         var vec = Subtract(this, right);
 
-        return (Math.Abs(vec.q) + Math.Abs(vec.q + vec.r) + Math.Abs(vec.r)) / 2;
+        return (Math.Abs(vec.Q) + Math.Abs(vec.Q + vec.R) + Math.Abs(vec.R)) / 2;
     }
 
     private static Coordinate Subtract(Coordinate left, Coordinate right)
     {
-        return new Coordinate(left.q - right.q, left.r - right.r, true);
+        return new Coordinate(left.Q - right.Q, left.R - right.R);
     }
 }
