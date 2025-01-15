@@ -11,7 +11,7 @@ public class GameEngine
                 case MoveType.Walk:
                     var unit = state.Units.FirstOrDefault(u => u.Id == move.unitId);
                     if (unit != null){
-                        if(unit.Location.Distance(move.target) == 1){
+                        if(unit.Location.Distance(move.target) <= unit.Movement){
                             unit.Location = new Coordinate(move.target.Col, move.target.Row);
                         }
                     }
