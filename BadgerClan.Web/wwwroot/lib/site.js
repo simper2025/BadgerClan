@@ -18,3 +18,11 @@ window.createIconDiv = (containerId, imageUrl, x, y, width, height) => {
         container.appendChild(iconDiv);
     }
 };
+
+window.clearIcons = (containerId) => {
+    const container = document.getElementById(containerId);
+    if (container) {
+        // Remove all child elements (icons)
+        container.innerHTML = '';
+    }
+};

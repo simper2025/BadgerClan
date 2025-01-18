@@ -9,55 +9,78 @@
 
 <style>
     .battle-field {
-        position: relative; 
-        width: 500px;
-        height: 500px; 
-        background-color: lightblue; 
+        position: relative;
+        width: 1000px;
+        height: 1000px;
+        background-color: lightblue;
         border: 1px solid black;
     }
 </style>
 
-<h1>Hello, world!</h1>
+<button @onclick="ProcessTurn">Process Turn</button>
 
-<button @onclick="ProcessTurn">Process</button>
-<button @onclick="PlaceIcons">Place Icons</button>
-
-<div id="square" class="battle-field"  style="">
+<div id="square" class="battle-field" style="">
 </div>
 
+<span>@Location</span>
 
 @code {
 
+    private int dimension = 10;
+    private double root3 = Math.Sqrt(3.0);
     private GameEngine engine = new GameEngine();
     private GameState state = new GameState();
 
+    private Dictionary<string, string> iconLookup = new Dictionary<string, string>
+{
+{"Knight", "/images/pikeman.svg"},
+{"Archer", "/images/archer.svg"},
+};
+
+    private string Location = "";
+
     protected override Task OnInitializedAsync()
     {
-        @* state = new GameState(); *@
+        var knight1 = Unit.Factory("Knight", Coordinate.Offset(2, 2));
+        state.AddUnit(knight1);
+        var knight2 = Unit.Factory("Knight", Coordinate.Offset(2, 3));
+        state.AddUnit(knight2);
+        var archer1 = Unit.Factory("Archer", Coordinate.Offset(3, 3));
+        state.AddUnit(archer1);
+
         return Task.CompletedTask;
     }
 
     private void ProcessTurn()
     {
-        state = engine.ProcessTurn(state, new List<Move>());
+        var moves = new List<Move>();
+        foreach (var unit in state.Units)
+        {
+            moves.Add(new Move(MoveType.Walk, unit.Id, unit.Location.MoveSouthEast(1)));
+        }
+        state = engine.ProcessTurn(state, moves);
+        var man = state.Units.FirstOrDefault();
+        
+
+        JSRuntime.InvokeVoidAsync("clearIcons", "square");
+
+        foreach (var unit in state.Units)
+        {
+            @* var con = new Icon(iconLookup[unit.Type], 50 , 50, 20, 20); *@
+            var image = iconLookup[unit.Type];
+            var x = (int)(dimension * (root3 *unit.Location.Q + root3/2.0 * unit.Location.R));
+            var y = (int)(dimension * ((3.0/2) * unit.Location.R));
+            var con = new Icon(image, x, y, 20, 20);
+            Location = $"{unit.Id}({x}, {y}) ({unit.Location.Col}, {unit.Location.Row})";
+            PlaceIcon(con);
+        }
     }
 
-
-    private List<Icon> icons = new()
-{
-new Icon("/images/pikeman.svg", 50, 50, 32, 32),
-new Icon("/images/pikeman.svg", 100, 100, 32, 32),
-new Icon("/images/archer.svg", 75, 100, 16, 16),
-};
-
-    private async Task PlaceIcons()
+    private void PlaceIcon(Icon icon)
     {
         try
         {
-            foreach (var icon in icons)
-            {
-                await JSRuntime.InvokeVoidAsync("createIconDiv", "square", icon.Url, icon.X, icon.Y, icon.Width, icon.Height);
-            }
+            JSRuntime.InvokeVoidAsync("createIconDiv", "square", icon.Url, icon.X, icon.Y, icon.Width, icon.Height);
         }
         catch (Exception ex)
         {
