@@ -1,7 +1,69 @@
 ﻿@page "/"
+@rendermode InteractiveServer
+@inject IJSRuntime JSRuntime
 
 <PageTitle>Home</PageTitle>
 
+
+<script src="/lib/site.js"></script>
+
+<style>
+    .battle-field {
+        position: relative; 
+        width: 500px;
+        height: 500px; 
+        background-color: lightblue; 
+        border: 1px solid black;
+    }
+</style>
+
 <h1>Hello, world!</h1>
 
-Welcome to your new app.
+<button @onclick="ProcessTurn">Process</button>
+<button @onclick="PlaceIcons">Place Icons</button>
+
+<div id="square" class="battle-field"  style="">
+</div>
+
+
+@code {
+
+    private GameEngine engine = new GameEngine();
+    private GameState state = new GameState();
+
+    protected override Task OnInitializedAsync()
+    {
+        @* state = new GameState(); *@
+        return Task.CompletedTask;
+    }
+
+    private void ProcessTurn()
+    {
+        state = engine.ProcessTurn(state, new List<Move>());
+    }
+
+
+    private List<Icon> icons = new()
+{
+new Icon("/images/pikeman.svg", 50, 50, 32, 32),
+new Icon("/images/pikeman.svg", 100, 100, 32, 32),
+new Icon("/images/archer.svg", 75, 100, 16, 16),
+};
+
+    private async Task PlaceIcons()
+    {
+        try
+        {
+            foreach (var icon in icons)
+            {
+                await JSRuntime.InvokeVoidAsync("createIconDiv", "square", icon.Url, icon.X, icon.Y, icon.Width, icon.Height);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine($"Error placing icons: {ex.Message}");
+        }
+    }
+
+    private record Icon(string Url, int X, int Y, int Width, int Height);
+}
