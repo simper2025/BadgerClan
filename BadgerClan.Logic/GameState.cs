@@ -77,35 +77,45 @@ public class GameState
 
     public void AddUnit(Unit unit)
     {
-        if (!Units.Contains(unit))
+        if (Units.Contains(unit))
         {
-            if (Turn > 0 && !Units.Any(u => u.Team == unit.Team))
-            {
-                return;
-            }
-            if (!IsOnBoard(unit.Location))
-            {
-                if (Units.Any(u => u.Team == unit.Team))
-                    unit.Location = Units.FirstOrDefault(u => u.Team == unit.Team)?.Location
-                        ?? Coordinate.Offset(0, 0);
-                else
-                    unit.Location = Coordinate.Offset(0, 0);
-            }
-            while (Units.Any(u => u.Location == unit.Location))
-            {
-                var target = unit.Location.MoveEast(1);
-                if (!IsOnBoard(target))
-                {
-                    target = unit.Location.MoveSouthWest(1);
-                }
-                unit.Location = target;
-            }
-            Units.Add(unit);
-            if (!Teams.Contains(unit.Team))
-                Teams.Add(unit.Team);
-            if (Teams.Count == 1)
-                currentTeam = unit.Team;
+            return;
         }
+        if (Turn > 0 && !Units.Any(u => u.Team == unit.Team))
+        {
+            return;
+        }
+
+        unit.Location = FitToBoard(unit, Units);
+
+        Units.Add(unit);
+        if (!Teams.Contains(unit.Team))
+            Teams.Add(unit.Team);
+        if (Teams.Count == 1)
+            currentTeam = unit.Team;
+    }
+
+    private Coordinate FitToBoard(Unit unit, List<Unit> units)
+    {
+        var retval = unit.Location.Copy();
+        if (!IsOnBoard(unit.Location))
+        {
+            if (units.Any(u => u.Team == unit.Team))
+                retval = units.FirstOrDefault(u => u.Team == unit.Team)?.Location
+                    ?? Coordinate.Offset(0, 0);
+            else
+                retval = Coordinate.Offset(0, 0);
+        }
+        while (units.Any(u => u.Location == retval))
+        {
+            var target = retval.MoveEast(1);
+            if (!IsOnBoard(target))
+            {
+                target = retval.MoveSouthWest(1);
+            }
+            retval = target;
+        }
+        return retval;
     }
 
     public bool IsOnBoard(Coordinate loc)
