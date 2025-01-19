@@ -17,6 +17,14 @@ public class GameState
     {
         if (!Units.Contains(unit))
         {
+            if (!IsOnBoard(unit.Location))
+            {
+                if (Units.Any(u => u.Team == unit.Team))
+                    unit.Location = Units.FirstOrDefault(u => u.Team == unit.Team)?.Location
+                        ?? Coordinate.Offset(0, 0);
+                else
+                    unit.Location = Coordinate.Offset(0, 0);
+            }
             while (Units.Any(u => u.Location == unit.Location))
             {
                 var target = unit.Location.MoveEast(1);
