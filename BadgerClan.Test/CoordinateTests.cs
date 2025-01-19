@@ -78,10 +78,18 @@ public class CoordinateTests
     }
 
     [Fact]
-    public void AreEqualTest() {
-        var p1 = new Coordinate(5,12);
-        var p2 = new Coordinate(5,12);
+    public void AreEqualTest()
+    {
+        var p1 = new Coordinate(5, 12);
+        var p2 = new Coordinate(5, 12);
         Assert.Equal(p1, p2);
     }
 
+    [Fact]
+    public void GetNeighbors()
+    {
+        var p1 = new Coordinate(4, 4);
+        var neighbors = p1.Neighbors();
+        Assert.Equal(6, neighbors.Count);
+    }
 }

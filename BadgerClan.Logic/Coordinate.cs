@@ -99,6 +99,18 @@ public class Coordinate : IEquatable<Coordinate>
     }
 
 
+    public List<Coordinate> Neighbors()
+    {
+        var neighbors = new List<Coordinate>{
+            new Coordinate(Q-1, R+0),
+            new Coordinate(Q+0, R-1),
+            new Coordinate(Q+1, R-1),
+            new Coordinate(Q+1, R+0),
+            new Coordinate(Q+0, R+1),
+            new Coordinate(Q-1, R+1),
+        };
 
+        return neighbors;
+    }
 
 }
