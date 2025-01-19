@@ -19,11 +19,13 @@ public class GameEngine
                 continue;
             }
             var distance = unit.Location.Distance(move.target);
+            var defender = state.Units.FirstOrDefault(u => 
+                u.Location == move.target && u.Id != unit.Id);
             switch (move.Type)
             {
                 case MoveType.Walk:
                     var movedLocation = new Coordinate(move.target.Q, move.target.R);
-                    if (distance <= unit.Moves &&
+                    if (distance <= unit.Moves && defender == null &&
                         movedLocation.Col >= 0 && movedLocation.Row >= 0 &&
                         movedLocation.Col <= state.Dimension && movedLocation.Row <= state.Dimension)
                     {
@@ -36,8 +38,6 @@ public class GameEngine
                     {
                         continue;
                     }
-                    var defender = state.Units.FirstOrDefault(u => u.Location == move.target &&
-                        u.Id != unit.Id);
                     if (defender != null)
                     {
                         defender.Health = defender.Health - unit.Attack;

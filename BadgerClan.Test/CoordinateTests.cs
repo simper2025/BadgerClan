@@ -77,4 +77,11 @@ public class CoordinateTests
         Assert.Equal(2, result.Row);
     }
 
+    [Fact]
+    public void AreEqualTest() {
+        var p1 = new Coordinate(5,12);
+        var p2 = new Coordinate(5,12);
+        Assert.Equal(p1, p2);
+    }
+
 }

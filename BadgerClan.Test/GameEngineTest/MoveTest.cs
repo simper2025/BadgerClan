@@ -21,7 +21,7 @@ public class MoveTest
             new Move(MoveType.Walk, knight.Id, knight.Location.MoveEast(1))
         };
         var state2 = engine.ProcessTurn(state, moves);
-        Assert.Equal(3, knight.Location.Col);
+        Assert.Equal(Coordinate.Offset(3, 2), knight.Location);
     }
 
     [Fact]
@@ -48,11 +48,12 @@ public class MoveTest
             new Move(MoveType.Walk, knight.Id, knight.Location.MoveEast(3))
         };
         var state2 = engine.ProcessTurn(state, moves);
-        Assert.Equal(4, knight.Location.Col);
+        Assert.Equal(Coordinate.Offset(4, 2), knight.Location);
     }
 
     [Fact]
-    public void CantMoveOffGridBottom(){
+    public void CantMoveOffGridBottom()
+    {
         var state = new GameState();
         var knight = Unit.Factory("Knight", Coordinate.Offset(1, 1));
         state.AddUnit(knight);
@@ -61,11 +62,12 @@ public class MoveTest
             new Move(MoveType.Walk, knight.Id, knight.Location.MoveNorthEast(2)),
         };
         var state2 = engine.ProcessTurn(state, moves);
-        Assert.Equal(0, knight.Location.Row);
+        Assert.Equal( Coordinate.Offset(2, 0), knight.Location);
     }
 
-[Fact]
-    public void CantMoveOffGridSide(){
+    [Fact]
+    public void CantMoveOffGridSide()
+    {
         var state = new GameState();
         state.Dimension = 6;
         var knight = Unit.Factory("Knight", Coordinate.Offset(5, 5));
@@ -75,7 +77,23 @@ public class MoveTest
             new Move(MoveType.Walk, knight.Id, knight.Location.MoveSouthWest(2)),
         };
         var state2 = engine.ProcessTurn(state, moves);
-        Assert.Equal(6, knight.Location.Row);
+        Assert.Equal(Coordinate.Offset(5, 6), knight.Location);
+    }
+
+    [Fact]
+    public void CantMoveOntoAnotherUnit()
+    {
+        var state = new GameState();
+        var knight = Unit.Factory("Knight", Coordinate.Offset(5, 5));
+        var knight2 = Unit.Factory("Knight", Coordinate.Offset(5, 6));
+        var expectedLocation = knight.Location.Copy();
+        state.AddUnit(knight);
+        state.AddUnit(knight2);
+        var moves = new List<Move> {
+            new Move(MoveType.Walk, knight.Id, knight2.Location),
+        };
+        var state2 = engine.ProcessTurn(state, moves);
+        Assert.Equal(expectedLocation, knight.Location);
     }
 
 }

@@ -5,7 +5,7 @@ namespace BadgerClan.Logic;
 /*
 odd-r layout with axial underpinnings
 */
-public class Coordinate
+public class Coordinate : IEquatable<Coordinate>
 {
     public int Q;
     public int R;
@@ -31,6 +31,39 @@ public class Coordinate
         Q = q;
         R = r;
     }
+
+    #region object methods
+    public Coordinate Copy()
+    {
+        return new Coordinate(Q, R);
+    }
+
+    public bool Equals(Coordinate? other)
+    {
+        if (other is null) return false;
+        return Q == other.Q && R == other.R;
+    }
+    public override bool Equals(object? obj) => Equals(obj as Coordinate);
+
+    public static bool operator ==(Coordinate left, Coordinate right)
+    {
+        if (ReferenceEquals(left, right)) return true;
+        if (left is null) return false;
+        if (right is null) return false;
+        return left.Equals(right);
+    }
+    public static bool operator !=(Coordinate left, Coordinate right) => !(left == right);
+
+    public override int GetHashCode()
+    {
+        unchecked
+        {
+            int hashCode = Q.GetHashCode();
+            hashCode = (hashCode * 397) ^ R.GetHashCode();
+            return hashCode;
+        }
+    }
+    #endregion
 
     public Coordinate MoveWest(int distance) => MoveEast(-1 * distance);
     public Coordinate MoveEast(int distance)
@@ -64,4 +97,5 @@ public class Coordinate
     {
         return new Coordinate(left.Q - right.Q, left.R - right.R);
     }
+
 }

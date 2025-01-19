@@ -25,8 +25,7 @@ public class AttackMoveTest
             new Move(MoveType.Walk, knight1.Id, knight1.Location.MoveSouthWest(2)),
         };
         var state2 = engine.ProcessTurn(state, moves);
-        Assert.Equal(1, knight1.Location.Col);
-        Assert.Equal(3, knight1.Location.Row);
 
+        Assert.Equal(Coordinate.Offset(1, 3), knight1.Location);
     }
 }
