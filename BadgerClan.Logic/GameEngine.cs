@@ -14,12 +14,12 @@ public class GameEngine
         foreach (var move in moves)
         {
             var unit = state.Units.FirstOrDefault(u => u.Id == move.unitId);
-            if (unit == null)
+            if (unit == null || unit.Team != state.CurrentTeam)
             {
                 continue;
             }
             var distance = unit.Location.Distance(move.target);
-            var defender = state.Units.FirstOrDefault(u => 
+            var defender = state.Units.FirstOrDefault(u =>
                 u.Location == move.target && u.Id != unit.Id);
             switch (move.Type)
             {
@@ -47,7 +47,7 @@ public class GameEngine
 
 
         }
-
+        state.IncrementTurn();
         return state;
     }
 }

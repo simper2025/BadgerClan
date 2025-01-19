@@ -41,12 +41,15 @@
 
     protected override Task OnInitializedAsync()
     {
-        var knight1 = Unit.Factory("Knight", Coordinate.Offset(2, 2));
+        var knight1 = Unit.Factory("Knight", 1, Coordinate.Offset(2, 2));
         state.AddUnit(knight1);
-        var knight2 = Unit.Factory("Knight", Coordinate.Offset(2, 3));
+        var knight2 = Unit.Factory("Knight", 1, Coordinate.Offset(2, 3));
         state.AddUnit(knight2);
-        var archer1 = Unit.Factory("Archer", Coordinate.Offset(3, 3));
+        var archer1 = Unit.Factory("Archer", 1, Coordinate.Offset(3, 3));
         state.AddUnit(archer1);
+
+        var knight3 = Unit.Factory("Knight", 2, Coordinate.Offset(10, 10));
+        state.AddUnit(knight3);
 
         return Task.CompletedTask;
     }

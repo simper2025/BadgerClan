@@ -71,8 +71,89 @@ public class SetupTest
         Assert.Equal(1, knight3.Location.Distance(knight.Location));
     }
 
-    // game win lose
+    [Fact]
+    public void TurnCountAndChangeTeams()
+    {
+        var state = new GameState();
+        var knight = Unit.Factory("Knight", 1, Coordinate.Offset(6, 6));
+        var knight2 = Unit.Factory("Knight", 2, Coordinate.Offset(60, 60));
+        state.AddUnit(knight);
+        state.AddUnit(knight2);
+        Assert.Equal(0, state.Turn);
+        Assert.Equal(1, state.CurrentTeam);
+        Assert.False(state.Running);
 
+        state = engine.ProcessTurn(state, new List<Move>());
+        Assert.Equal(1, state.Turn);
+        Assert.Equal(2, state.CurrentTeam);
+        Assert.True(state.Running);
+
+        state = engine.ProcessTurn(state, new List<Move>());
+        Assert.Equal(2, state.Turn);
+        Assert.Equal(1, state.CurrentTeam);
+    }
+
+
+    [Fact]
+    public void MoveOnlyOnYourTurn()
+    {
+        var state = new GameState();
+        var knight1 = Unit.Factory("Knight", 1, Coordinate.Offset(6, 6));
+        var knight2 = Unit.Factory("Knight", 2, Coordinate.Offset(60, 60));
+        state.AddUnit(knight1);
+        state.AddUnit(knight2);
+
+        var expectedLocation1 = knight1.Location.MoveEast(1);
+        var expectedLocation2 = knight2.Location.Copy();
+        var moves = new List<Move>{
+            new Move(MoveType.Walk, knight1.Id, knight1.Location.MoveEast(1)),
+            new Move(MoveType.Walk, knight2.Id, knight2.Location.MoveEast(1)),
+        };
+        state = engine.ProcessTurn(state, moves);
+
+        Assert.Equal(expectedLocation1, knight1.Location);
+        Assert.Equal(expectedLocation2, knight2.Location);
+
+        expectedLocation1 = knight1.Location.Copy();
+        expectedLocation2 = knight2.Location.MoveEast(1);
+        moves = new List<Move>{
+            new Move(MoveType.Walk, knight1.Id, knight1.Location.MoveEast(1)),
+            new Move(MoveType.Walk, knight2.Id, knight2.Location.MoveEast(1)),
+        };
+        state = engine.ProcessTurn(state, moves);
+
+        Assert.Equal(expectedLocation1, knight1.Location);
+        Assert.Equal(expectedLocation2, knight2.Location);
+    }
+
+    //Cant' add units for new team after start
+    [Fact]
+    public void CantAddTeamAfterStart()
+    {
+        var state = new GameState();
+        var knight1 = Unit.Factory("Knight", 1, Coordinate.Offset(6, 6));
+        var knight2 = Unit.Factory("Knight", 2, Coordinate.Offset(60, 60));
+        state.AddUnit(knight1);
+        state.AddUnit(knight2);
+        state = engine.ProcessTurn(state, new List<Move>());
+        var knight3 = Unit.Factory("Knight", 3, Coordinate.Offset(40, 40));
+        state.AddUnit(knight3);
+        Assert.Equal(2, state.Units.Count);
+    }
+    [Fact]
+    public void TestGameOver()
+    {
+        var state = new GameState();
+        var knight = Unit.Factory("Knight", 1, Coordinate.Offset(6, 6));
+        var knight2 = Unit.Factory("Knight", 2, Coordinate.Offset(60, 60));
+        state.AddUnit(knight);
+        state.AddUnit(knight2);
+        var knight3 = Unit.Factory("Knight", 1);
+        state.AddUnit(knight3);
+
+        Assert.Equal(3, state.Units.Count);
+        Assert.Equal(1, knight3.Location.Distance(knight.Location));
+    }
 
 
     //Turn Changing
