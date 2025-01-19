@@ -49,6 +49,14 @@ public class GameState
         Turn++;
     }
 
+    public void AddTeam(int team, Coordinate loc, List<string> units)
+    {
+        foreach (var unit in units)
+        {
+            AddUnit(Unit.Factory(unit, team, loc));
+        }
+    }
+
     public void AddUnit(Unit unit)
     {
         if (!Units.Contains(unit))

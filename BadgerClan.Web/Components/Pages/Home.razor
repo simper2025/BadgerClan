@@ -22,7 +22,6 @@
 <div id="square" class="battle-field" style="">
 </div>
 
-<span>@Location</span>
 
 @code {
 
@@ -31,27 +30,24 @@
     private GameEngine engine = new GameEngine();
     private GameState state = new GameState();
 
-    private Dictionary<string, string> iconLookup = new Dictionary<string, string>
-{
-{"Knight", "/images/pikeman.svg"},
-{"Archer", "/images/archer.svg"},
-};
-
-    private string Location = "";
+    private Dictionary<string, string> iconLookup = new Dictionary<string, string>();
 
     protected override Task OnInitializedAsync()
     {
-        var knight1 = Unit.Factory("Knight", 1, Coordinate.Offset(2, 2));
-        state.AddUnit(knight1);
-        var knight2 = Unit.Factory("Knight", 1, Coordinate.Offset(2, 3));
-        state.AddUnit(knight2);
-        var archer1 = Unit.Factory("Archer", 1, Coordinate.Offset(3, 3));
-        state.AddUnit(archer1);
+        iconLookup.Add("Knight", "/images/pikeman.svg");
+        iconLookup.Add("Archer", "/images/archer.svg");
 
-        var knight3 = Unit.Factory("Knight", 2, Coordinate.Offset(10, 10));
-        state.AddUnit(knight3);
+        var team = new List<string> { "Knight", "Knight", "Knight", "Knight", "Archer", "Archer" };
+        state.AddTeam(1, Coordinate.Offset(10, 10), team);
+        state.AddTeam(2, Coordinate.Offset(30, 30), team);
 
         return Task.CompletedTask;
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        DrawUnits(state);
+
     }
 
     private void ProcessTurn()
@@ -63,20 +59,22 @@
         }
         state = engine.ProcessTurn(state, moves);
         var man = state.Units.FirstOrDefault();
-        
 
+        DrawUnits(state);
+    }
+
+    private void DrawUnits(GameState state)
+    {
         JSRuntime.InvokeVoidAsync("clearIcons", "square");
-
         foreach (var unit in state.Units)
         {
-            @* var con = new Icon(iconLookup[unit.Type], 50 , 50, 20, 20); *@
             var image = iconLookup[unit.Type];
-            var x = (int)(dimension * (root3 *unit.Location.Q + root3/2.0 * unit.Location.R));
-            var y = (int)(dimension * ((3.0/2) * unit.Location.R));
+            var x = (int)(dimension * (root3 * unit.Location.Q + root3 / 2.0 * unit.Location.R));
+            var y = (int)(dimension * ((3.0 / 2) * unit.Location.R));
             var con = new Icon(image, x, y, 20, 20);
-            Location = $"{unit.Id}({x}, {y}) ({unit.Location.Col}, {unit.Location.Row})";
             PlaceIcon(con);
         }
+
     }
 
     private void PlaceIcon(Icon icon)
