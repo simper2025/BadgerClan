@@ -1,6 +1,6 @@
 
 
-window.createIconDiv = (containerId, imageUrl, x, y, width, height) => {
+window.createIconDiv = (containerId, imageUrl, x, y, width, height, color) => {
     const container = document.getElementById(containerId);
 
     if (container) {
@@ -14,6 +14,7 @@ window.createIconDiv = (containerId, imageUrl, x, y, width, height) => {
         iconDiv.style.backgroundImage = `url(${imageUrl})`;
         iconDiv.style.backgroundSize = 'cover';
         iconDiv.style.backgroundRepeat = 'no-repeat';
+        iconDiv.style.border = "solid " + color;
 
         container.appendChild(iconDiv);
     }

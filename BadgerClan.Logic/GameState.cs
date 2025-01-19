@@ -40,15 +40,17 @@ public class GameState
     public override string ToString()
     {
         string status = "";
-        if(Running)
+        if (Running)
         {
-            foreach(int team in Teams){
-                status += "Team " + team +": " + Units.Count(u => u.Team == team) + "; ";
+            foreach (int team in Teams)
+            {
+                status += "Team " + team + ": " + Units.Count(u => u.Team == team) + "; ";
             }
         }
         else if (Turn > 0)
         {
-            status = "GameOver; Team #" + Units.FirstOrDefault().Team + " wins";
+            var team = Units.FirstOrDefault()?.Team ?? 0;
+            status = "GameOver; Team #" + team + " wins";
         }
         return status;
     }

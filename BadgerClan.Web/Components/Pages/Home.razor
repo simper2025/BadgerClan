@@ -32,7 +32,7 @@
     private GameEngine engine = new GameEngine();
     private GameState state = new GameState();
 
-    private string status ="";
+    private string status = "";
 
     private Dictionary<string, string> iconLookup = new Dictionary<string, string>();
 
@@ -43,10 +43,11 @@
 
         var team = new List<string>();
 
-        team = new List<string> { "Archer", "Archer", "Knight", "Knight", "Knight", "Knight" };
+        team = new List<string> { "Knight", "Knight", "Archer", "Archer", "Knight", "Knight" };
         state.AddTeam(1, Coordinate.Offset(10, 10), team);
-        team = new List<string> { "Knight", "Knight", "Knight", "Knight", "Archer", "Archer" };
-        state.AddTeam(2, Coordinate.Offset(30, 30), team);
+        state.AddTeam(2, Coordinate.Offset(30, 10), team);
+        state.AddTeam(3, Coordinate.Offset(30, 30), team);
+        state.AddTeam(4, Coordinate.Offset(10, 30), team);
 
         return Task.CompletedTask;
     }
@@ -62,10 +63,10 @@
         var moves = MoveGenetator.MakeList(state.CurrentTeam, state);
         state = engine.ProcessTurn(state, moves);
         var man = state.Units.FirstOrDefault();
-        
+
         status = state.ToString();
-        
-        
+
+
         DrawUnits(state);
     }
 
@@ -74,10 +75,28 @@
         JSRuntime.InvokeVoidAsync("clearIcons", "square");
         foreach (var unit in state.Units)
         {
+            var color = "red";
+            switch (unit.Team)
+            {
+                case 2:
+                    color = "blue";
+                    break;
+                case 3:
+                    color = "green";
+                    break;
+                case 4:
+                    color = "yellow";
+                    break;
+                case 5:
+                    color = "orange";
+                    break;
+
+            }
+
             var image = iconLookup[unit.Type];
             var x = (int)(dimension * (root3 * unit.Location.Q + root3 / 2.0 * unit.Location.R));
             var y = (int)(dimension * ((3.0 / 2) * unit.Location.R));
-            var con = new Icon(image, x, y, 20, 20);
+            var con = new Icon(image, x, y, 20, 20, color);
             PlaceIcon(con);
         }
 
@@ -87,7 +106,7 @@
     {
         try
         {
-            JSRuntime.InvokeVoidAsync("createIconDiv", "square", icon.Url, icon.X, icon.Y, icon.Width, icon.Height);
+            JSRuntime.InvokeVoidAsync("createIconDiv", "square", icon.Url, icon.X, icon.Y, icon.Width, icon.Height, icon.color);
         }
         catch (Exception ex)
         {
@@ -95,5 +114,5 @@
         }
     }
 
-    private record Icon(string Url, int X, int Y, int Width, int Height);
+    private record Icon(string Url, int X, int Y, int Width, int Height, string color);
 }

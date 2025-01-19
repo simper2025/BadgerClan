@@ -19,7 +19,9 @@ public class MoveGenetator
                 if (closest.Location.Distance(unit.Location) <= unit.AttackDistance)
                 {
                     var attack = new Move(MoveType.Attack, unit.Id, closest.Location);
+                    var attack2 = new Move(MoveType.Attack, unit.Id, closest.Location);
                     moves.Add(attack);
+                    moves.Add(attack2);
                 }
                 else
                 {
