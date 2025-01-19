@@ -11,7 +11,6 @@ public class AttackMoveTest
         engine = new GameEngine();
     }
 
-    //TODO: check this
     [Fact]
     public void OnlyOneMoveAfterAttack()
     {
@@ -20,17 +19,55 @@ public class AttackMoveTest
         var knight2 = Unit.Factory("Knight", 2, Coordinate.Offset(3, 2));
         state.AddUnit(knight1);
         state.AddUnit(knight2);
+        var expected = knight1.Location.MoveSouthWest(1);
         var moves = new List<Move> {
             new Move(MoveType.Attack, knight1.Id, knight2.Location),
-            new Move(MoveType.Walk, knight1.Id, knight1.Location.MoveSouthWest(1)),
-            new Move(MoveType.Walk, knight1.Id, knight1.Location.MoveSouthWest(2)),
+            new Move(MoveType.Walk, knight1.Id, expected),
+            new Move(MoveType.Walk, knight1.Id, expected.MoveSouthWest(2)),
         };
         var state2 = engine.ProcessTurn(state, moves);
 
-        Assert.Equal(Coordinate.Offset(1, 3), knight1.Location);
+        Assert.Equal(expected, knight1.Location);
     }
 
-    //attacks take movement
+    [Fact]
+    public void ArcherCanAttackOnceAndMoveTwoTimes()
+    {
+        var state = new GameState();
+        var archer1 = Unit.Factory("Archer", 1, Coordinate.Offset(4, 2));
+        var knight2 = Unit.Factory("Knight", 2, Coordinate.Offset(2, 2));
+        state.AddUnit(archer1);
+        state.AddUnit(knight2);
+        var expected = archer1.Location.MoveSouthEast(2);
+        var moves = new List<Move> {
+            new Move(MoveType.Attack, archer1.Id, knight2.Location),
+            new Move(MoveType.Walk, archer1.Id, archer1.Location.MoveSouthEast(1)),
+            new Move(MoveType.Walk, archer1.Id, expected),
+        };
+        var state2 = engine.ProcessTurn(state, moves);
+
+        Assert.Equal(expected, archer1.Location);
+    }
+
+    [Fact]
+    public void ArcherCanAttackOnceAndMoveTwo()
+    {
+        var state = new GameState();
+        var archer1 = Unit.Factory("Archer", 1, Coordinate.Offset(4, 2));
+        var knight2 = Unit.Factory("Knight", 2, Coordinate.Offset(2, 2));
+        state.AddUnit(archer1);
+        state.AddUnit(knight2);
+        var expected = archer1.Location.MoveSouthEast(2);
+        var moves = new List<Move> {
+            new Move(MoveType.Attack, archer1.Id, knight2.Location),
+            new Move(MoveType.Walk, archer1.Id, expected),
+        };
+        var state2 = engine.ProcessTurn(state, moves);
+
+        Assert.Equal(expected, archer1.Location);
+    }
+
+    //  
 
 
 }

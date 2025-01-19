@@ -30,7 +30,6 @@ public class GameState
         }
     }
 
-
     public GameState()
     {
         Units = new List<Unit>();

@@ -1,4 +1,5 @@
-﻿namespace BadgerClan.Logic;
+﻿
+namespace BadgerClan.Logic;
 
 public class GameEngine
 {
@@ -6,7 +7,7 @@ public class GameEngine
     public GameState ProcessTurn(GameState state, List<Move> moves)
     {
 
-        foreach (var unit in state.Units)
+        foreach (var unit in state.Units.Where(u => u.Team == state.CurrentTeam))
         {
             unit.Moves = unit.MaxMoves;
         }
@@ -25,7 +26,15 @@ public class GameEngine
             {
                 case MoveType.Walk:
                     var movedLocation = new Coordinate(move.target.Q, move.target.R);
-                    if (distance <= unit.Moves && defender == null &&
+                    var canMove = distance <= unit.Moves;
+                    if (!canMove)
+                    {
+                        if (distance <= unit.Moves + (1 / 2.0 + 0.01))
+                        {
+                            canMove = true;
+                        }
+                    }
+                    if (canMove && defender == null &&
                         state.IsOnBoard(movedLocation))
                     {
                         unit.Location = movedLocation;
@@ -37,15 +46,16 @@ public class GameEngine
                     {
                         continue;
                     }
-                    if (defender != null)
+                    var attackCost = unit.MaxMoves / unit.AttackCount;
+                    if (defender != null && unit.Moves > (attackCost / 2.0))
                     {
-                        defender.Health = defender.Health - unit.Attack;
-                        unit.Moves = unit.Moves - (unit.MaxMoves / 2);
+                        defender.Health -= unit.Attack;
+                        unit.Moves -= attackCost;
                     }
                     break;
             }
 
-
+            state.Units.RemoveAll(u => u.Health <= 0);
         }
         state.IncrementTurn();
         return state;

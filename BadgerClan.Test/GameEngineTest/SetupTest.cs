@@ -126,7 +126,6 @@ public class SetupTest
         Assert.Equal(expectedLocation2, knight2.Location);
     }
 
-    //Cant' add units for new team after start
     [Fact]
     public void CantAddTeamAfterStart()
     {
@@ -140,22 +139,26 @@ public class SetupTest
         state.AddUnit(knight3);
         Assert.Equal(2, state.Units.Count);
     }
+
     [Fact]
     public void TestGameOver()
     {
         var state = new GameState();
-        var knight = Unit.Factory("Knight", 1, Coordinate.Offset(6, 6));
-        var knight2 = Unit.Factory("Knight", 2, Coordinate.Offset(60, 60));
-        state.AddUnit(knight);
+        var knight1 = Unit.Factory("Knight", 1, Coordinate.Offset(6, 6));
+        var knight2 = Unit.Factory("Knight", 2, Coordinate.Offset(6, 5));
+        state.AddUnit(knight1);
+        knight2.Health = 1;
         state.AddUnit(knight2);
-        var knight3 = Unit.Factory("Knight", 1);
-        state.AddUnit(knight3);
 
-        Assert.Equal(3, state.Units.Count);
-        Assert.Equal(1, knight3.Location.Distance(knight.Location));
+        var moves = new List<Move>{
+            new Move(MoveType.Attack, knight1.Id, knight2.Location)
+        };
+        state = engine.ProcessTurn(state, moves);
+
+        Assert.Single(state.Units);
+        Assert.False(state.Running);
     }
 
 
-    //Turn Changing
 
 }

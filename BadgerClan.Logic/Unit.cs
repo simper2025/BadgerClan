@@ -10,6 +10,8 @@ public class Unit
     public Coordinate Location { get; set; }
     public double MaxMoves { get; set; }
     public double Moves { get; set; }
+
+    public int AttackCount;
     public int Attack { get; set; }
     public int AttackDistance { get; set; }
     public int Health { get; set; }
@@ -29,6 +31,7 @@ public class Unit
             AttackDistance = 1,
             Moves = 1,
             Team = team,
+            AttackCount = 1
         };
 
         switch (name)
@@ -39,6 +42,7 @@ public class Unit
                 unit.Health = 10;
                 unit.MaxMoves = 2;
                 unit.Moves = 2;
+                unit.AttackCount = 2;
                 break;
             case "Archer":
                 unit.Type = "Archer";
@@ -47,6 +51,7 @@ public class Unit
                 unit.MaxMoves = 3;
                 unit.AttackDistance = 3;
                 unit.Moves = 3;
+                unit.AttackCount = 2;
                 break;
         }
 
