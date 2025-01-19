@@ -18,10 +18,6 @@ public class Unit
     {
         return Factory(name, team, new Coordinate(-1, -1));
     }
-    public static Unit Factory(string name, Coordinate loc)
-    {
-        return Factory(name, 0, loc);
-    }
     public static Unit Factory(string name, int team, Coordinate loc)
     {
         var unit = new Unit

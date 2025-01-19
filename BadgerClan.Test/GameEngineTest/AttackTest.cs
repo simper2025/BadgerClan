@@ -15,8 +15,8 @@ public class AttackTest
     public void KnightAttacksKnight()
     {
         var state = new GameState();
-        var knight1 = Unit.Factory("Knight", Coordinate.Offset(2, 2));
-        var knight2 = Unit.Factory("Knight", Coordinate.Offset(3, 2));
+        var knight1 = Unit.Factory("Knight", 1, Coordinate.Offset(2, 2));
+        var knight2 = Unit.Factory("Knight", 2, Coordinate.Offset(3, 2));
         state.AddUnit(knight1);
         state.AddUnit(knight2);
         var expectedHealth = knight2.Health - knight1.Attack;
@@ -31,8 +31,8 @@ public class AttackTest
     public void UnitCantAttackSelf()
     {
         var state = new GameState();
-        var knight1 = Unit.Factory("Knight", Coordinate.Offset(2, 2));
-        var knight2 = Unit.Factory("Knight", Coordinate.Offset(3, 2));
+        var knight1 = Unit.Factory("Knight", 1, Coordinate.Offset(2, 2));
+        var knight2 = Unit.Factory("Knight", 2, Coordinate.Offset(3, 2));
         state.AddUnit(knight1);
         state.AddUnit(knight2);
         var expectedHealth = knight1.Health;
@@ -47,8 +47,8 @@ public class AttackTest
     public void KnightCanOnlyAttackOneSpaceAway()
     {
         var state = new GameState();
-        var knight1 = Unit.Factory("Knight", Coordinate.Offset(2, 2));
-        var knight2 = Unit.Factory("Knight", Coordinate.Offset(4, 2));
+        var knight1 = Unit.Factory("Knight", 1, Coordinate.Offset(2, 2));
+        var knight2 = Unit.Factory("Knight", 2, Coordinate.Offset(4, 2));
         state.AddUnit(knight1);
         state.AddUnit(knight2);
         var expectedHealth = knight2.Health;
@@ -63,8 +63,8 @@ public class AttackTest
     public void ArcherCanAttackUpToThreeSpacesAway()
     {
         var state = new GameState();
-        var archer = Unit.Factory("Archer", Coordinate.Offset(2, 2));
-        var knight2 = Unit.Factory("Knight", Coordinate.Offset(5, 2));
+        var archer = Unit.Factory("Archer", 1, Coordinate.Offset(2, 2));
+        var knight2 = Unit.Factory("Knight", 2, Coordinate.Offset(5, 2));
         state.AddUnit(archer);
         state.AddUnit(knight2);
         var expectedHealth = knight2.Health - archer.Attack;

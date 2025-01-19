@@ -15,8 +15,8 @@ public class AttackMoveTest
     public void OnlyOneMoveAfterAttack()
     {
         var state = new GameState();
-        var knight1 = Unit.Factory("Knight", Coordinate.Offset(2, 2));
-        var knight2 = Unit.Factory("Knight", Coordinate.Offset(3, 2));
+        var knight1 = Unit.Factory("Knight", 1, Coordinate.Offset(2, 2));
+        var knight2 = Unit.Factory("Knight", 2, Coordinate.Offset(3, 2));
         state.AddUnit(knight1);
         state.AddUnit(knight2);
         var moves = new List<Move> {
@@ -28,4 +28,8 @@ public class AttackMoveTest
 
         Assert.Equal(Coordinate.Offset(1, 3), knight1.Location);
     }
+
+    //attacks take movement
+
+    
 }

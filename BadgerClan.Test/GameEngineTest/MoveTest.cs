@@ -15,7 +15,7 @@ public class MoveTest
     public void MoveOneStep()
     {
         var state = new GameState();
-        var knight = Unit.Factory("Knight", Coordinate.Offset(2, 2));
+        var knight = Unit.Factory("Knight", 1, Coordinate.Offset(2, 2));
         state.AddUnit(knight);
         var moves = new List<Move> {
             new Move(MoveType.Walk, knight.Id, knight.Location.MoveEast(1))
@@ -28,7 +28,7 @@ public class MoveTest
     public void ResetsMoves()
     {
         var state = new GameState();
-        var knight = Unit.Factory("Knight", Coordinate.Offset(2, 2));
+        var knight = Unit.Factory("Knight", 1, Coordinate.Offset(2, 2));
         knight.Moves = 0;
         state.AddUnit(knight);
         var moves = new List<Move> { };
@@ -40,7 +40,7 @@ public class MoveTest
     public void KnightCantMoveThree()
     {
         var state = new GameState();
-        var knight = Unit.Factory("Knight", Coordinate.Offset(2, 2));
+        var knight = Unit.Factory("Knight", 1, Coordinate.Offset(2, 2));
         state.AddUnit(knight);
         var moves = new List<Move> {
             new Move(MoveType.Walk, knight.Id, knight.Location.MoveEast(1)),
@@ -55,7 +55,7 @@ public class MoveTest
     public void CantMoveOffGridBottom()
     {
         var state = new GameState();
-        var knight = Unit.Factory("Knight", Coordinate.Offset(1, 1));
+        var knight = Unit.Factory("Knight", 1, Coordinate.Offset(1, 1));
         state.AddUnit(knight);
         var moves = new List<Move> {
             new Move(MoveType.Walk, knight.Id, knight.Location.MoveNorthEast(1)),
@@ -70,7 +70,7 @@ public class MoveTest
     {
         var state = new GameState();
         state.Dimension = 6;
-        var knight = Unit.Factory("Knight", Coordinate.Offset(5, 5));
+        var knight = Unit.Factory("Knight", 1, Coordinate.Offset(5, 5));
         state.AddUnit(knight);
         var moves = new List<Move> {
             new Move(MoveType.Walk, knight.Id, knight.Location.MoveSouthWest(1)),
@@ -84,8 +84,8 @@ public class MoveTest
     public void CantMoveOntoAnotherUnit()
     {
         var state = new GameState();
-        var knight = Unit.Factory("Knight", Coordinate.Offset(5, 5));
-        var knight2 = Unit.Factory("Knight", Coordinate.Offset(5, 6));
+        var knight = Unit.Factory("Knight", 1, Coordinate.Offset(5, 5));
+        var knight2 = Unit.Factory("Knight", 1, Coordinate.Offset(5, 6));
         var expectedLocation = knight.Location.Copy();
         state.AddUnit(knight);
         state.AddUnit(knight2);
