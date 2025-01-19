@@ -37,6 +37,22 @@ public class GameState
         Turn = 0;
     }
 
+    public override string ToString()
+    {
+        string status = "";
+        if(Running)
+        {
+            foreach(int team in Teams){
+                status += "Team " + team +": " + Units.Count(u => u.Team == team) + "; ";
+            }
+        }
+        else if (Turn > 0)
+        {
+            status = "GameOver; Team #" + Units.FirstOrDefault().Team + " wins";
+        }
+        return status;
+    }
+
     public void IncrementTurn()
     {
         var teamIndex = Teams.IndexOf(currentTeam);

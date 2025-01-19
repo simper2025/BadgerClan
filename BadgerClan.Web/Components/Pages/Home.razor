@@ -22,6 +22,8 @@
 <div id="square" class="battle-field" style="">
 </div>
 
+<div>@status</div>
+
 
 @code {
 
@@ -30,6 +32,8 @@
     private GameEngine engine = new GameEngine();
     private GameState state = new GameState();
 
+    private string status ="";
+
     private Dictionary<string, string> iconLookup = new Dictionary<string, string>();
 
     protected override Task OnInitializedAsync()
@@ -37,8 +41,11 @@
         iconLookup.Add("Knight", "/images/pikeman.svg");
         iconLookup.Add("Archer", "/images/archer.svg");
 
-        var team = new List<string> { "Knight", "Knight", "Knight", "Knight", "Archer", "Archer" };
+        var team = new List<string>();
+
+        team = new List<string> { "Archer", "Archer", "Knight", "Knight", "Knight", "Knight" };
         state.AddTeam(1, Coordinate.Offset(10, 10), team);
+        team = new List<string> { "Knight", "Knight", "Knight", "Knight", "Archer", "Archer" };
         state.AddTeam(2, Coordinate.Offset(30, 30), team);
 
         return Task.CompletedTask;
@@ -52,14 +59,13 @@
 
     private void ProcessTurn()
     {
-        var moves = new List<Move>();
-        foreach (var unit in state.Units)
-        {
-            moves.Add(new Move(MoveType.Walk, unit.Id, unit.Location.MoveSouthEast(1)));
-        }
+        var moves = MoveGenetator.MakeList(state.CurrentTeam, state);
         state = engine.ProcessTurn(state, moves);
         var man = state.Units.FirstOrDefault();
-
+        
+        status = state.ToString();
+        
+        
         DrawUnits(state);
     }
 

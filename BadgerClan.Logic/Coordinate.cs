@@ -98,4 +98,7 @@ public class Coordinate : IEquatable<Coordinate>
         return new Coordinate(left.Q - right.Q, left.R - right.R);
     }
 
+
+
+
 }
