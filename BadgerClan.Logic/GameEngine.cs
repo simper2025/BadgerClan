@@ -26,8 +26,7 @@ public class GameEngine
                 case MoveType.Walk:
                     var movedLocation = new Coordinate(move.target.Q, move.target.R);
                     if (distance <= unit.Moves && defender == null &&
-                        movedLocation.Col >= 0 && movedLocation.Row >= 0 &&
-                        movedLocation.Col <= state.Dimension && movedLocation.Row <= state.Dimension)
+                        state.IsOnBoard(movedLocation))
                     {
                         unit.Location = movedLocation;
                         unit.Moves -= distance;
