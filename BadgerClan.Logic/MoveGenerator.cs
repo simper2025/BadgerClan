@@ -6,7 +6,7 @@ namespace BadgerClan.Logic;
 public class MoveGenetator
 {
 
-    public static List<Move> MakeList(int team, GameState state)
+    public static List<Move> RunAndGun(int team, GameState state)
     {
         Random rnd = new Random();
 
@@ -47,8 +47,9 @@ public class MoveGenetator
                     {
                         if (neighbors.Any())
                         {
-                            target = neighbors[0];
-                            neighbors.RemoveAt(0);
+                            var i = rnd.Next(0, neighbors.Count() - 1);
+                            target = neighbors[i];
+                            neighbors.RemoveAt(i);
                         }
                         else
                         {

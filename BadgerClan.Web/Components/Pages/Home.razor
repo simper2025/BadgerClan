@@ -17,13 +17,14 @@
     }
 </style>
 
-<button @onclick="ProcessTurn">Process Turn</button>
+<button @onclick="RunTurns">Run</button>
 
 <div id="square" class="battle-field" style="">
 </div>
 
 <div>@status</div>
 
+@* <div>@(Running ? "Running" : "Stopped")</div> *@
 
 @code {
 
@@ -32,6 +33,7 @@
     private GameEngine engine = new GameEngine();
     private GameState state = new GameState();
 
+    private bool Running = false;
     private string status = "";
 
     private Dictionary<string, string> iconLookup = new Dictionary<string, string>();
@@ -44,10 +46,13 @@
         var team = new List<string>();
 
         team = new List<string> { "Knight", "Knight", "Archer", "Archer", "Knight", "Knight" };
-        state.AddTeam(1, Coordinate.Offset(10, 10), team);
+        state.AddTeam(1, Coordinate.Offset(8, 13), team);
+        //state.AddTeam(1, Coordinate.Offset(8, 15), team);
         state.AddTeam(2, Coordinate.Offset(30, 10), team);
         state.AddTeam(3, Coordinate.Offset(30, 30), team);
         state.AddTeam(4, Coordinate.Offset(10, 30), team);
+
+        state.AddTeam(5, Coordinate.Offset(50, 20), team);
 
         return Task.CompletedTask;
     }
@@ -58,16 +63,30 @@
 
     }
 
-    private void ProcessTurn()
+    private void RunTurns()
     {
-        var moves = MoveGenetator.MakeList(state.CurrentTeam, state);
-        state = engine.ProcessTurn(state, moves);
-        var man = state.Units.FirstOrDefault();
+        Running = !Running;
 
-        status = state.ToString();
+        if (Running)
+            ProcessTurn();
+    }
 
+    private async void ProcessTurn()
+    {
+        while (Running)
+        {
+            var moves = MoveGenetator.RunAndGun(state.CurrentTeam, state);
+            state = engine.ProcessTurn(state, moves);
+            var man = state.Units.FirstOrDefault();
 
-        DrawUnits(state);
+            status = state.ToString();
+
+            DrawUnits(state);
+            Running = state.Running;
+
+            Thread.Sleep(150);
+        }
+
     }
 
     private void DrawUnits(GameState state)

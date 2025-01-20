@@ -39,7 +39,7 @@ public class GameState
 
     public override string ToString()
     {
-        string status = "";
+        string status = "Turn #" + Turn + "; ";
         if (Running)
         {
             foreach (int team in Teams)

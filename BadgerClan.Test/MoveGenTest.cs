@@ -23,7 +23,7 @@ public class MoveGenTest
         state.AddUnit(archer1);
         state.AddUnit(knight2);
 
-        var moves = MoveGenetator.MakeList(1, state);
+        var moves = MoveGenetator.RunAndGun(1, state);
         state = engine.ProcessTurn(state, moves);
         Assert.True(true);
     }
@@ -36,7 +36,7 @@ public class MoveGenTest
         state.AddTeam(1, Coordinate.Offset(10, 10), team);
         state.AddTeam(2, Coordinate.Offset(30, 30), team);
 
-        var moves = MoveGenetator.MakeList(1, state);
+        var moves = MoveGenetator.RunAndGun(1, state);
         Assert.Equal(6, moves.Count);
         state = engine.ProcessTurn(state, moves);
     }
@@ -50,11 +50,11 @@ public class MoveGenTest
         state.AddTeam(1, Coordinate.Offset(10, 10), team);
         state.AddTeam(2, Coordinate.Offset(30, 30), team);
 
-        var moves = MoveGenetator.MakeList(1, state);
+        var moves = MoveGenetator.RunAndGun(1, state);
         Assert.Equal(6, moves.Count);
         state = engine.ProcessTurn(state, moves);
 
-        moves = MoveGenetator.MakeList(2, state);
+        moves = MoveGenetator.RunAndGun(2, state);
         Assert.Equal(6, moves.Count);
         state = engine.ProcessTurn(state, moves);
     }
