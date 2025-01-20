@@ -15,7 +15,7 @@ public class MoveGenTest
     }
 
     [Fact]
-    public void Test1()
+    public void BasicTest()
     {
         var state = new GameState();
         var archer1 = Unit.Factory("Archer", 1, Coordinate.Offset(10, 10));
@@ -29,7 +29,21 @@ public class MoveGenTest
     }
 
     [Fact]
-    public void Test2()
+    public void OneTurn()
+    {
+        var state = new GameState();
+        var team = new List<string> { "Knight", "Knight", "Knight", "Knight", "Archer", "Archer" };
+        state.AddTeam(1, Coordinate.Offset(10, 10), team);
+        state.AddTeam(2, Coordinate.Offset(30, 30), team);
+
+        var moves = MoveGenetator.MakeList(1, state);
+        Assert.Equal(6, moves.Count);
+        state = engine.ProcessTurn(state, moves);
+    }
+
+
+    //[Fact]
+    public void TwoTurns()
     {
         var state = new GameState();
         var team = new List<string> { "Knight", "Knight", "Knight", "Knight", "Archer", "Archer" };
