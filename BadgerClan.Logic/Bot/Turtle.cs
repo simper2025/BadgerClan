@@ -14,24 +14,6 @@ public class Turtle : IBot
         return attack;
     }
 
-    private static Coordinate Toward(Unit unit, Unit closest)
-    {
-        var r = 0;
-        if (closest.Location.R - unit.Location.R < 0)
-            r = -1;
-        else if (closest.Location.R - unit.Location.R > 0)
-            r = +1;
-
-        var q = 0;
-        if (closest.Location.Q - unit.Location.Q < 0)
-            q = -1;
-        else if (closest.Location.Q - unit.Location.Q > 0)
-            q = +1;
-
-        var target = new Coordinate(unit.Location.Q + q, unit.Location.R + r);
-        return target;
-    }
-
     private static Coordinate Away(Unit unit, Unit closest)
     {
         var r = 0;
@@ -54,7 +36,7 @@ public class Turtle : IBot
     {
         Random rnd = new Random();
 
-        var target = Toward(unit, closest);
+        var target = unit.Location.Toward(closest.Location);
 
         var neighbors = unit.Location.Neighbors();
 

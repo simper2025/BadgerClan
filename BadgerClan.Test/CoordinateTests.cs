@@ -1,4 +1,5 @@
 
+using System.Security.AccessControl;
 using BadgerClan.Logic;
 
 namespace BadgerClan.Test;
@@ -91,5 +92,14 @@ public class CoordinateTests
         var p1 = new Coordinate(4, 4);
         var neighbors = p1.Neighbors();
         Assert.Equal(6, neighbors.Count);
+    }
+
+    [Fact]
+    public void TowardTest()
+    {
+        var point = Coordinate.Offset(1,1);
+        var toward = point.Toward(Coordinate.Offset(3,4));
+        var expected = Coordinate.Offset(2,2);
+        Assert.Equal(expected, toward);
     }
 }
