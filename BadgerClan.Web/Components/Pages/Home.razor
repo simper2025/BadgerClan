@@ -46,13 +46,16 @@
         var team = new List<string>();
 
         team = new List<string> { "Knight", "Knight", "Archer", "Archer", "Knight", "Knight" };
-        state.AddTeam(1, Coordinate.Offset(8, 13), team);
-        //state.AddTeam(1, Coordinate.Offset(8, 15), team);
+        state.AddTeam(1, Coordinate.Offset(6, 14), team);
+        @* state.AddTeam(1, Coordinate.Offset(6, 14), team);
+        state.AddTeam(1, Coordinate.Offset(6, 16), team);
+        state.AddTeam(1, Coordinate.Offset(6, 16), team); *@
         state.AddTeam(2, Coordinate.Offset(30, 10), team);
         state.AddTeam(3, Coordinate.Offset(30, 30), team);
         state.AddTeam(4, Coordinate.Offset(10, 30), team);
 
         state.AddTeam(5, Coordinate.Offset(50, 20), team);
+        state.AddTeam(6, Coordinate.Offset(30, 40), team);
 
         return Task.CompletedTask;
     }
@@ -75,7 +78,15 @@
     {
         while (Running)
         {
-            var moves = MoveGenetator.RunAndGun(state.CurrentTeam, state);
+            var moves = new List<Move>();
+            if (state.CurrentTeam != 1)
+            {
+                moves = MoveGenetator.RunAndGun(state.CurrentTeam, state);
+            }
+            else
+            {
+                moves = MoveGenetator.Turtle(state.CurrentTeam, state);
+            }
             state = engine.ProcessTurn(state, moves);
             var man = state.Units.FirstOrDefault();
 
@@ -108,6 +119,9 @@
                     break;
                 case 5:
                     color = "orange";
+                    break;
+                case 6:
+                    color = "black";
                     break;
 
             }
