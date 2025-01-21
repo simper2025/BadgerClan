@@ -10,8 +10,8 @@
 <style>
     .battle-field {
         position: relative;
-        width: 1000px;
-        height: 1000px;
+        width: 997px;
+        height: 860px;
         background-color: lightblue;
         border: 1px solid black;
     }
@@ -20,7 +20,12 @@
 <button @onclick="RunTurns">Run</button>
 
 <div id="square" class="battle-field" style="">
+    @foreach (var u in state.Units)
+    {
+        <UnitComponent Unit=u Team=teams[u.Team] @key=u.Id />
+    }
 </div>
+
 
 <div>@status</div>
 
@@ -28,11 +33,10 @@
 
 @code {
 
-    private int dimension = 10;
-    private double root3 = Math.Sqrt(3.0);
     private GameEngine engine = new GameEngine();
     private GameState state = new GameState();
 
+    private CancellationToken ShouldStop = new CancellationToken();
     private bool Running = false;
     private string status = "";
 
@@ -40,18 +44,32 @@
     private Dictionary<string, string> iconLookup = new Dictionary<string, string>();
 
     private List<string> teamUnits = new List<string> { "Knight", "Knight", "Archer", "Archer", "Knight", "Knight" };
+    private List<string> colors = new List<string> { "blank", "red", "blue", "green", "yellow", "orange", "black" };
 
     protected override Task OnInitializedAsync()
     {
         iconLookup.Add("Knight", "/images/pikeman.svg");
         iconLookup.Add("Archer", "/images/archer.svg");
 
-        MakeTeam(1, 6, 14, "red", new Turtle());
-        MakeTeam(2, 30, 10, "blue", new Turtle());
-        MakeTeam(3, 10, 60, "green", new Turtle());
-        MakeTeam(4, 10, 30, "yellow", new Turtle());
-        MakeTeam(5, 50, 20, "orange", new Turtle(1, 2));
-        MakeTeam(6, 30, 40, "black", new Turtle());
+        MakeTeam(1, 35, 10, "red", new RunAndGun());
+        MakeTeam(2, 30, 10, "blue", new RunAndGun());
+        MakeTeam(3, 60, 35, "green", new RunAndGun());
+        MakeTeam(4, 10, 30, "yellow", new RunAndGun());
+        MakeTeam(5, 50, 20, "orange", new RunAndGun());
+        MakeTeam(6, 30, 40, "black", new RunAndGun());
+
+        @* state.AddTeam(1, Coordinate.Offset(0, 0), new List<string> { "Archer" });
+        state.AddTeam(1, Coordinate.Offset(0, 1), new List<string> { "Archer" });
+
+        state.AddTeam(1, Coordinate.Offset(70, 0), new List<string> { "Archer" });
+        state.AddTeam(1, Coordinate.Offset(70, 1), new List<string> { "Archer" });
+
+        state.AddTeam(1, Coordinate.Offset(0, 70), new List<string> { "Archer" });
+        state.AddTeam(1, Coordinate.Offset(0, 69), new List<string> { "Archer" });
+
+        state.AddTeam(1, Coordinate.Offset(70, 70), new List<string> { "Archer" });
+        state.AddTeam(1, Coordinate.Offset(70, 69), new List<string> { "Archer" }); *@
+
 
         return Task.CompletedTask;
     }
@@ -69,63 +87,45 @@
 
     protected override void OnAfterRender(bool firstRender)
     {
-        DrawUnits(state);
+        
     }
 
     private void RunTurns()
     {
-        Running = !Running;
-
         if (Running)
-            ProcessTurn();
+            return;
+        Running = true;
+
+        Task.Run(() => ProcessTurn());
     }
 
-    private async void ProcessTurn()
-    {
-        while (Running)
-        {
-            var moves = teams[state.CurrentTeam].Bot.PlanMoves(state);
-
-            state = engine.ProcessTurn(state, moves);
-            var man = state.Units.FirstOrDefault();
-
-            status = state.ToString();
-
-            DrawUnits(state);
-            Running = state.Running;
-
-            Thread.Sleep(150);
-        }
-
-    }
-
-    private void DrawUnits(GameState state)
-    {
-        JSRuntime.InvokeVoidAsync("clearIcons", "square");
-        foreach (var unit in state.Units)
-        {
-            var color = teams[unit.Team].Color;
-
-            var image = iconLookup[unit.Type];
-            var x = (int)(dimension * (root3 * unit.Location.Q + root3 / 2.0 * unit.Location.R));
-            var y = (int)(dimension * ((3.0 / 2) * unit.Location.R));
-            var con = new Icon(image, x, y, 20, 20, color);
-            PlaceIcon(con);
-        }
-
-    }
-
-    private void PlaceIcon(Icon icon)
+    private void ProcessTurn()
     {
         try
         {
-            JSRuntime.InvokeVoidAsync("createIconDiv", "square", icon.Url, icon.X, icon.Y, icon.Width, icon.Height, icon.color);
-        }
-        catch (Exception ex)
-        {
-            Console.Error.WriteLine($"Error placing icons: {ex.Message}");
-        }
-    }
+            while (Running)
+            {
+                ShouldStop.ThrowIfCancellationRequested();
+                var moves = teams[state.CurrentTeam].Bot.PlanMoves(state);
 
-    private record Icon(string Url, int X, int Y, int Width, int Height, string color);
+                state = engine.ProcessTurn(state, moves);
+                var man = state.Units.FirstOrDefault();
+
+                status = state.ToString();
+
+                Running = state.Running;
+
+                InvokeAsync(StateHasChanged);
+
+                Thread.Sleep(150);
+            }
+        }
+        catch (Exception e)
+        {
+            Running = false;
+        }
+
+    }
+    
+   
 }

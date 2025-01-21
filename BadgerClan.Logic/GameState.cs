@@ -4,7 +4,7 @@ namespace BadgerClan.Logic;
 
 public class GameState
 {
-    public int Dimension = 100;
+    public int Dimension = 70;
 
     public List<Unit> Units { get; set; }
     private List<int> Teams;
