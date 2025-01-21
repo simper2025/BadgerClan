@@ -3,6 +3,6 @@ namespace BadgerClan.Logic.Bot;
 
 public interface IBot
 {
-    List<Move> PlanMoves(int team, GameState state);
+    List<Move> PlanMoves(GameState state);
 
 }

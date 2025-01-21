@@ -1,13 +1,13 @@
 
 namespace BadgerClan.Logic.Bot;
 
-public class RunAndGun : IBot
+public class Turtle : IBot
 {
     public int Team;
-public RunAndGun(int team)
-{
-    Team = team;
-}
+    public Turtle(int team)
+    {
+        Team = team;
+    }
     private static Move AttackClosest(Unit unit, Unit closest)
     {
         var attack = new Move(MoveType.Attack, unit.Id, closest.Location);
@@ -81,15 +81,25 @@ public RunAndGun(int team)
 
     public List<Move> PlanMoves(GameState state)
     {
+        var active = false;
+        var enemies = state.Units.Where(u => u.Team != Team);
 
-        var moves = new List<Move>();
         foreach (var unit in state.Units.Where(u => u.Team == Team))
         {
-            var enemies = state.Units.Where(u => u.Team != Team);
             var closest = enemies.OrderBy(u => u.Location.Distance(unit.Location)).FirstOrDefault();
-            if (closest != null)
+            if (closest != null && closest.Location.Distance(unit.Location) <= 5)
             {
+                active = true;
+                break;
+            }
+        }
 
+        var moves = new List<Move>();
+        foreach (var unit in state.Units.Where(u => u.Team == Team && u.Type == "Knight"))
+        {
+            var closest = enemies.OrderBy(u => u.Location.Distance(unit.Location)).FirstOrDefault();
+            if (active && closest != null)
+            {
                 if (closest.Location.Distance(unit.Location) <= unit.AttackDistance)
                 {
                     moves.Add(AttackClosest(unit, closest));
@@ -101,7 +111,29 @@ public RunAndGun(int team)
                 }
             }
         }
+        foreach (var unit in state.Units.Where(u => u.Team == Team && u.Type == "Archer"))
+        {
+            var closest = enemies.OrderBy(u => u.Location.Distance(unit.Location)).FirstOrDefault();
+            if (active && closest != null)
+            {
+                if (closest.Location.Distance(unit.Location) == 1)
+                {
+                    var target = Away(unit, closest);
+                    moves.Add(new Move(MoveType.Walk, unit.Id, target));
+                    moves.Add(AttackClosest(unit, closest));
+                }
+                else if (closest.Location.Distance(unit.Location) <= unit.AttackDistance)
+                {
+                    moves.Add(AttackClosest(unit, closest));
+                    moves.Add(AttackClosest(unit, closest));
+                }
+                else if (active)
+                {
+                    moves.Add(StepToClosest(unit, closest, state));
+                }
+            }
+        }
+
         return moves;
     }
-
 }

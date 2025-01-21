@@ -35,27 +35,32 @@
 
     private bool Running = false;
     private string status = "";
-
     private Dictionary<string, string> iconLookup = new Dictionary<string, string>();
+
+    private List<IBot> bots = new List<IBot>();
+
 
     protected override Task OnInitializedAsync()
     {
         iconLookup.Add("Knight", "/images/pikeman.svg");
         iconLookup.Add("Archer", "/images/archer.svg");
+        bots.Add(new RunAndGun(1));
 
         var team = new List<string>();
 
         team = new List<string> { "Knight", "Knight", "Archer", "Archer", "Knight", "Knight" };
         state.AddTeam(1, Coordinate.Offset(6, 14), team);
-        @* state.AddTeam(1, Coordinate.Offset(6, 14), team);
-        state.AddTeam(1, Coordinate.Offset(6, 16), team);
-        state.AddTeam(1, Coordinate.Offset(6, 16), team); *@
+        bots.Add(new RunAndGun(1));
         state.AddTeam(2, Coordinate.Offset(30, 10), team);
+        bots.Add(new RunAndGun(2));
         state.AddTeam(3, Coordinate.Offset(30, 30), team);
+        bots.Add(new RunAndGun(3));
         state.AddTeam(4, Coordinate.Offset(10, 30), team);
-
+        bots.Add(new RunAndGun(4));
         state.AddTeam(5, Coordinate.Offset(50, 20), team);
+        bots.Add(new RunAndGun(5));
         state.AddTeam(6, Coordinate.Offset(30, 40), team);
+        bots.Add(new RunAndGun(6));
 
         return Task.CompletedTask;
     }
@@ -78,15 +83,8 @@
     {
         while (Running)
         {
-            var moves = new List<Move>();
-            if (state.CurrentTeam != 1)
-            {
-                moves = MoveGenetator.RunAndGun(state.CurrentTeam, state);
-            }
-            else
-            {
-                moves = MoveGenetator.Turtle(state.CurrentTeam, state);
-            }
+            var moves = bots[state.CurrentTeam].PlanMoves(state);
+
             state = engine.ProcessTurn(state, moves);
             var man = state.Units.FirstOrDefault();
 
