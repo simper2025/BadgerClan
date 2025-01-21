@@ -22,7 +22,7 @@ public class Turtle : IBot
         // TurnsOfDelay = 10;
 
         Random rnd = new Random();
-        TurnsOfAction = rnd.Next(1, 5) + 5;
+        TurnsOfAction = rnd.Next(1, 5) + 0;
         TurnsOfDelay = rnd.Next(1, 10) + 5; 
     }
 
@@ -107,6 +107,7 @@ public class Turtle : IBot
         Go active 
             if there are few enemies
             if it has been a few turns since someone died
+        Stay active
             if you have active turns left
     */
     private bool ShouldGoActive(IEnumerable<Unit> enemies)
