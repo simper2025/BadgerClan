@@ -35,40 +35,41 @@
 
     private bool Running = false;
     private string status = "";
+
+    private Dictionary<int, Team> teams = new Dictionary<int, Team>();
     private Dictionary<string, string> iconLookup = new Dictionary<string, string>();
 
-    private List<IBot> bots = new List<IBot>();
-
+    private List<string> teamUnits = new List<string> { "Knight", "Knight", "Archer", "Archer", "Knight", "Knight" };
 
     protected override Task OnInitializedAsync()
     {
         iconLookup.Add("Knight", "/images/pikeman.svg");
         iconLookup.Add("Archer", "/images/archer.svg");
-        bots.Add(new RunAndGun(1));
 
-        var team = new List<string>();
-
-        team = new List<string> { "Knight", "Knight", "Archer", "Archer", "Knight", "Knight" };
-        state.AddTeam(1, Coordinate.Offset(6, 14), team);
-        bots.Add(new RunAndGun(1));
-        state.AddTeam(2, Coordinate.Offset(30, 10), team);
-        bots.Add(new RunAndGun(2));
-        state.AddTeam(3, Coordinate.Offset(30, 30), team);
-        bots.Add(new RunAndGun(3));
-        state.AddTeam(4, Coordinate.Offset(10, 30), team);
-        bots.Add(new RunAndGun(4));
-        state.AddTeam(5, Coordinate.Offset(50, 20), team);
-        bots.Add(new RunAndGun(5));
-        state.AddTeam(6, Coordinate.Offset(30, 40), team);
-        bots.Add(new Turtle(6));
+        MakeTeam(1, 6, 14, "red", new Turtle());
+        MakeTeam(2, 30, 10, "blue", new Turtle());
+        MakeTeam(3, 10, 60, "green", new Turtle());
+        MakeTeam(4, 10, 30, "yellow", new Turtle());
+        MakeTeam(5, 50, 20, "orange", new Turtle(1, 2));
+        MakeTeam(6, 30, 40, "black", new Turtle());
 
         return Task.CompletedTask;
+    }
+
+    private void MakeTeam(int id, int col, int row, string color, IBot bot)
+    {
+        var loc = Coordinate.Offset(col, row);
+        bot.Team = id;
+
+        state.AddTeam(id, loc, teamUnits);
+
+        var team = new Team(id, color, bot);
+        teams.Add(id, team);
     }
 
     protected override void OnAfterRender(bool firstRender)
     {
         DrawUnits(state);
-
     }
 
     private void RunTurns()
@@ -83,7 +84,7 @@
     {
         while (Running)
         {
-            var moves = bots[state.CurrentTeam].PlanMoves(state);
+            var moves = teams[state.CurrentTeam].Bot.PlanMoves(state);
 
             state = engine.ProcessTurn(state, moves);
             var man = state.Units.FirstOrDefault();
@@ -103,26 +104,7 @@
         JSRuntime.InvokeVoidAsync("clearIcons", "square");
         foreach (var unit in state.Units)
         {
-            var color = "red";
-            switch (unit.Team)
-            {
-                case 2:
-                    color = "blue";
-                    break;
-                case 3:
-                    color = "green";
-                    break;
-                case 4:
-                    color = "yellow";
-                    break;
-                case 5:
-                    color = "orange";
-                    break;
-                case 6:
-                    color = "black";
-                    break;
-
-            }
+            var color = teams[unit.Team].Color;
 
             var image = iconLookup[unit.Type];
             var x = (int)(dimension * (root3 * unit.Location.Q + root3 / 2.0 * unit.Location.R));

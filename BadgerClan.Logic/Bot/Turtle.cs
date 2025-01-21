@@ -12,23 +12,36 @@ public class Turtle : IBot
     private int TurnsSinceDeath = 0;
     private int ActionsLeft = 0;
 
-    public int Team;
+    public int Team { get; set; }
 
-    public Turtle(int team)
+    public Turtle()
     {
-        Team = team;
+        Team = 0;
+
+        // TurnsOfAction = 5;
+        // TurnsOfDelay = 10;
 
         Random rnd = new Random();
-        TurnsOfAction = rnd.Next(1, 10);
-        TurnsOfDelay = rnd.Next(1, 10);
+        TurnsOfAction = rnd.Next(1, 5) + 5;
+        TurnsOfDelay = rnd.Next(1, 10) + 5; 
     }
 
-    public Turtle(int team, int action, int delay)
+    public Turtle(int team) : this()
     {
         Team = team;
+    }
+
+    public Turtle(int action, int delay)
+    {
+        Team = 0;
 
         TurnsOfAction = action;
         TurnsOfDelay = delay;
+    }
+
+    public Turtle(int team, int action, int delay) : this(action, delay)
+    {
+        Team = team;
     }
 
     public List<Move> PlanMoves(GameState state)
@@ -89,7 +102,6 @@ public class Turtle : IBot
 
         return moves;
     }
-
 
     /*
         Go active 

@@ -3,7 +3,12 @@ namespace BadgerClan.Logic.Bot;
 
 public class RunAndGun : IBot
 {
-    public int Team;
+    public int Team { get; set; }
+
+    public RunAndGun()
+    {
+        Team = 0;
+    }
     public RunAndGun(int team)
     {
         Team = team;
