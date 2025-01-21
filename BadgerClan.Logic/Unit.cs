@@ -39,7 +39,7 @@ public class Unit
             case "Knight":
                 unit.Type = "Knight";
                 unit.Attack = 4;
-                unit.Health = 10;
+                unit.Health = 15;
                 unit.MaxMoves = 2;
                 unit.Moves = 2;
                 unit.AttackCount = 2;

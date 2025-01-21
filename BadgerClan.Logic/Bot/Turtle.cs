@@ -3,21 +3,44 @@ namespace BadgerClan.Logic.Bot;
 
 public class Turtle : IBot
 {
+    public int ActiveRange = 6;
+    public int ActiveEnemyCount = 10;
+    public int TurnsOfDelay = 1;
+    public int TurnsOfAction = 1;
+
+    private int LastEnemyCount = 0;
+    private int TurnsSinceDeath = 0;
+    private int ActionsLeft = 0;
+
     public int Team;
+
     public Turtle(int team)
     {
         Team = team;
+
+        Random rnd = new Random();
+        TurnsOfAction = rnd.Next(1, 10);
+        TurnsOfDelay = rnd.Next(1, 10);
+    }
+
+    public Turtle(int team, int action, int delay)
+    {
+        Team = team;
+
+        TurnsOfAction = action;
+        TurnsOfDelay = delay;
     }
 
     public List<Move> PlanMoves(GameState state)
     {
-        var active = false;
         var enemies = state.Units.Where(u => u.Team != Team);
+        var active = ShouldGoActive(enemies);
 
         foreach (var unit in state.Units.Where(u => u.Team == Team))
         {
+            if (active) break;
             var closest = enemies.OrderBy(u => u.Location.Distance(unit.Location)).FirstOrDefault();
-            if (closest != null && closest.Location.Distance(unit.Location) <= 5)
+            if (closest != null && closest.Location.Distance(unit.Location) <= ActiveRange)
             {
                 active = true;
                 break;
@@ -65,5 +88,37 @@ public class Turtle : IBot
         }
 
         return moves;
+    }
+
+
+    /*
+        Go active 
+            if there are few enemies
+            if it has been a few turns since someone died
+            if you have active turns left
+    */
+    private bool ShouldGoActive(IEnumerable<Unit> enemies)
+    {
+        if (enemies.Count() < ActiveEnemyCount)
+        {
+            ActionsLeft = TurnsOfAction;
+        }
+
+        if (enemies.Count() == LastEnemyCount)
+        {
+            TurnsSinceDeath++;
+        }
+        else
+        {
+            LastEnemyCount = enemies.Count();
+            TurnsSinceDeath = 0;
+        }
+
+        if (TurnsSinceDeath > TurnsOfDelay)
+        {
+            ActionsLeft = TurnsOfAction;
+        }
+
+        return ActionsLeft > 0;
     }
 }

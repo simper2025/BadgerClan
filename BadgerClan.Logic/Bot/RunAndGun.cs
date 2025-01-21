@@ -4,10 +4,10 @@ namespace BadgerClan.Logic.Bot;
 public class RunAndGun : IBot
 {
     public int Team;
-public RunAndGun(int team)
-{
-    Team = team;
-}
+    public RunAndGun(int team)
+    {
+        Team = team;
+    }
 
     public List<Move> PlanMoves(GameState state)
     {
