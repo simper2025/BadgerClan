@@ -14,24 +14,6 @@ public class Turtle : IBot
         return attack;
     }
 
-    private static Coordinate Away(Unit unit, Unit closest)
-    {
-        var r = 0;
-        if (closest.Location.R - unit.Location.R < 0)
-            r = +1;
-        else if (closest.Location.R - unit.Location.R > 0)
-            r = -1;
-
-        var q = 0;
-        if (closest.Location.Q - unit.Location.Q < 0)
-            q = +1;
-        else if (closest.Location.Q - unit.Location.Q > 0)
-            q = -1;
-
-        var target = new Coordinate(unit.Location.Q + q, unit.Location.R + r);
-        return target;
-    }
-
     private static Move StepToClosest(Unit unit, Unit closest, GameState state)
     {
         Random rnd = new Random();
@@ -100,7 +82,7 @@ public class Turtle : IBot
             {
                 if (closest.Location.Distance(unit.Location) == 1)
                 {
-                    var target = Away(unit, closest);
+                    var target = unit.Location.Away(closest.Location);
                     moves.Add(new Move(MoveType.Walk, unit.Id, target));
                     moves.Add(AttackClosest(unit, closest));
                 }

@@ -102,4 +102,15 @@ public class CoordinateTests
         var expected = Coordinate.Offset(2,2);
         Assert.Equal(expected, toward);
     }
+
+    [Fact]
+    public void AwayTest()
+    {
+        var point = Coordinate.Offset(3,4);
+        var away = point.Away(Coordinate.Offset(1,1));
+        var expected = Coordinate.Offset(3,5);
+        Assert.Equal(expected, away);
+    }
+
+
 }

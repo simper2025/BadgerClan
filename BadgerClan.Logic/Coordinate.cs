@@ -130,4 +130,23 @@ public class Coordinate : IEquatable<Coordinate>
         var target = new Coordinate(Q + q, R + r);
         return target;
     }
+
+    public Coordinate Away(Coordinate end)
+    {
+        var r = 0;
+        if (end.R - R < 0)
+            r = +1;
+        else if (end.R - R > 0)
+            r = -1;
+
+        var q = 0;
+        if (end.Q - Q < 0)
+            q = +1;
+        else if (end.Q - Q > 0)
+            q = -1;
+
+        var target = new Coordinate(Q + q, R + r);
+        return target;
+    }
+
 }
