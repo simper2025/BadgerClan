@@ -1,7 +1,7 @@
 
-namespace BadgerClan.Logic;
+namespace BadgerClan.Logic.Bot;
 
-public class MoveGenetator
+public class MoveGenetator : IBot
 {
 
     private static Move AttackClosest(Unit unit, Unit closest)
