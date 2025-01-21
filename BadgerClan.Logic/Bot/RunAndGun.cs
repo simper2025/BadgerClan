@@ -1,7 +1,7 @@
 
 namespace BadgerClan.Logic.Bot;
 
-public class MoveGenetator : IBot
+public class RunAndGun : IBot
 {
 
     private static Move AttackClosest(Unit unit, Unit closest)
@@ -75,7 +75,7 @@ public class MoveGenetator : IBot
         return move;
     }
 
-    public static List<Move> RunAndGun(int team, GameState state)
+    public List<Move> PlanMoves(int team, GameState state)
     {
 
         var moves = new List<Move>();
