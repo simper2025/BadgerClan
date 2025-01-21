@@ -8,40 +8,6 @@ public class Turtle : IBot
     {
         Team = team;
     }
-    private static Move AttackClosest(Unit unit, Unit closest)
-    {
-        var attack = new Move(MoveType.Attack, unit.Id, closest.Location);
-        return attack;
-    }
-
-    private static Move StepToClosest(Unit unit, Unit closest, GameState state)
-    {
-        Random rnd = new Random();
-
-        var target = unit.Location.Toward(closest.Location);
-
-        var neighbors = unit.Location.Neighbors();
-
-        while (state.Units.Any(u => u.Location == target))
-        {
-            if (neighbors.Any())
-            {
-                var i = rnd.Next(0, neighbors.Count() - 1);
-                target = neighbors[i];
-                neighbors.RemoveAt(i);
-            }
-            else
-            {
-                neighbors = unit.Location.MoveEast(1).Neighbors();
-                // r = rnd.Next(-1, 1);
-                // q = rnd.Next(-1, 1);
-                // target = new Coordinate(unit.Location.Q + q, unit.Location.R + r);
-            }
-        }
-
-        var move = new Move(MoveType.Walk, unit.Id, target);
-        return move;
-    }
 
     public List<Move> PlanMoves(GameState state)
     {
@@ -66,12 +32,12 @@ public class Turtle : IBot
             {
                 if (closest.Location.Distance(unit.Location) <= unit.AttackDistance)
                 {
-                    moves.Add(AttackClosest(unit, closest));
-                    moves.Add(AttackClosest(unit, closest));
+                    moves.Add(SharedMoves.AttackClosest(unit, closest));
+                    moves.Add(SharedMoves.AttackClosest(unit, closest));
                 }
                 else
                 {
-                    moves.Add(StepToClosest(unit, closest, state));
+                    moves.Add(SharedMoves.StepToClosest(unit, closest, state));
                 }
             }
         }
@@ -84,16 +50,16 @@ public class Turtle : IBot
                 {
                     var target = unit.Location.Away(closest.Location);
                     moves.Add(new Move(MoveType.Walk, unit.Id, target));
-                    moves.Add(AttackClosest(unit, closest));
+                    moves.Add(SharedMoves.AttackClosest(unit, closest));
                 }
                 else if (closest.Location.Distance(unit.Location) <= unit.AttackDistance)
                 {
-                    moves.Add(AttackClosest(unit, closest));
-                    moves.Add(AttackClosest(unit, closest));
+                    moves.Add(SharedMoves.AttackClosest(unit, closest));
+                    moves.Add(SharedMoves.AttackClosest(unit, closest));
                 }
                 else if (active)
                 {
-                    moves.Add(StepToClosest(unit, closest, state));
+                    moves.Add(SharedMoves.StepToClosest(unit, closest, state));
                 }
             }
         }
