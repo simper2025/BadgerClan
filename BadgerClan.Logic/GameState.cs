@@ -20,7 +20,7 @@ public class GameState
     {
         get
         {
-            if (currentTeam == 0)
+            if (currentTeam == 0 && TurnOrder.Count > 0)
             {
                 currentTeam = TurnOrder[0];
             }
@@ -66,14 +66,23 @@ public class GameState
 
     public void IncrementTurn()
     {
+        currentTeam = AdvanceTeam();
+
+        Turn++;
+    }
+
+    private int AdvanceTeam()
+    {
         var teamIndex = TurnOrder.IndexOf(currentTeam);
+        // possibly change
+        if (teamIndex < 0)
+            return 0;
+
         if (teamIndex != TurnOrder.Count - 1)
             teamIndex++;
         else
             teamIndex = 0;
-        currentTeam = TurnOrder[teamIndex];
-
-        Turn++;
+        return TurnOrder[teamIndex];
     }
 
     public void AddTeam(Team team)
@@ -99,7 +108,8 @@ public class GameState
         {
             return;
         }
-        if (Turn > 0 && !Units.Any(u => u.Team == unit.Team))
+        if (!TeamList.Any(t => t.Id == unit.Team))
+        // if (Turn > 0 && !Units.Any(u => u.Team == unit.Team))
         {
             return;
         }
@@ -109,12 +119,12 @@ public class GameState
         Units.Add(unit);
 
         // Remove this soon
-        if (!TurnOrder.Contains(unit.Team))
-            TurnOrder.Add(unit.Team);
-        if (!TeamList.Any(t => t.Id == unit.Team))
-        {
-            TeamList.Add(new Team(unit.Team));
-        }
+        // if (!TurnOrder.Contains(unit.Team))
+        //     TurnOrder.Add(unit.Team);
+        // if (!TeamList.Any(t => t.Id == unit.Team))
+        // {
+        //     TeamList.Add(new Team(unit.Team));
+        // }
 
     }
 

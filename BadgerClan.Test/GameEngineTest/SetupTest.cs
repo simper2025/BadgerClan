@@ -26,6 +26,7 @@ public class SetupTest
     public void StackedUnitMoved()
     {
         var state = new GameState();
+        state.AddTeam(new Team(1));
         var knight = Unit.Factory("Knight", 1, Coordinate.Offset(2, 2));
         var knight2 = Unit.Factory("Knight", 1, Coordinate.Offset(2, 2));
         state.AddUnit(knight);
@@ -50,6 +51,8 @@ public class SetupTest
     public void TeamsExist()
     {
         var state = new GameState();
+        state.AddTeam(new Team(1));
+        state.AddTeam(new Team(2));
         var knight = Unit.Factory("Knight", 1, Coordinate.Offset(6, 6));
         var knight2 = Unit.Factory("Knight", 2, Coordinate.Offset(6, 6));
         state.AddUnit(knight);
@@ -61,6 +64,8 @@ public class SetupTest
     public void AddNextToTeammates()
     {
         var state = new GameState();
+        state.AddTeam(new Team(1));
+        state.AddTeam(new Team(2));
         var knight = Unit.Factory("Knight", 1, Coordinate.Offset(6, 6));
         var knight2 = Unit.Factory("Knight", 2, Coordinate.Offset(60, 60));
         state.AddUnit(knight);
@@ -76,6 +81,8 @@ public class SetupTest
     public void TurnCountAndChangeTeams()
     {
         var state = new GameState();
+        state.AddTeam(new Team(1));
+        state.AddTeam(new Team(2));
         var knight = Unit.Factory("Knight", 1, Coordinate.Offset(6, 6));
         var knight2 = Unit.Factory("Knight", 2, Coordinate.Offset(60, 60));
         state.AddUnit(knight);
@@ -99,6 +106,8 @@ public class SetupTest
     public void MoveOnlyOnYourTurn()
     {
         var state = new GameState();
+        state.AddTeam(new Team(1));
+        state.AddTeam(new Team(2));
         var knight1 = Unit.Factory("Knight", 1, Coordinate.Offset(6, 6));
         var knight2 = Unit.Factory("Knight", 2, Coordinate.Offset(60, 60));
         state.AddUnit(knight1);
@@ -131,6 +140,8 @@ public class SetupTest
     public void CantAddTeamAfterStart()
     {
         var state = new GameState();
+        state.AddTeam(new Team(1));
+        state.AddTeam(new Team(2));
         var knight1 = Unit.Factory("Knight", 1, Coordinate.Offset(6, 6));
         var knight2 = Unit.Factory("Knight", 2, Coordinate.Offset(60, 60));
         state.AddUnit(knight1);
@@ -145,6 +156,8 @@ public class SetupTest
     public void TestGameOver()
     {
         var state = new GameState();
+        state.AddTeam(new Team(1));
+        state.AddTeam(new Team(2));
         var knight1 = Unit.Factory("Knight", 1, Coordinate.Offset(6, 6));
         var knight2 = Unit.Factory("Knight", 2, Coordinate.Offset(6, 5));
         state.AddUnit(knight1);
@@ -166,7 +179,7 @@ public class SetupTest
         var state = new GameState();
         var team = new List<string> { "Knight", "Knight", "Knight", "Knight", "Archer", "Archer" };
         state.AddTeam(1, Coordinate.Offset(10, 10), team);
-        Assert.Contains(state.Units, u => u.Location == Coordinate.Offset(10,10));
+        Assert.Contains(state.Units, u => u.Location == Coordinate.Offset(10, 10));
         Assert.Equal(6, state.Units.Count);
     }
 

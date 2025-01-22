@@ -15,6 +15,7 @@ public class MoveTest
     public void MoveOneStep()
     {
         var state = new GameState();
+        state.AddTeam(new Team(1));
         var knight = Unit.Factory("Knight", 1, Coordinate.Offset(2, 2));
         state.AddUnit(knight);
         var moves = new List<Move> {
@@ -28,6 +29,7 @@ public class MoveTest
     public void ResetsMoves()
     {
         var state = new GameState();
+        state.AddTeam(new Team(1));
         var knight = Unit.Factory("Knight", 1, Coordinate.Offset(2, 2));
         knight.Moves = 0;
         state.AddUnit(knight);
@@ -36,10 +38,12 @@ public class MoveTest
         Assert.True(knight.Moves > 0);
     }
 
+    // rewrite to use a for loop and the knights moves
     [Fact]
     public void KnightCantMoveThree()
     {
         var state = new GameState();
+        state.AddTeam(new Team(1));
         var knight = Unit.Factory("Knight", 1, Coordinate.Offset(2, 2));
         state.AddUnit(knight);
         var moves = new List<Move> {
@@ -55,6 +59,7 @@ public class MoveTest
     public void CantMoveOffGridBottom()
     {
         var state = new GameState();
+        state.AddTeam(new Team(1));
         var knight = Unit.Factory("Knight", 1, Coordinate.Offset(1, 1));
         state.AddUnit(knight);
         var moves = new List<Move> {
@@ -62,7 +67,7 @@ public class MoveTest
             new Move(MoveType.Walk, knight.Id, knight.Location.MoveNorthEast(2)),
         };
         var state2 = engine.ProcessTurn(state, moves);
-        Assert.Equal( Coordinate.Offset(2, 0), knight.Location);
+        Assert.Equal(Coordinate.Offset(2, 0), knight.Location);
     }
 
     [Fact]
@@ -70,6 +75,7 @@ public class MoveTest
     {
         var state = new GameState();
         state.Dimension = 6;
+        state.AddTeam(new Team(1));
         var knight = Unit.Factory("Knight", 1, Coordinate.Offset(5, 5));
         state.AddUnit(knight);
         var moves = new List<Move> {

@@ -15,6 +15,8 @@ public class AttackTest
     public void KnightAttacksKnight()
     {
         var state = new GameState();
+        state.AddTeam(new Team(1));
+        state.AddTeam(new Team(2));
         var knight1 = Unit.Factory("Knight", 1, Coordinate.Offset(2, 2));
         var knight2 = Unit.Factory("Knight", 2, Coordinate.Offset(3, 2));
         state.AddUnit(knight1);
@@ -31,6 +33,8 @@ public class AttackTest
     public void UnitCantAttackSelf()
     {
         var state = new GameState();
+        state.AddTeam(new Team(1));
+        state.AddTeam(new Team(2));
         var knight1 = Unit.Factory("Knight", 1, Coordinate.Offset(2, 2));
         var knight2 = Unit.Factory("Knight", 2, Coordinate.Offset(3, 2));
         state.AddUnit(knight1);
@@ -40,6 +44,7 @@ public class AttackTest
             new Move(MoveType.Attack, knight1.Id, knight1.Location)
         };
         var state2 = engine.ProcessTurn(state, moves);
+        Assert.Equal(2, state.Units.Count);
         Assert.Equal(expectedHealth, knight1.Health);
     }
 
@@ -63,6 +68,8 @@ public class AttackTest
     public void ArcherCanAttackUpToThreeSpacesAway()
     {
         var state = new GameState();
+        state.AddTeam(new Team(1));
+        state.AddTeam(new Team(2));
         var archer = Unit.Factory("Archer", 1, Coordinate.Offset(2, 2));
         var knight2 = Unit.Factory("Knight", 2, Coordinate.Offset(5, 2));
         state.AddUnit(archer);
