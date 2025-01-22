@@ -109,7 +109,6 @@ public class GameState
             return;
         }
         if (!TeamList.Any(t => t.Id == unit.Team))
-        // if (Turn > 0 && !Units.Any(u => u.Team == unit.Team))
         {
             return;
         }
@@ -117,14 +116,6 @@ public class GameState
         unit.Location = FitToBoard(unit, Units);
 
         Units.Add(unit);
-
-        // Remove this soon
-        // if (!TurnOrder.Contains(unit.Team))
-        //     TurnOrder.Add(unit.Team);
-        // if (!TeamList.Any(t => t.Id == unit.Team))
-        // {
-        //     TeamList.Add(new Team(unit.Team));
-        // }
 
     }
 

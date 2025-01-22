@@ -9,11 +9,15 @@ public record Team
     public string Color;
     public IBot? Bot;
 
-    public Team(int id)
+    public Team(int id) : this(id, "red", null)
+    {
+    }
+
+    public Team(int id, string color, IBot bot)
     {
         Id = id;
-        Color = "red";
-        Bot = null;
+        Color = color;
+        Bot = bot;        
     }
 
 }
