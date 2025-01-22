@@ -43,15 +43,12 @@
     private string status = "";
 
     private Dictionary<int, Team> teams = new Dictionary<int, Team>();
-    private Dictionary<string, string> iconLookup = new Dictionary<string, string>();
 
     private List<string> teamUnits = new List<string> { "Knight", "Knight", "Archer", "Archer", "Knight", "Knight" };
-    private List<string> colors = new List<string> { "blank", "red", "blue", "green", "yellow", "orange", "black" };
 
     protected override Task OnInitializedAsync()
     {
-        iconLookup.Add("Knight", "/images/pikeman.svg");
-        iconLookup.Add("Archer", "/images/archer.svg");
+
 
         MakeTeam(1, 20, 10, "red", new RunAndGun());
         MakeTeam(2, 30, 10, "blue", new Turtle());
@@ -81,15 +78,11 @@
         var loc = Coordinate.Offset(col, row);
         bot.Team = id;
 
+        var team = new Team(id, color, bot);
+        state.AddTeam(team);
         state.AddTeam(id, loc, teamUnits);
 
-        var team = new Team(id, color, bot);
         teams.Add(id, team);
-    }
-
-    protected override void OnAfterRender(bool firstRender)
-    {
-
     }
 
     private void RunTurns()
