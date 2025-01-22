@@ -7,9 +7,11 @@ public class GameState
     public int Dimension = 70;
 
     public List<Unit> Units { get; set; }
-    private List<int> Teams;
+    private List<int> TurnOrder;
 
-    public int TeamCount { get { return Teams.Count(); } }
+    private List<Team> TeamList;
+
+    public int TeamCount { get { return TeamList.Count(); } }
 
     public int Turn { get; private set; }
 
@@ -35,7 +37,8 @@ public class GameState
     public GameState()
     {
         Units = new List<Unit>();
-        Teams = new List<int>();
+        TurnOrder = new List<int>();
+        TeamList = new List<Team>();
         Turn = 0;
     }
 
@@ -44,7 +47,7 @@ public class GameState
         string status = "Turn #" + Turn + "; ";
         if (Running)
         {
-            foreach (int team in Teams)
+            foreach (int team in TurnOrder)
             {
                 status += "Team " + team + ": " + Units.Count(u => u.Team == team) + "; ";
             }
@@ -59,18 +62,22 @@ public class GameState
 
     public void IncrementTurn()
     {
-        var teamIndex = Teams.IndexOf(currentTeam);
-        if (teamIndex != Teams.Count - 1)
+        var teamIndex = TurnOrder.IndexOf(currentTeam);
+        if (teamIndex != TurnOrder.Count - 1)
             teamIndex++;
         else
             teamIndex = 0;
-        currentTeam = Teams[teamIndex];
+        currentTeam = TurnOrder[teamIndex];
 
         Turn++;
     }
 
     public void AddTeam(int team, Coordinate loc, List<string> units)
     {
+        if (!TeamList.Any(t => t.Id == team))
+        {
+            TeamList.Add(new Team(team));
+        }
         foreach (var unit in units)
         {
             AddUnit(Unit.Factory(unit, team, loc));
@@ -91,10 +98,17 @@ public class GameState
         unit.Location = FitToBoard(unit, Units);
 
         Units.Add(unit);
-        if (!Teams.Contains(unit.Team))
-            Teams.Add(unit.Team);
-        if (Teams.Count == 1)
+        if (!TurnOrder.Contains(unit.Team))
+            TurnOrder.Add(unit.Team);
+        if (TurnOrder.Count == 1)
             currentTeam = unit.Team;
+        
+        // Remove this soon
+        if (!TeamList.Any(t => t.Id == unit.Team))
+        {
+            TeamList.Add(new Team(unit.Team));
+        }
+
     }
 
     private Coordinate FitToBoard(Unit unit, List<Unit> units)
