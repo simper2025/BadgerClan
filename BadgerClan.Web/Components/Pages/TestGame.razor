@@ -11,10 +11,7 @@
 
 <button @onclick="RunTurns">Run</button>
 
-@if(state != null)
-{
-    <BoardComponent State=state Teams=teams />
-}
+<BoardComponent State=state Teams=teams />
 
 <div>@status</div>
 

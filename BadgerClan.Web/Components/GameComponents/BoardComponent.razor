@@ -1,8 +1,11 @@
 <style>
   .battle-field {
     position: relative;
-    width: 997px;
-    height: 860px;
+    @* width: @(DisplayConstants.MapWidth)px;
+    height: @(DisplayConstants.MapHeight)px; *@
+    width: 100%;
+
+    aspect-ratio: 997 / 860;
     background-color: lightblue;
     border: 1px solid black;
   }
