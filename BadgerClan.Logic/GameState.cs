@@ -72,6 +72,11 @@ public class GameState
         Turn++;
     }
 
+    public void AddTeam(Team team)
+    {
+        TeamList.Add(team);
+        TurnOrder.Add(team.Id);
+    }
     public void AddTeam(int team, Coordinate loc, List<string> units)
     {
         if (!TeamList.Any(t => t.Id == team))
@@ -102,7 +107,7 @@ public class GameState
             TurnOrder.Add(unit.Team);
         if (TurnOrder.Count == 1)
             currentTeam = unit.Team;
-        
+
         // Remove this soon
         if (!TeamList.Any(t => t.Id == unit.Team))
         {

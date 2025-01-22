@@ -15,6 +15,7 @@ public class SetupTest
     public void CantAddSameUnitTwice()
     {
         var state = new GameState();
+        state.AddTeam(new Team(1));
         var knight = Unit.Factory("Knight", 1, Coordinate.Offset(2, 2));
         state.AddUnit(knight);
         state.AddUnit(knight);
