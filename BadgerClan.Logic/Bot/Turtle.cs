@@ -14,6 +14,10 @@ public class Turtle : IBot
 
     public int Team { get; set; }
 
+
+    public static IBot Make(){
+        return new Turtle();
+    }
     public Turtle()
     {
         Team = 0;

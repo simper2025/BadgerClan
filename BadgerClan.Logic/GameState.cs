@@ -9,6 +9,8 @@ public class GameState
     public List<Unit> Units { get; set; }
     private List<int> Teams;
 
+    public int TeamCount { get { return Teams.Count(); } }
+
     public int Turn { get; private set; }
 
     private int currentTeam = 0;
