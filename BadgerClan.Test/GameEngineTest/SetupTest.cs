@@ -178,7 +178,8 @@ public class SetupTest
     {
         var state = new GameState();
         var team = new List<string> { "Knight", "Knight", "Knight", "Knight", "Archer", "Archer" };
-        state.AddTeam(1, Coordinate.Offset(10, 10), team);
+        state.AddTeam(new Team(1));
+        state.AddUnits(1, Coordinate.Offset(10, 10), team);
         Assert.Contains(state.Units, u => u.Location == Coordinate.Offset(10, 10));
         Assert.Equal(6, state.Units.Count);
     }

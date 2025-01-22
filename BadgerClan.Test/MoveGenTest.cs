@@ -36,8 +36,10 @@ public class MoveGenTest
         var state = new GameState();
         var bot = new RunAndGun(1);
         var team = new List<string> { "Knight", "Knight", "Knight", "Knight", "Archer", "Archer" };
-        state.AddTeam(1, Coordinate.Offset(10, 10), team);
-        state.AddTeam(2, Coordinate.Offset(30, 30), team);
+        state.AddTeam(new Team(1,"red", bot));
+        state.AddTeam(new Team(2, "blue", bot));
+        state.AddUnits(1, Coordinate.Offset(10, 10), team);
+        state.AddUnits(2, Coordinate.Offset(30, 30), team);
 
         var moves = bot.PlanMoves(state);
         Assert.Equal(6, moves.Count);
@@ -51,9 +53,11 @@ public class MoveGenTest
         var state = new GameState();
         var bot1 = new RunAndGun(1);
         var bot2 = new RunAndGun(2);
+        state.AddTeam(new Team(1,"red", bot1));
+        state.AddTeam(new Team(2, "blue", bot2));
         var team = new List<string> { "Knight", "Knight", "Knight", "Knight", "Archer", "Archer" };
-        state.AddTeam(1, Coordinate.Offset(10, 10), team);
-        state.AddTeam(2, Coordinate.Offset(30, 30), team);
+        state.AddUnits(1, Coordinate.Offset(10, 10), team);
+        state.AddUnits(2, Coordinate.Offset(30, 30), team);
 
         var moves = bot1.PlanMoves(state);
         Assert.Equal(6, moves.Count);

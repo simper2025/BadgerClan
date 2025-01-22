@@ -80,7 +80,7 @@
 
         var team = new Team(id, color, bot);
         state.AddTeam(team);
-        state.AddTeam(id, loc, teamUnits);
+        state.AddUnits(id, loc, teamUnits);
 
         teams.Add(id, team);
     }

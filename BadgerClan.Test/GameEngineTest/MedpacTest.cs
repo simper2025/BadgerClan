@@ -17,8 +17,8 @@ public class MedpacTest
 
         var state = new GameState();
         var team = new List<string> { "Knight", "Knight", "Knight", "Knight", "Archer", "Archer" };
-        state.AddTeam(1, Coordinate.Offset(10, 10), team);
-        state.AddTeam(2, Coordinate.Offset(20, 20), team);
+        state.AddUnits(1, Coordinate.Offset(10, 10), team);
+        state.AddUnits(2, Coordinate.Offset(20, 20), team);
 
         var knight1 = Unit.Factory("Knight", 1, Coordinate.Offset(2, 2));
         var knight2 = Unit.Factory("Knight", 2, Coordinate.Offset(3, 2));

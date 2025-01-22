@@ -90,12 +90,8 @@ public class GameState
         TeamList.Add(team);
         TurnOrder.Add(team.Id);
     }
-    public void AddTeam(int team, Coordinate loc, List<string> units)
+    public void AddUnits(int team, Coordinate loc, List<string> units)
     {
-        if (!TeamList.Any(t => t.Id == team))
-        {
-            AddTeam(new Team(team));
-        }
         foreach (var unit in units)
         {
             AddUnit(Unit.Factory(unit, team, loc));
