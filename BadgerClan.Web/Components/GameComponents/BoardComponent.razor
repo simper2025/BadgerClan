@@ -1,0 +1,24 @@
+<style>
+  .battle-field {
+    position: relative;
+    width: 997px;
+    height: 860px;
+    background-color: lightblue;
+    border: 1px solid black;
+  }
+</style>
+<div id="square" class="battle-field" style="">
+  @foreach (var u in State.Units)
+  {
+    <UnitComponent Unit=u Team=Teams[u.Team] @key=u.Id />
+  }
+</div>
+
+
+@code {
+  [Parameter]
+  public GameState State { get; set; }
+
+  [Parameter]
+  public Dictionary<int, Team> Teams { get; set; }
+}

@@ -1,4 +1,5 @@
 ﻿@page "/testgame"
+@using BadgerClan.Web.Components.GameComponents
 @rendermode InteractiveServer
 @inject IJSRuntime JSRuntime
 
@@ -7,25 +8,13 @@
 
 <script src="/lib/site.js"></script>
 
-<style>
-    .battle-field {
-        position: relative;
-        width: 997px;
-        height: 860px;
-        background-color: lightblue;
-        border: 1px solid black;
-    }
-</style>
 
 <button @onclick="RunTurns">Run</button>
 
-<div id="square" class="battle-field" style="">
-    @foreach (var u in state.Units)
-    {
-        <UnitComponent Unit=u Team=teams[u.Team] @key=u.Id />
-    }
-</div>
-
+@if(state != null)
+{
+    <BoardComponent State=state Teams=teams />
+}
 
 <div>@status</div>
 
