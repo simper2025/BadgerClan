@@ -20,6 +20,10 @@ public class GameState
     {
         get
         {
+            if (currentTeam == 0)
+            {
+                currentTeam = TurnOrder[0];
+            }
             return currentTeam;
         }
     }
@@ -81,7 +85,7 @@ public class GameState
     {
         if (!TeamList.Any(t => t.Id == team))
         {
-            TeamList.Add(new Team(team));
+            AddTeam(new Team(team));
         }
         foreach (var unit in units)
         {
@@ -103,12 +107,10 @@ public class GameState
         unit.Location = FitToBoard(unit, Units);
 
         Units.Add(unit);
-        if (!TurnOrder.Contains(unit.Team))
-            TurnOrder.Add(unit.Team);
-        if (TurnOrder.Count == 1)
-            currentTeam = unit.Team;
 
         // Remove this soon
+        if (!TurnOrder.Contains(unit.Team))
+            TurnOrder.Add(unit.Team);
         if (!TeamList.Any(t => t.Id == unit.Team))
         {
             TeamList.Add(new Team(unit.Team));
