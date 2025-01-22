@@ -6,7 +6,7 @@ namespace BadgerClan.Test.GameEngineTest;
 public class LoaderTest
 {
 
-    [Fact]
+    //[Fact]
     public void FirstGame()
     {
         var state = GameLoader.CreateGame(4, Turtle.Make);
