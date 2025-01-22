@@ -1,131 +1,60 @@
 ﻿@page "/"
+@using System.Text.Json.Serialization
 @rendermode InteractiveServer
 @inject IJSRuntime JSRuntime
 
 <PageTitle>Home</PageTitle>
 
 
-<script src="/lib/site.js"></script>
+<button @onclick="CallApi">Call</button>
 
-<style>
-    .battle-field {
-        position: relative;
-        width: 997px;
-        height: 860px;
-        background-color: lightblue;
-        border: 1px solid black;
-    }
-</style>
-
-<button @onclick="RunTurns">Run</button>
-
-<div id="square" class="battle-field" style="">
-    @foreach (var u in state.Units)
-    {
-        <UnitComponent Unit=u Team=teams[u.Team] @key=u.Id />
-    }
-</div>
-
-
-<div>@status</div>
-
-@* <div>@(Running ? "Running" : "Stopped")</div> *@
+<div>@Result</div>
 
 @code {
 
-    private GameEngine engine = new GameEngine();
-    private GameState state = new GameState();
+    private string Result = "";
 
 
-    private CancellationTokenSource source = new CancellationTokenSource();
-    private CancellationToken ShouldStop => source.Token;
-    private bool Running = false;
-    private string status = "";
-
-    private Dictionary<int, Team> teams = new Dictionary<int, Team>();
-    private Dictionary<string, string> iconLookup = new Dictionary<string, string>();
-
-    private List<string> teamUnits = new List<string> { "Knight", "Knight", "Archer", "Archer", "Knight", "Knight" };
-    private List<string> colors = new List<string> { "blank", "red", "blue", "green", "yellow", "orange", "black" };
-
-    protected override Task OnInitializedAsync()
+    private void CallApi()
     {
-        iconLookup.Add("Knight", "/images/pikeman.svg");
-        iconLookup.Add("Archer", "/images/archer.svg");
-
-        MakeTeam(1, 20, 10, "red", new RunAndGun());
-        MakeTeam(2, 30, 10, "blue", new Turtle());
-        MakeTeam(3, 60, 35, "green", new Turtle());
-        MakeTeam(4, 10, 30, "yellow", new Turtle());
-        MakeTeam(5, 50, 20, "orange", new RunAndGun());
-        MakeTeam(6, 30, 40, "black", new Turtle());
-
-        @* state.AddTeam(1, Coordinate.Offset(0, 0), new List<string> { "Archer" });
-        state.AddTeam(1, Coordinate.Offset(0, 1), new List<string> { "Archer" });
-
-        state.AddTeam(1, Coordinate.Offset(70, 0), new List<string> { "Archer" });
-        state.AddTeam(1, Coordinate.Offset(70, 1), new List<string> { "Archer" });
-
-        state.AddTeam(1, Coordinate.Offset(0, 70), new List<string> { "Archer" });
-        state.AddTeam(1, Coordinate.Offset(0, 69), new List<string> { "Archer" });
-
-        state.AddTeam(1, Coordinate.Offset(70, 70), new List<string> { "Archer" });
-        state.AddTeam(1, Coordinate.Offset(70, 69), new List<string> { "Archer" }); *@
-
-
-        return Task.CompletedTask;
-    }
-
-    private void MakeTeam(int id, int col, int row, string color, IBot bot)
-    {
-        var loc = Coordinate.Offset(col, row);
-        bot.Team = id;
-
-        state.AddTeam(id, loc, teamUnits);
-
-        var team = new Team(id, color, bot);
-        teams.Add(id, team);
-    }
-
-    protected override void OnAfterRender(bool firstRender)
-    {
+        Result = "call: " + DateTime.Now.ToLongTimeString() + "; ";
+        var task = Thing();
 
     }
 
-    private void RunTurns()
+    private async Task Thing()
     {
-        if (Running)
+        using var httpClient = new HttpClient();
+        Result += "start; ";
+        // URL of the Minimal API endpoint
+        var apiUrl = "http://localhost:5217/api/echo";
+
+        Result += "url; ";
+
+        var state = new GameState();
+        // Request payload
+        var payload = state;
+        Result += "payload; ";
+
+        // Make the POST request
+        var response = await httpClient.PostAsJsonAsync(apiUrl, payload);
+        Result += "await; ";
+
+        if (response.IsSuccessStatusCode)
         {
-            source.Cancel();
-            Running = false;
-            return;
+            Result += "success; ";
+            // Read the response as JSON
+            var result = await response.Content.ReadFromJsonAsync<dynamic>();
+            Result += result;
+            Console.WriteLine($"Server replied: {result?.reply}");
         }
-        Running = true;
-        source = new CancellationTokenSource();
-
-        Task.Run(() => ProcessTurn(), source.Token);
-    }
-
-    private void ProcessTurn()
-    {
-        while (Running)
+        else
         {
-            ShouldStop.ThrowIfCancellationRequested();
-            var moves = teams[state.CurrentTeam].Bot.PlanMoves(state);
-
-            state = engine.ProcessTurn(state, moves);
-            var man = state.Units.FirstOrDefault();
-
-            status = state.ToString();
-
-            Running = state.Running;
-
-            InvokeAsync(StateHasChanged);
-
-            Thread.Sleep(150);
+            Result += "error; ";
+            Console.WriteLine($"Error: {response.StatusCode}");
         }
-
     }
 
 
 }
+    using System.Text.Json.Serialization;
