@@ -5,6 +5,8 @@
 
     top: @(yPercent)%;
     left: @(xPercent)%; 
+
+    offset-position: 0 0;
   " viewBox="0 0 800 800" fill="none" xmlns="http://www.w3.org/2000/svg">
   <g>
     <path d="M0 215.385V584.615L400 800L800 584.615V215.385L400 0L0 215.385Z" stroke="#00000022" stroke-width="80" />
@@ -29,7 +31,7 @@
     width = 100 * 1 / (double)Dimension;
 
 
-    X = (int)(DisplayConstants.Dimension * (DisplayConstants.Root3 * Col + DisplayConstants.Root3 / 2.0 * Row));
+    X = (int)(DisplayConstants.Dimension * (DisplayConstants.Root3 * Col + DisplayConstants.Root3 / 2.0 * (Row % 2)));
     Y = (int)(DisplayConstants.Dimension * ((3.0 / 2) * Row));
 
     xPercent = 100 * X / (double)DisplayConstants.MapWidth;
