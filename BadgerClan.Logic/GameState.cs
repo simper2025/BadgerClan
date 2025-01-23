@@ -7,19 +7,20 @@ public class GameState
     public DateTime Created { get; } = DateTime.Now;
     public Guid Id { get; } = Guid.NewGuid();
     public event Action<GameState> GameChanged;
-    private static int NextId = 1;
     public string Name { get; set; }
+
     public int Dimension = 70;
 
     public int TotalUnits = 0;
+    public int Turn { get; private set; }
     public List<Unit> Units { get; set; }
-    private List<int> TurnOrder;
 
     public List<Team> TeamList { get; private set; }
+    private List<int> TurnOrder;
+
     private Dictionary<int, string> teamNames = new(); 
     public int TeamCount { get { return TeamList.Count(); } }
     public IEnumerable<string> TeamNames => teamNames.Values;
-    public int Turn { get; private set; }
 
     private int currentTeam = 0;
     public int CurrentTeam
@@ -50,7 +51,7 @@ public class GameState
         TurnOrder = new List<int>();
         TeamList = new List<Team>();
         Turn = 0;
-        Name = name ?? $"Game{NextId++}";
+        Name = name ?? $"Game{Id.ToString().Substring(32)}";
     }
 
     public override string ToString()
