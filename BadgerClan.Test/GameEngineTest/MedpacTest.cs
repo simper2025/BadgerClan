@@ -17,6 +17,8 @@ public class MedpacTest
 
         var state = new GameState();
         var team = new List<string> { "Knight", "Knight", "Knight", "Knight", "Archer", "Archer" };
+        state.AddTeam(new Team(1));
+        state.AddTeam(new Team(2));
         state.AddUnits(1, Coordinate.Offset(10, 10), team);
         state.AddUnits(2, Coordinate.Offset(20, 20), team);
 
@@ -29,8 +31,9 @@ public class MedpacTest
         var moves = new List<Move> {
             new Move(MoveType.Attack, knight1.Id, knight2.Location),
         };
-        var state2 = engine.ProcessTurn(state, moves);
-        
+        state = engine.ProcessTurn(state, moves);
+        Assert.Equal(13, state.Units.Count);
+        Assert.True(state.TeamList[0].Medpacs > 0);
     }
 
     

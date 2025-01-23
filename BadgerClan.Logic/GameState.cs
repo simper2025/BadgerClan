@@ -9,7 +9,7 @@ public class GameState
     public List<Unit> Units { get; set; }
     private List<int> TurnOrder;
 
-    private List<Team> TeamList;
+    public List<Team> TeamList { get; private set; }
 
     public int TeamCount { get { return TeamList.Count(); } }
 

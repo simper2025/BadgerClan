@@ -6,7 +6,7 @@ public class GameEngine
 
     public GameState ProcessTurn(GameState state, List<Move> moves)
     {
-
+        var team = state.TeamList.FirstOrDefault(t => t.Id == state.CurrentTeam);
         foreach (var unit in state.Units.Where(u => u.Team == state.CurrentTeam))
         {
             unit.Moves = unit.MaxMoves;
@@ -54,7 +54,10 @@ public class GameEngine
                     }
                     break;
             }
-
+            var deadunits = state.Units.Count(u => u.Health <= 0);
+            if (deadunits > 0){
+                team.Medpacs ++;
+            }
             state.Units.RemoveAll(u => u.Health <= 0);
         }
         state.IncrementTurn();
