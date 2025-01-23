@@ -10,8 +10,9 @@ public record Team
     public IBot? Bot;
     public int Medpacs = 0;
 
-    public Team(int id) : this(id, "red", null)
+    public Team(int id) : this(id, "red", new Nothing())
     {
+        
     }
 
     public Team(int id, string color, IBot bot)

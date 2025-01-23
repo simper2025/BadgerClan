@@ -15,7 +15,8 @@ public class Turtle : IBot
     public int Team { get; set; }
 
 
-    public static IBot Make(){
+    public static IBot Make()
+    {
         return new Turtle();
     }
     public Turtle()
@@ -27,7 +28,7 @@ public class Turtle : IBot
 
         Random rnd = new Random();
         TurnsOfAction = rnd.Next(1, 5) + 0;
-        TurnsOfDelay = rnd.Next(1, 10) + 5; 
+        TurnsOfDelay = rnd.Next(1, 10) + 5;
     }
 
     public Turtle(int team) : this()
@@ -50,6 +51,10 @@ public class Turtle : IBot
 
     public List<Move> PlanMoves(GameState state)
     {
+        var myteam = state.TeamList.FirstOrDefault(t => t.Id == Team);
+        if (myteam is null)
+            return new List<Move>();
+
         var enemies = state.Units.Where(u => u.Team != Team);
         var active = ShouldGoActive(enemies);
 
@@ -75,6 +80,10 @@ public class Turtle : IBot
                     moves.Add(SharedMoves.AttackClosest(unit, closest));
                     moves.Add(SharedMoves.AttackClosest(unit, closest));
                 }
+                else if (myteam.Medpacs > 0 && unit.Health < unit.MaxHealth)
+                {
+                    moves.Add(new Move(MoveType.Medpac, unit.Id, unit.Location));
+                }
                 else
                 {
                     moves.Add(SharedMoves.StepToClosest(unit, closest, state));
@@ -96,6 +105,10 @@ public class Turtle : IBot
                 {
                     moves.Add(SharedMoves.AttackClosest(unit, closest));
                     moves.Add(SharedMoves.AttackClosest(unit, closest));
+                }
+                else if (myteam.Medpacs > 0 && unit.Health < unit.MaxHealth)
+                {
+                    moves.Add(new Move(MoveType.Medpac, unit.Id, unit.Location));
                 }
                 else if (active)
                 {

@@ -62,6 +62,7 @@ public class GameState
             var team = Units.FirstOrDefault()?.Team ?? 0;
             status = "GameOver; Team #" + team + " wins";
         }
+        status += " Medpacs" + TeamList.Sum(t => t.Medpacs);
         return status;
     }
 

@@ -15,6 +15,7 @@ public class Unit
     public int Attack { get; set; }
     public int AttackDistance { get; set; }
     public int Health { get; set; }
+    public int MaxHealth { get; private set; }
 
     public static Unit Factory(string name, int team)
     {
@@ -27,6 +28,7 @@ public class Unit
             Location = loc,
             Attack = 1,
             Health = 5,
+            MaxHealth = 5,
             MaxMoves = 1,
             AttackDistance = 1,
             Moves = 1,
@@ -40,6 +42,7 @@ public class Unit
                 unit.Type = "Knight";
                 unit.Attack = 4;
                 unit.Health = 15;
+                unit.MaxHealth = 15;
                 unit.MaxMoves = 2;
                 unit.Moves = 2;
                 unit.AttackCount = 2;
@@ -48,6 +51,7 @@ public class Unit
                 unit.Type = "Archer";
                 unit.Attack = 2;
                 unit.Health = 9;
+                unit.MaxHealth = 9;
                 unit.MaxMoves = 3;
                 unit.AttackDistance = 3;
                 unit.Moves = 3;

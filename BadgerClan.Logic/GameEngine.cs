@@ -47,6 +47,7 @@ public class GameEngine
                         unit.Moves -= distance;
                     }
                     break;
+
                 case MoveType.Attack:
                     if (distance > unit.AttackDistance)
                     {
@@ -57,6 +58,24 @@ public class GameEngine
                     {
                         defender.Health -= unit.Attack;
                         unit.Moves -= attackCost;
+                    }
+                    break;
+
+                case MoveType.Medpac:
+                    if (team.Medpacs > 0 && unit.Health < unit.MaxHealth)
+                    {
+                        unit.Moves--;
+                        if (unit.MaxHealth - unit.Health > team.Medpacs)
+                        {
+                            unit.Health += team.Medpacs;
+                            team.Medpacs = 0;
+                        }
+                        else
+                        {
+                            var health = unit.MaxHealth - unit.Health;
+                            unit.Health = unit.MaxHealth;
+                            team.Medpacs -= health;
+                        }
                     }
                     break;
             }

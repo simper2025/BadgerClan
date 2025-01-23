@@ -37,39 +37,54 @@ public class MedpacTest
     }
 
     [Fact]
-    public void MoreMedpacForFirstKill()
+    public void ApplyMedpacToHeal()
     {
 
         var state = new GameState();
         var team = new List<string> { "Knight", "Knight", "Knight", "Knight", "Archer", "Archer" };
-        state.AddTeam(new Team(1));
+        var team1 = new Team(1);
+        team1.Medpacs = 1;
+        state.AddTeam(team1);
         state.AddTeam(new Team(2));
         state.AddUnits(1, Coordinate.Offset(10, 10), team);
         state.AddUnits(2, Coordinate.Offset(20, 20), team);
 
         var knight1 = Unit.Factory("Knight", 1, Coordinate.Offset(2, 2));
-        var knight2 = Unit.Factory("Knight", 2, Coordinate.Offset(3, 2));
-        var knight3 = Unit.Factory("Knight", 2, Coordinate.Offset(2, 3));
         knight1.Health = 1;
-        knight2.Health = 1;
         state.AddUnit(knight1);
-        state.AddUnit(knight2);
-        state.AddUnit(knight3);
 
         var moves = new List<Move> {
-            new Move(MoveType.Attack, knight1.Id, knight2.Location),
+            new Move(MoveType.Medpac, knight1.Id, knight1.Location),
         };
         state = engine.ProcessTurn(state, moves);
-        moves = new List<Move> {
-            new Move(MoveType.Attack, knight3.Id, knight1.Location),
-        };
-        state = engine.ProcessTurn(state, moves);
-        //I'm not sure what to do with this test
-        // Assert.True(state.TeamList[0].Medpacs > state.TeamList[1].Medpacs, 
-        //     "There should be more medpacs for the first kill than the second");
-
+        Assert.Equal(2, knight1.Health);
+        Assert.Equal(0, team1.Medpacs);
     }
     
+    [Fact]
+    public void SomeMedpacsLeftOver()
+    {
+
+        var state = new GameState();
+        var team = new List<string> { "Knight", "Knight", "Knight", "Knight", "Archer", "Archer" };
+        var team1 = new Team(1);
+        team1.Medpacs = 5;
+        state.AddTeam(team1);
+        state.AddTeam(new Team(2));
+        state.AddUnits(1, Coordinate.Offset(10, 10), team);
+        state.AddUnits(2, Coordinate.Offset(20, 20), team);
+
+        var knight1 = Unit.Factory("Knight", 1, Coordinate.Offset(2, 2));
+        knight1.Health = knight1.MaxHealth - 3;
+        state.AddUnit(knight1);
+
+        var moves = new List<Move> {
+            new Move(MoveType.Medpac, knight1.Id, knight1.Location),
+        };
+        state = engine.ProcessTurn(state, moves);
+        Assert.Equal(knight1.MaxHealth, knight1.Health);
+        Assert.Equal(2, team1.Medpacs);
+    }
 
 
 }
