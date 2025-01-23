@@ -110,6 +110,7 @@ public class GameState
             AddUnits(team.Id, loc, units);
             i++;
         }
+        GameChanged?.Invoke(this);
     }
 
     public static Coordinate GetCircleCoordinate(int deg, int size)
