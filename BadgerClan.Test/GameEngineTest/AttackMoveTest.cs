@@ -25,7 +25,7 @@ public class AttackMoveTest
             new Move(MoveType.Walk, knight1.Id, expected),
             new Move(MoveType.Walk, knight1.Id, expected.MoveSouthWest(2)),
         };
-        var state2 = engine.ProcessTurn(state, moves);
+        GameEngine.ProcessTurn(state, moves);
 
         Assert.Equal(expected, knight1.Location);
     }
@@ -44,7 +44,7 @@ public class AttackMoveTest
             new Move(MoveType.Walk, archer1.Id, archer1.Location.MoveSouthEast(1)),
             new Move(MoveType.Walk, archer1.Id, expected),
         };
-        var state2 = engine.ProcessTurn(state, moves);
+        GameEngine.ProcessTurn(state, moves);
 
         Assert.Equal(expected, archer1.Location);
     }
@@ -62,7 +62,7 @@ public class AttackMoveTest
             new Move(MoveType.Attack, archer1.Id, knight2.Location),
             new Move(MoveType.Walk, archer1.Id, expected),
         };
-        var state2 = engine.ProcessTurn(state, moves);
+        GameEngine.ProcessTurn(state, moves);
 
         Assert.Equal(expected, archer1.Location);
     }

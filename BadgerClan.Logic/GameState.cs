@@ -14,7 +14,7 @@ public class GameState
     public List<Unit> Units { get; set; }
 
     public List<Team> TeamList { get; private set; }
-    private List<int> TurnOrder;
+    private List<int> turnOrder;
 
     public int TeamCount { get { return TeamList.Count(); } }
     public IEnumerable<string> TeamNames => TeamList.Select(t => t.Name);
@@ -24,13 +24,15 @@ public class GameState
     {
         get
         {
-            if (currentTeamId == 0 && TurnOrder.Count > 0)
+            if (currentTeamId == 0 && turnOrder.Count > 0)
             {
-                currentTeamId = TurnOrder[0];
+                currentTeamId = turnOrder[0];
             }
             return currentTeamId;
         }
     }
+
+    public Team CurrentTeam => TeamList.FirstOrDefault(t => t.Id == CurrentTeamId);
 
     public bool Running
     {
@@ -45,10 +47,20 @@ public class GameState
     public GameState(string? name = null)
     {
         Units = new List<Unit>();
-        TurnOrder = new List<int>();
+        turnOrder = new List<int>();
         TeamList = new List<Team>();
         TurnNumber = 0;
         Name = name ?? $"Game-{Id.ToString().Substring(32)}";
+    }
+
+    public GameState(string gameId, int boardSize, int turnNumber, IEnumerable<Unit>? units, IEnumerable<int> teamIds, Team currentTeam)
+    {
+        Id = Guid.Parse(gameId);
+        Dimension = boardSize;
+        TurnNumber = turnNumber;
+        Units = units?.ToList() ?? new List<Unit>();
+        TeamList = [currentTeam];
+        turnOrder = [currentTeam.Id];
     }
 
     public override string ToString()
@@ -65,7 +77,7 @@ public class GameState
         else if (TurnNumber > 0)
         {
             var teamid = Units.FirstOrDefault()?.Team ?? 0;
-            var team = TeamList.FirstOrDefault(team => team.Id == teamid)?.Name?? "empty";
+            var team = TeamList.FirstOrDefault(team => team.Id == teamid)?.Name ?? "empty";
             status = $"GameOver: {team} wins";
         }
         //status += " Medpacs" + TeamList.Sum(t => t.Medpacs);
@@ -76,29 +88,30 @@ public class GameState
     {
         currentTeamId = AdvanceTeam();
         TurnNumber++;
+        GameChanged?.Invoke(this);
     }
 
     private int AdvanceTeam()
     {
-        var teamIndex = TurnOrder.IndexOf(currentTeamId);
+        var teamIndex = turnOrder.IndexOf(currentTeamId);
         // possibly change
         if (teamIndex < 0)
             return 0;
 
-        if (teamIndex != TurnOrder.Count - 1)
+        if (teamIndex != turnOrder.Count - 1)
             teamIndex++;
         else
             teamIndex = 0;
-        return TurnOrder[teamIndex];
+        return turnOrder[teamIndex];
     }
 
     public void AddTeam(Team team)
     {
         TeamList.Add(team);
-        TurnOrder.Add(team.Id);
+        turnOrder.Add(team.Id);
     }
 
-    public void StartGame(List<string> units)
+    public void LayoutStartingPositions(List<string> units)
     {
         var degrees = 360 / TeamList.Count;
         int i = 0;

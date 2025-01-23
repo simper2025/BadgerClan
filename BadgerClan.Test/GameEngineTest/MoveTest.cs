@@ -21,7 +21,7 @@ public class MoveTest
         var moves = new List<Move> {
             new Move(MoveType.Walk, knight.Id, knight.Location.MoveEast(1))
         };
-        var state2 = engine.ProcessTurn(state, moves);
+        GameEngine.ProcessTurn(state, moves);
         Assert.Equal(Coordinate.Offset(3, 2), knight.Location);
     }
 
@@ -34,7 +34,7 @@ public class MoveTest
         knight.Moves = 0;
         state.AddUnit(knight);
         var moves = new List<Move> { };
-        var state2 = engine.ProcessTurn(state, moves);
+        GameEngine.ProcessTurn(state, moves);
         Assert.True(knight.Moves > 0);
     }
 
@@ -51,7 +51,7 @@ public class MoveTest
             new Move(MoveType.Walk, knight.Id, knight.Location.MoveEast(2)),
             new Move(MoveType.Walk, knight.Id, knight.Location.MoveEast(3))
         };
-        var state2 = engine.ProcessTurn(state, moves);
+        GameEngine.ProcessTurn(state, moves);
         Assert.Equal(Coordinate.Offset(4, 2), knight.Location);
     }
 
@@ -66,7 +66,7 @@ public class MoveTest
             new Move(MoveType.Walk, knight.Id, knight.Location.MoveNorthEast(1)),
             new Move(MoveType.Walk, knight.Id, knight.Location.MoveNorthEast(2)),
         };
-        var state2 = engine.ProcessTurn(state, moves);
+        GameEngine.ProcessTurn(state, moves);
         Assert.Equal(Coordinate.Offset(2, 0), knight.Location);
     }
 
@@ -82,7 +82,7 @@ public class MoveTest
             new Move(MoveType.Walk, knight.Id, knight.Location.MoveSouthWest(1)),
             new Move(MoveType.Walk, knight.Id, knight.Location.MoveSouthWest(2)),
         };
-        var state2 = engine.ProcessTurn(state, moves);
+        GameEngine.ProcessTurn(state, moves);
         Assert.Equal(Coordinate.Offset(5, 6), knight.Location);
     }
 
@@ -98,7 +98,7 @@ public class MoveTest
         var moves = new List<Move> {
             new Move(MoveType.Walk, knight.Id, knight2.Location),
         };
-        var state2 = engine.ProcessTurn(state, moves);
+        GameEngine.ProcessTurn(state, moves);
         Assert.Equal(expectedLocation, knight.Location);
     }
 

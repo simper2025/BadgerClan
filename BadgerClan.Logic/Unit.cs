@@ -1,3 +1,4 @@
+
 namespace BadgerClan.Logic;
 
 public class Unit
@@ -59,6 +60,23 @@ public class Unit
                 break;
         }
 
+        return unit;
+    }
+
+    public static Unit Factory(string type, int attack, int attackDistance, int health, int maxHealth, double moves, double maxMoves, Coordinate location, int team)
+    {
+        var unit = new Unit
+        {
+            Type = type,
+            Attack = attack,
+            AttackDistance = attackDistance,
+            Health = health,
+            MaxHealth = maxHealth,
+            Moves = moves,
+            MaxMoves = maxMoves,
+            Location = location,
+            Team = team
+        };
         return unit;
     }
 

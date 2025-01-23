@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace BadgerClan.Logic;
 
 
@@ -7,8 +9,8 @@ odd-r layout with axial underpinnings
 */
 public class Coordinate : IEquatable<Coordinate>
 {
-    public int Q;
-    public int R;
+    public int Q { get; set; }
+    public int R { get; set; }
 
     public int Col
     {
@@ -26,10 +28,11 @@ public class Coordinate : IEquatable<Coordinate>
         return new Coordinate(q, r);
     }
 
-    public Coordinate(int q, int r)
+    [JsonConstructor]
+    public Coordinate(int Q, int R)
     {
-        Q = q;
-        R = r;
+        this.Q = Q;
+        this.R = R;
     }
 
     #region object methods

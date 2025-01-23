@@ -3,27 +3,16 @@ namespace BadgerClan.Logic.Bot;
 
 public class RunAndGun : IBot
 {
-    public int Team { get; set; }
-
-    public RunAndGun()
+    public async Task<List<Move>> PlanMovesAsync(GameState state)
     {
-        Team = 0;
-    }
-    public RunAndGun(int team)
-    {
-        Team = team;
-    }
-
-    public List<Move> PlanMoves(GameState state)
-    {
-        var myteam = state.TeamList.FirstOrDefault(t => t.Id == Team);
+        var myteam = state.TeamList.FirstOrDefault(t => t.Id == state.CurrentTeamId);
         if (myteam is null)
             return new List<Move>();
 
         var moves = new List<Move>();
-        foreach (var unit in state.Units.Where(u => u.Team == Team))
+        foreach (var unit in state.Units.Where(u => u.Team == state.CurrentTeamId))
         {
-            var enemies = state.Units.Where(u => u.Team != Team);
+            var enemies = state.Units.Where(u => u.Team != state.CurrentTeamId);
             var closest = enemies.OrderBy(u => u.Location.Distance(unit.Location)).FirstOrDefault();
             if (closest != null)
             {

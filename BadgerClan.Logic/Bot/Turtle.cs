@@ -12,8 +12,6 @@ public class Turtle : IBot
     private int TurnsSinceDeath = 0;
     private int ActionsLeft = 0;
 
-    public int Team { get; set; }
-
 
     public static IBot Make()
     {
@@ -21,8 +19,6 @@ public class Turtle : IBot
     }
     public Turtle()
     {
-        Team = 0;
-
         // TurnsOfAction = 5;
         // TurnsOfDelay = 10;
 
@@ -31,34 +27,22 @@ public class Turtle : IBot
         TurnsOfDelay = rnd.Next(1, 10) + 5;
     }
 
-    public Turtle(int team) : this()
-    {
-        Team = team;
-    }
-
     public Turtle(int action, int delay)
     {
-        Team = 0;
-
         TurnsOfAction = action;
         TurnsOfDelay = delay;
     }
 
-    public Turtle(int team, int action, int delay) : this(action, delay)
+    public Task<List<Move>> PlanMovesAsync(GameState state)
     {
-        Team = team;
-    }
-
-    public List<Move> PlanMoves(GameState state)
-    {
-        var myteam = state.TeamList.FirstOrDefault(t => t.Id == Team);
+        var myteam = state.TeamList.FirstOrDefault(t => t.Id == state.CurrentTeamId);
         if (myteam is null)
-            return new List<Move>();
+            return Task.FromResult(new List<Move>());
 
-        var enemies = state.Units.Where(u => u.Team != Team);
+        var enemies = state.Units.Where(u => u.Team != state.CurrentTeamId);
         var active = ShouldGoActive(enemies);
-        
-        var squad = state.Units.Where(u => u.Team == Team);
+
+        var squad = state.Units.Where(u => u.Team == state.CurrentTeamId);
 
         foreach (var unit in squad)
         {
@@ -75,12 +59,14 @@ public class Turtle : IBot
 
         //Don't split up
         var pointman = squad.OrderBy(u => u.Id).FirstOrDefault();
-        foreach (var unit in squad){
+        foreach (var unit in squad)
+        {
             if (pointman != null && unit.Id != pointman.Id &&
-                unit.Location.Distance(pointman.Location) > 5){
-                    var toward = unit.Location.Toward(pointman.Location);
-                    moves.Add(new Move(MoveType.Walk, unit.Id, toward));
-                    moves.Add(new Move(MoveType.Walk, unit.Id, toward.Toward(pointman.Location)));
+                unit.Location.Distance(pointman.Location) > 5)
+            {
+                var toward = unit.Location.Toward(pointman.Location);
+                moves.Add(new Move(MoveType.Walk, unit.Id, toward));
+                moves.Add(new Move(MoveType.Walk, unit.Id, toward.Toward(pointman.Location)));
             }
         }
 
@@ -110,7 +96,7 @@ public class Turtle : IBot
         foreach (var unit in squad.Where(u => u.Type == "Archer"))
         {
             var closest = enemies.OrderBy(u => u.Location.Distance(unit.Location)).FirstOrDefault();
-            
+
             if (active && closest != null)
             {
                 // Run away and shoot at knights
@@ -136,11 +122,11 @@ public class Turtle : IBot
             }
         }
 
-        return moves;
+        return Task.FromResult(moves);
     }
 
     /*
-        Go active 
+        Go active
             if there are few enemies
             if it has been a few turns since someone died
         Stay active

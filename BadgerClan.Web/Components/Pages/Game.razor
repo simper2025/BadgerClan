@@ -1,0 +1,19 @@
+﻿@page "/game/{GameId}"
+@using BadgerClan.Web.Components.GameComponents
+@inject Lobby lobby
+
+<h3>Game @GameId</h3>
+
+<BoardComponent State=game />
+
+@code {
+    [Parameter]
+    public string GameId { get; set; }
+
+    private GameState game;
+
+    protected override void OnParametersSet()
+    {
+        game = lobby.Games.First(g => g.Id == Guid.Parse(GameId));
+    }
+}

@@ -5,13 +5,13 @@ namespace BadgerClan.Logic;
 public class GameEngine
 {
 
-    public GameState ProcessTurn(GameState state, List<Move> moves)
+    public static void ProcessTurn(GameState state, List<Move> moves)
     {
         var team = state.TeamList.FirstOrDefault(t => t.Id == state.CurrentTeamId);
         if (team is null)
         {
             state.IncrementTurn();
-            return state;
+            return;
         }
         foreach (var unit in state.Units.Where(u => u.Team == state.CurrentTeamId))
         {
@@ -88,7 +88,6 @@ public class GameEngine
             state.Units.RemoveAll(u => u.Health <= 0);
         }
         state.IncrementTurn();
-        return state;
     }
 
     public static int CalculateMeds(int unitsLeft, int totalUnits)

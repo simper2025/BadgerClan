@@ -6,7 +6,7 @@
 
 <button @onclick="RunTurns">Run</button>
 
-<BoardComponent State=state Teams=teams TickInterval=TickInterval />
+<BoardComponent State=state />
 
 <div>@status</div>
 
@@ -38,7 +38,7 @@
         MakeTeam("orange", new RunAndGun());
         MakeTeam("black", new Turtle());
 
-        state.StartGame(squadUnits);
+        state.LayoutStartingPositions(squadUnits);
 
         AddBorderUnits(state);
 
@@ -48,7 +48,6 @@
     private void MakeTeam(string color, IBot bot)
     {
         var team = new Team($"Team {color}", color, bot);
-        bot.Team = team.Id;
         state.AddTeam(team);
         teams.Add(team.Id, team);
     }
@@ -67,23 +66,20 @@
         Task.Run(() => ProcessTurn(), source.Token);
     }
 
-    private void ProcessTurn()
+    private async Task ProcessTurn()
     {
         while (Running)
         {
             ShouldStop.ThrowIfCancellationRequested();
 
-            var moves = teams[state.CurrentTeamId]?.Bot?.PlanMoves(state)
-            ?? new List<Move>();
+            var moves = (await teams[state.CurrentTeamId]?.Bot?.PlanMovesAsync(state))
+                ?? new List<Move>();
 
-            state = engine.ProcessTurn(state, moves);
-            var man = state.Units.FirstOrDefault();
-
-            status = state.ToString();
+            GameEngine.ProcessTurn(state, moves);
 
             Running = state.Running;
 
-            InvokeAsync(StateHasChanged);
+            await InvokeAsync(StateHasChanged);
 
             Thread.Sleep(TickInterval);
         }

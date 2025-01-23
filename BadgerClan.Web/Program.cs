@@ -30,22 +30,80 @@ app.MapStaticAssets();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
-app.MapGet("/bots/runandgun/join", (string gameId, ILogger<Program> logger, Lobby lobby, RunAndGun bot) =>
+
+app.MapPost("/bots/runandgun", async (MoveRequest request, ILogger<Program> logger, RunAndGun runAndGun) =>
 {
-    logger.LogInformation("runandgun joined game {gameId}", gameId);
-    var playerName = PlayerHelpers.GetRandomPlayerName();
-    return new JoinGameResponse(playerName);
-});
-app.MapPost("/bots/runandgun/move", (MoveRequest request, ILogger<Program> logger, RunAndGun bot) =>
-{
-    logger.LogInformation("runandgun moved in game {gameId}", request.state.Name);
-    return new MoveResponse(bot.PlanMoves(request.state));
+    logger.LogInformation("runandgun moved in game {gameId}", request.GameId);
+    var currentTeam = new Team(request.YourTeamId)
+    {
+        Medpacs = request.Medpacs
+    };
+    var gameState = new GameState(request.GameId, request.BoardSize, request.TurnNumber, request.Units.Select(FromDto), request.TeamIds, currentTeam);
+
+    return new MoveResponse(await runAndGun.PlanMovesAsync(gameState));
 });
 
 app.Run();
 
+Unit FromDto(UnitDto dto)
+{
+    return Unit.Factory(
+        dto.Type,
+        dto.Attack,
+        dto.AttackDistance,
+        dto.Health,
+        dto.MaxHealth,
+        dto.Moves,
+        dto.MaxMoves,
+        dto.Location,
+        dto.Team
+    );
+}
+
+
 
 public record JoinGameResponse(string playerName);
-public record MoveRequest(GameState state);
-public record MoveResponse(List<Move> moves);
+public record MoveRequest(IEnumerable<UnitDto> Units, IEnumerable<int> TeamIds, int YourTeamId, int TurnNumber, string GameId, int BoardSize, int Medpacs);
+public record MoveResponse(List<Move> Moves);
+public record UnitDto(string Type, int Attack, int AttackDistance, int Health, int MaxHealth, double Moves, double MaxMoves, Coordinate Location, int Team);
+
+public class NetworkBot : IBot
+{
+
+    HttpClient client = new();
+    public NetworkBot(Uri endpoint)
+    {
+        client.BaseAddress = endpoint;
+    }
+    UnitDto MakeDto(Unit unit)
+    {
+        return new UnitDto(
+            unit.Type,
+            unit.Attack,
+            unit.AttackDistance,
+            unit.Health,
+            unit.MaxHealth,
+            unit.Moves,
+            unit.MaxMoves,
+            unit.Location,
+            unit.Team
+        );
+    }
+
+    public async Task<List<Move>> PlanMovesAsync(GameState state)
+    {
+        var moveRequest = new MoveRequest(
+            state.Units.Select(MakeDto),
+            state.TeamList.Select(t => t.Id),
+            state.CurrentTeamId,
+            state.TurnNumber,
+            state.Id.ToString(),
+            state.Dimension,
+            state.CurrentTeam.Medpacs
+        );
+        var response = await client.PostAsJsonAsync("", moveRequest);
+        var moveResponse = await response.Content.ReadFromJsonAsync<MoveResponse>();
+        return moveResponse.Moves;
+    }
+}
 

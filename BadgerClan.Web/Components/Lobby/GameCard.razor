@@ -2,35 +2,58 @@
 @inject HttpClient httpClient
 @inject Lobby lobby
 @inject ILogger<GameCard> logger
+@inject NavigationManager navManager
 
 <div class="col-md-4">
     <div class="card mb-3">
         <div class="card-body">
             <h5 class="card-title">@Game.Name</h5>
             <div style="background-color: azure; padding: 5px;">
+                <label for="botName" class="form-label fs-6 mb-0">Your bot's name</label>
+                <div class="d-flex">
+                    <input type="text"
+                           id="botName"
+                           class="form-control me-2"
+                           style="width: auto;"
+                           @bind="newBotName" />
+                </div>
                 <label for="serverAddress" class="form-label fs-6 mb-0">Your server's address</label>
                 <div class="d-flex">
                     <input type="text"
-                    id="serverAddress"
-                    class="form-control me-2"
-                    style="width: auto;"
-                    @bind="joinUrl"
-                    placeholder="https://yourserver:1234" />
-                    <button class="btn btn-primary" @onclick=joinGame>Join</button>
+                           id="serverAddress"
+                           class="form-control me-2"
+                           style="width: auto;"
+                           @bind="joinUrl"
+                           placeholder="https://yourserver:1234" />
                 </div>
+                <button class="btn btn-primary" @onclick=joinGame>Join</button>
             </div>
             <div class="d-flex justify-content-between">
                 <p class="card-text">Players: @Game.TeamCount.ToString("n0")</p>
                 <p class="card-text">Created: @Game.Created.Humanize()</p>
             </div>
-            @if (Game.TeamNames.Any())
-            {
-                <ul>
-                    @foreach (var team in Game.TeamNames)
+            <div class="row">
+                <div class="col">
+                    <h4>Current Players</h4>
+                    @if (Game.TeamNames.Any())
                     {
-                        <li>@team</li>
+                        <ul>
+                            @foreach (var team in Game.TeamNames)
+                            {
+                                <li>@team</li>
+                            }
+                        </ul>
                     }
-                </ul>
+                </div>
+                <div class="col">
+                    <button class="btn btn-outline-primary" @onclick=addRunAndGun>Add Run &amp; Gun Bot</button>
+                </div>
+            </div>
+            @if (Game.TeamList.Count > 1)
+            {
+                <div class="row">
+                    <button class="btn btn-warning" @onclick=startGame>Start Game</button>
+                </div>
             }
             <div class="text-bg-warning">
                 @error
@@ -43,25 +66,42 @@
     [Parameter]
     public GameState Game { get; set; }
 
+    string newBotName = PlayerHelpers.GetRandomPlayerName();
+
     string joinUrl;
     string? error = null;
+
+    private void addRunAndGun()
+    {
+        var networkBot = new NetworkBot(new Uri($"{navManager.BaseUri}bots/runandgun"));
+        var team = new Team(newBotName, "red", networkBot);
+        Game.AddTeam(team);
+        newBotName = PlayerHelpers.GetRandomPlayerName();
+    }
 
     private async Task joinGame()
     {
         try
         {
             //make a request to the server to join the game
-            var response = await httpClient.GetFromJsonAsync<JoinGameResponse>($"{joinUrl}?gameId={Game.Id}");
-            logger.LogInformation("{playerName} joined game {gameId}", response?.playerName, Game.Id);
-            var team = new Team(response?.playerName??"Player", "red", joinUrl);
-            Game.AddTeam(team);
-            //figure out how to join the new player to the game
-            joinUrl = null;
+            // var response = await httpClient.GetFromJsonAsync<JoinGameResponse>($"{joinUrl}?gameId={Game.Id}");
+            // logger.LogInformation("{playerName} joined game {gameId}", response?.playerName, Game.Id);
+            // var team = new Team(response?.playerName??"Player", "red", joinUrl);
+            // Game.AddTeam(team);
+            // figure out how to join the new player to the game
+            // joinUrl = null;
+            // newBotName = PlayerHelpers.GetRandomPlayerName();
         }
         catch (Exception ex)
         {
             error = ex.ToString();
         }
+    }
+
+    private void startGame()
+    {
+        lobby.StartGame(Game);
+        navManager.NavigateTo($"/game/{Game.Id}");
     }
 
     protected override void OnInitialized()

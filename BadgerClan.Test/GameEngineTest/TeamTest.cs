@@ -1,5 +1,5 @@
-using System.Runtime.InteropServices;
 using BadgerClan.Logic;
+using BadgerClan.Logic.Bot;
 
 namespace BadgerClan.Test.GameEngineTest;
 
@@ -35,7 +35,7 @@ public class TeamTest
         var knight2 = Unit.Factory("Knight", 2, Coordinate.Offset(60, 60));
         state.AddUnit(knight1);
         state.AddUnit(knight2);
-        state = engine.ProcessTurn(state, new List<Move>());
+        GameEngine.ProcessTurn(state, new List<Move>());
         var knight3 = Unit.Factory("Knight", 3, Coordinate.Offset(40, 40));
         state.AddUnit(knight3);
         Assert.Equal(2, state.Units.Count);
@@ -52,7 +52,7 @@ public class TeamTest
     public void IdIncrementsNextId()
     {
         var team = new Team(14);
-        var team2 = new Team("team", "red", "url");
+        var team2 = new Team("team", "red", new NothingBot());
         Assert.True(team2.Id > 14);
     }
 }

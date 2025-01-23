@@ -1,5 +1,5 @@
-﻿using System.Runtime.InteropServices;
-using BadgerClan.Logic;
+﻿using BadgerClan.Logic;
+using BadgerClan.Logic.Bot;
 
 namespace BadgerClan.Test.GameEngineTest;
 
@@ -12,7 +12,7 @@ public class SetupTest
         engine = new GameEngine();
     }
 
-        [Fact]
+    [Fact]
     public void CreateGameWithName()
     {
         string expected = "Party Time";
@@ -96,12 +96,12 @@ public class SetupTest
         Assert.Equal(1, state.CurrentTeamId);
         Assert.False(state.Running);
 
-        state = engine.ProcessTurn(state, new List<Move>());
+        GameEngine.ProcessTurn(state, new List<Move>());
         Assert.Equal(1, state.TurnNumber);
         Assert.Equal(2, state.CurrentTeamId);
         Assert.True(state.Running);
 
-        state = engine.ProcessTurn(state, new List<Move>());
+        GameEngine.ProcessTurn(state, new List<Move>());
         Assert.Equal(2, state.TurnNumber);
         Assert.Equal(1, state.CurrentTeamId);
     }
@@ -124,7 +124,7 @@ public class SetupTest
             new Move(MoveType.Walk, knight1.Id, knight1.Location.MoveEast(1)),
             new Move(MoveType.Walk, knight2.Id, knight2.Location.MoveEast(1)),
         };
-        state = engine.ProcessTurn(state, moves);
+        GameEngine.ProcessTurn(state, moves);
 
         Assert.Equal(expectedLocation1, knight1.Location);
         Assert.Equal(expectedLocation2, knight2.Location);
@@ -135,7 +135,7 @@ public class SetupTest
             new Move(MoveType.Walk, knight1.Id, knight1.Location.MoveEast(1)),
             new Move(MoveType.Walk, knight2.Id, knight2.Location.MoveEast(1)),
         };
-        state = engine.ProcessTurn(state, moves);
+        GameEngine.ProcessTurn(state, moves);
 
         Assert.Equal(expectedLocation1, knight1.Location);
         Assert.Equal(expectedLocation2, knight2.Location);
@@ -145,7 +145,7 @@ public class SetupTest
     public void TestGameOver()
     {
         var state = new GameState();
-        var winner = new Team("Winner", "red", "url");
+        var winner = new Team("Winner", "red", new NothingBot());
         state.AddTeam(winner);
         state.AddTeam(new Team(2));
         var knight1 = Unit.Factory("Knight", winner.Id, Coordinate.Offset(6, 6));
@@ -157,7 +157,7 @@ public class SetupTest
         var moves = new List<Move>{
             new Move(MoveType.Attack, knight1.Id, knight2.Location)
         };
-        state = engine.ProcessTurn(state, moves);
+        GameEngine.ProcessTurn(state, moves);
 
         Assert.Single(state.Units);
         Assert.False(state.Running);
@@ -171,7 +171,7 @@ public class SetupTest
         var team = new List<string> { "Knight", "Knight", "Knight", "Knight", "Archer", "Archer" };
         state.AddTeam(new Team(1));
         state.AddUnits(1, Coordinate.Offset(10, 10), team);
-        Assert.Contains(state.Units, u => u.Location == Coordinate.Offset(10,10));
+        Assert.Contains(state.Units, u => u.Location == Coordinate.Offset(10, 10));
         Assert.Equal(6, state.Units.Count);
     }
 
@@ -182,7 +182,7 @@ public class SetupTest
         state.AddTeam(new Team(1));
         state.AddTeam(new Team(2));
         var team = new List<string> { "Knight", "Knight", "Knight", "Knight", "Archer", "Archer" };
-        state.StartGame(team);
+        state.LayoutStartingPositions(team);
         Assert.Equal(team.Count * 2, state.Units.Count);
     }
 
@@ -193,7 +193,7 @@ public class SetupTest
     [InlineData(2400, 14, 47)] // 3 of 3
     public void LayoutSquadsInCircle(int deg, int col, int row)
     {
-        var loc =  GameSetupHelper.GetCircleCoordinate(deg, 70);
+        var loc = GameSetupHelper.GetCircleCoordinate(deg, 70);
         var expected = Coordinate.Offset(col, row);
         Assert.Equal(expected, loc);
     }

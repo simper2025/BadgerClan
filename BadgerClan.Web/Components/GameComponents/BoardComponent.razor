@@ -1,5 +1,7 @@
+@inject Lobby lobby
+
 <style>
-  .battle-field {
+    .battle-field {
     position: relative;
     @* width: @(DisplayConstants.MapWidth)px; *@
     height: @(DisplayConstants.MapHeight)px;
@@ -8,30 +10,33 @@
     aspect-ratio: 997 / 860;
     @* background-color: rgb(16, 64, 81); *@
     background-image: linear-gradient(135deg, rgb(5, 39, 103) 0%, #3a0647 70%);
-  }
+    }
 </style>
 <div id="square" class="battle-field" style="">
 
-  @foreach(var row in Enumerable.Range(0, State.Dimension + 1))
-  {
-    @foreach(var column in Enumerable.Range(0, State.Dimension + 1))
+    @foreach(var row in Enumerable.Range(0, State.Dimension + 1))
     {
-      <HexagonSquare Row=row Col=column Dimension=State.Dimension />
+        @foreach(var column in Enumerable.Range(0, State.Dimension + 1))
+        {
+            <HexagonSquare Row=row Col=column Dimension=State.Dimension />
+        }
     }
-  }
-  @foreach (var u in State.Units)
-  {
-    <UnitComponent Unit=u Team=Teams[u.Team] Dimension=State.Dimension  @key=u.Id TickInterval=TickInterval />
-  }
+    @foreach (var u in State.Units)
+    {
+        <UnitComponent Unit=u Team=teams[u.Team] Dimension=State.Dimension  @key=u.Id TickInterval=Lobby.TickInterval />
+    }
 </div>
 
 
 @code {
-  [Parameter]
-  public GameState State { get; set; }
-
-  [Parameter]
-  public Dictionary<int, Team> Teams { get; set; }
     [Parameter]
-    public int TickInterval { get; set; }
+    public GameState State { get; set; }
+
+    private Dictionary<int, Team> teams;
+
+    protected override void OnParametersSet()
+    {
+        teams = State.TeamList.ToDictionary(t => t.Id);
+        State.GameChanged += (e) => InvokeAsync(StateHasChanged);
+    }
 }

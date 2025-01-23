@@ -25,7 +25,7 @@ public class AttackTest
         var moves = new List<Move> {
             new Move(MoveType.Attack, knight1.Id, knight2.Location)
         };
-        var state2 = engine.ProcessTurn(state, moves);
+        GameEngine.ProcessTurn(state, moves);
         Assert.Equal(expectedHealth, knight2.Health);
     }
 
@@ -43,7 +43,7 @@ public class AttackTest
         var moves = new List<Move> {
             new Move(MoveType.Attack, knight1.Id, knight1.Location)
         };
-        var state2 = engine.ProcessTurn(state, moves);
+        GameEngine.ProcessTurn(state, moves);
         Assert.Equal(2, state.Units.Count);
         Assert.Equal(expectedHealth, knight1.Health);
     }
@@ -60,7 +60,7 @@ public class AttackTest
         var moves = new List<Move> {
             new Move(MoveType.Attack, knight1.Id, knight2.Location)
         };
-        var state2 = engine.ProcessTurn(state, moves);
+        GameEngine.ProcessTurn(state, moves);
         Assert.Equal(expectedHealth, knight2.Health);
     }
 
@@ -78,7 +78,7 @@ public class AttackTest
         var moves = new List<Move> {
             new Move(MoveType.Attack, archer.Id, knight2.Location)
         };
-        var state2 = engine.ProcessTurn(state, moves);
+        GameEngine.ProcessTurn(state, moves);
         Assert.Equal(expectedHealth, knight2.Health);
     }
 

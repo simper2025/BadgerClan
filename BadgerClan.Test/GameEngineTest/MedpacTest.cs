@@ -31,7 +31,7 @@ public class MedpacTest
         var moves = new List<Move> {
             new Move(MoveType.Attack, knight1.Id, knight2.Location),
         };
-        state = engine.ProcessTurn(state, moves);
+        GameEngine.ProcessTurn(state, moves);
         Assert.Equal(13, state.Units.Count);
         Assert.True(state.TeamList[0].Medpacs > 0);
     }
@@ -56,11 +56,11 @@ public class MedpacTest
         var moves = new List<Move> {
             new Move(MoveType.Medpac, knight1.Id, knight1.Location),
         };
-        state = engine.ProcessTurn(state, moves);
+        GameEngine.ProcessTurn(state, moves);
         Assert.Equal(2, knight1.Health);
         Assert.Equal(0, team1.Medpacs);
     }
-    
+
     [Fact]
     public void SomeMedpacsLeftOver()
     {
@@ -81,23 +81,23 @@ public class MedpacTest
         var moves = new List<Move> {
             new Move(MoveType.Medpac, knight1.Id, knight1.Location),
         };
-        state = engine.ProcessTurn(state, moves);
+        GameEngine.ProcessTurn(state, moves);
         Assert.Equal(knight1.MaxHealth, knight1.Health);
         Assert.Equal(2, team1.Medpacs);
     }
 
     //Just test the medpac generator function directlyy
     [Theory]
-    [InlineData (49, 50, 5)]
-    [InlineData (48, 50, 5)]
-    [InlineData (47, 50, 5)]
-    [InlineData (3, 50, 0)]
-    [InlineData (2, 50, 0)]
-    [InlineData (1, 50, 0)]
+    [InlineData(49, 50, 5)]
+    [InlineData(48, 50, 5)]
+    [InlineData(47, 50, 5)]
+    [InlineData(3, 50, 0)]
+    [InlineData(2, 50, 0)]
+    [InlineData(1, 50, 0)]
     public void TestMedpac(int remaining, int start, int expected)
     {
         var meds = GameEngine.CalculateMeds(remaining, start);
         Assert.Equal(expected, meds);
-    }    
+    }
 
 }

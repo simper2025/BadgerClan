@@ -6,7 +6,7 @@
 {
     <h4>Games to Join</h4>
     <div class="row">
-        @foreach (var game in lobby.Games)
+        @foreach (var game in lobby.Games.Where(g => g.TurnNumber == 0))
         {
             <GameCard Game="game" />
         }
