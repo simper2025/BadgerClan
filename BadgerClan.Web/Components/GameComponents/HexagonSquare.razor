@@ -6,7 +6,7 @@
     top: @(yPercent)%;
     left: @(xPercent)%; 
     transform: translate(-50%, -50%);
-    fill: white;
+    fill: @(fill);
   ">
   <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
   <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -30,13 +30,18 @@
   private double yPercent;
   double width;
 
-  string stroke = "";
+  string fill = "";
   protected override void OnParametersSet()
   {
+    @* fill = (Col* Row + Row + Col ) % 2 == 1
+    ? "white"
+    : "gray"; *@
+    fill = "white";
+
     width = 100 * 1 / (double)Dimension;
 
 
-    xPercent = DisplayUtils.CalculateXPercent(Col, Row, modHack: true);
-    yPercent = DisplayUtils.CalculateYPercent(Row);
+    xPercent = DisplayUtils.CalculateXPercent(Col, Row, Dimension, modHack: true);
+    yPercent = DisplayUtils.CalculateYPercent(Row, Dimension);
   }
 }
