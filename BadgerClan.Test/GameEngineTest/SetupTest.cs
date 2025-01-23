@@ -88,17 +88,17 @@ public class SetupTest
         var knight2 = Unit.Factory("Knight", 2, Coordinate.Offset(60, 60));
         state.AddUnit(knight);
         state.AddUnit(knight2);
-        Assert.Equal(0, state.Turn);
+        Assert.Equal(0, state.TurnNumber);
         Assert.Equal(1, state.CurrentTeam);
         Assert.False(state.Running);
 
         state = engine.ProcessTurn(state, new List<Move>());
-        Assert.Equal(1, state.Turn);
+        Assert.Equal(1, state.TurnNumber);
         Assert.Equal(2, state.CurrentTeam);
         Assert.True(state.Running);
 
         state = engine.ProcessTurn(state, new List<Move>());
-        Assert.Equal(2, state.Turn);
+        Assert.Equal(2, state.TurnNumber);
         Assert.Equal(1, state.CurrentTeam);
     }
 

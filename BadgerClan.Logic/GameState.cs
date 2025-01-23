@@ -12,15 +12,14 @@ public class GameState
     public int Dimension = 70;
 
     public int TotalUnits = 0;
-    public int Turn { get; private set; }
+    public int TurnNumber { get; private set; }
     public List<Unit> Units { get; set; }
 
     public List<Team> TeamList { get; private set; }
     private List<int> TurnOrder;
 
-    private Dictionary<int, string> teamNames = new(); 
     public int TeamCount { get { return TeamList.Count(); } }
-    public IEnumerable<string> TeamNames => teamNames.Values;
+    public IEnumerable<string> TeamNames => TeamList.Select(t => t.Name);
 
     private int currentTeam = 0;
     public int CurrentTeam
@@ -39,7 +38,7 @@ public class GameState
     {
         get
         {
-            if (Turn == 0)
+            if (TurnNumber == 0)
                 return false;
             return Units.Select(u => u.Team).Distinct().Count() > 1;
         }
@@ -50,13 +49,13 @@ public class GameState
         Units = new List<Unit>();
         TurnOrder = new List<int>();
         TeamList = new List<Team>();
-        Turn = 0;
+        TurnNumber = 0;
         Name = name ?? $"Game{Id.ToString().Substring(32)}";
     }
 
     public override string ToString()
     {
-        string status = "Turn #" + Turn + "; ";
+        string status = "Turn #" + TurnNumber + "; ";
         if (Running)
         {
             foreach (int team in TurnOrder)
@@ -64,7 +63,7 @@ public class GameState
                 status += "Team " + team + ": " + Units.Count(u => u.Team == team) + "; ";
             }
         }
-        else if (Turn > 0)
+        else if (TurnNumber > 0)
         {
             var team = Units.FirstOrDefault()?.Team ?? 0;
             status = "GameOver; Team #" + team + " wins";
@@ -77,7 +76,7 @@ public class GameState
     {
         currentTeam = AdvanceTeam();
 
-        Turn++;
+        TurnNumber++;
     }
 
     private int AdvanceTeam()

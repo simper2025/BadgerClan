@@ -86,12 +86,9 @@
         while (Running)
         {
             ShouldStop.ThrowIfCancellationRequested();
-            if (state.Turn == 0)
-            {
-                @* state.StartGame(teamUnits); *@
-            }
 
-            var moves = teams[state.CurrentTeam].Bot.PlanMoves(state);
+            var moves = teams[state.CurrentTeam]?.Bot?.PlanMoves(state) 
+                ?? new List<Move>();
 
             state = engine.ProcessTurn(state, moves);
             var man = state.Units.FirstOrDefault();
