@@ -9,19 +9,26 @@ public record Team
     public string Color;
     public string Name;
     public IBot? Bot;
+    public string BotEndpoint;
     public int Medpacs = 0;
 
-    public Team(int id) : this(id, $"Team {id}", "red", new Nothing())
+    public Team(int id) : this(id, $"Team {id}", "red", "")
     {
-        
+
     }
 
-    public Team(int id, string name, string color, IBot bot)
+    public Team(int id, string name, string color, string endpoint)
     {
         Id = id;
         Name = name;
         Color = color;
-        Bot = bot;        
+        Bot = null;
+        BotEndpoint = endpoint;
+    }
+
+    public Team(int id, string name, string color, IBot bot) : this(id, name, color, "")
+    {
+        Bot = bot;
     }
 
 }
