@@ -1,4 +1,5 @@
 using BadgerClan.Logic;
+using BadgerClan.Logic.Bot;
 using BadgerClan.Web.Components;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,6 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 builder.Services.AddSingleton<Lobby>();
+builder.Services.AddSingleton<RunAndGun>();
+builder.Services.AddHttpClient();
 
 var app = builder.Build();
 
@@ -27,4 +30,22 @@ app.MapStaticAssets();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
+app.MapGet("/bots/runandgun/join", (string gameId, ILogger<Program> logger, Lobby lobby, RunAndGun bot) =>
+{
+    logger.LogInformation("runandgun joined game {gameId}", gameId);
+    var playerName = PlayerHelpers.GetRandomPlayerName();
+    return new JoinGameResponse(playerName);
+});
+app.MapPost("/bots/runandgun/move", (MoveRequest request, ILogger<Program> logger, RunAndGun bot) =>
+{
+    logger.LogInformation("runandgun moved in game {gameId}", request.state.Name);
+    return new MoveResponse(bot.PlanMoves(request.state));
+});
+
 app.Run();
+
+
+public record JoinGameResponse(string playerName);
+public record MoveRequest(GameState state);
+public record MoveResponse(List<Move> moves);
+

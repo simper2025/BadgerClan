@@ -67,7 +67,7 @@
         var loc = Coordinate.Offset(col, row);
         bot.Team = id;
 
-        state.AddTeam(id, loc, teamUnits);
+        state.AddTeam(id, $"Team {id}", loc, teamUnits);
 
         var team = new Team(id, color, bot);
         teams.Add(id, team);

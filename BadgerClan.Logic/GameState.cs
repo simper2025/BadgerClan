@@ -4,14 +4,20 @@ namespace BadgerClan.Logic;
 
 public class GameState
 {
+    public DateTime Created { get; } = DateTime.Now;
+    public Guid Id { get; } = Guid.NewGuid();
+    public event Action<GameState> GameChanged;
     private static int NextId = 1;
     public string Name { get; set; }
     public int Dimension = 70;
 
     public List<Unit> Units { get; set; }
-    private List<int> Teams;
+    private List<int> teams;
+    private Dictionary<int, string> teamNames = new();
 
-    public int TeamCount { get { return Teams.Count(); } }
+    public int TeamCount { get { return teams.Count(); } }
+
+    public IEnumerable<string> TeamNames => teamNames.Values;
 
     public int Turn { get; private set; }
 
@@ -37,7 +43,7 @@ public class GameState
     public GameState(string? name = null)
     {
         Units = new List<Unit>();
-        Teams = new List<int>();
+        teams = new List<int>();
         Turn = 0;
         Name = name ?? $"Game{NextId++}";
     }
@@ -47,7 +53,7 @@ public class GameState
         string status = "Turn #" + Turn + "; ";
         if (Running)
         {
-            foreach (int team in Teams)
+            foreach (int team in teams)
             {
                 status += "Team " + team + ": " + Units.Count(u => u.Team == team) + "; ";
             }
@@ -62,22 +68,24 @@ public class GameState
 
     public void IncrementTurn()
     {
-        var teamIndex = Teams.IndexOf(currentTeam);
-        if (teamIndex != Teams.Count - 1)
+        var teamIndex = teams.IndexOf(currentTeam);
+        if (teamIndex != teams.Count - 1)
             teamIndex++;
         else
             teamIndex = 0;
-        currentTeam = Teams[teamIndex];
+        currentTeam = teams[teamIndex];
 
         Turn++;
     }
 
-    public void AddTeam(int team, Coordinate loc, List<string> units)
+    public void AddTeam(int team, string teamName, Coordinate loc, List<string> units)
     {
+        teamNames[team] = teamName;
         foreach (var unit in units)
         {
             AddUnit(Unit.Factory(unit, team, loc));
         }
+        GameChanged?.Invoke(this);
     }
 
     public void AddUnit(Unit unit)
@@ -94,9 +102,9 @@ public class GameState
         unit.Location = FitToBoard(unit, Units);
 
         Units.Add(unit);
-        if (!Teams.Contains(unit.Team))
-            Teams.Add(unit.Team);
-        if (Teams.Count == 1)
+        if (!teams.Contains(unit.Team))
+            teams.Add(unit.Team);
+        if (teams.Count == 1)
             currentTeam = unit.Team;
     }
 
