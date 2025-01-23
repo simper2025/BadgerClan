@@ -1,18 +1,21 @@
-<svg style="
+<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" style="
     position: absolute; 
     width: @(width)%; 
     aspect-ratio: 1 / 1;
 
     top: @(yPercent)%;
     left: @(xPercent)%; 
-
-    offset-position: 0 0;
-  " viewBox="0 0 800 800" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <g>
-    <path d="M0 215.385V584.615L400 800L800 584.615V215.385L400 0L0 215.385Z" stroke="#00000022" stroke-width="80" />
+    transform: translate(-50%, -50%);
+    fill: white;
+  ">
+  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+  <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+  <g id="SVGRepo_iconCarrier">
+    <path fill-rule="evenodd"
+      d="M8.5.134a1 1 0 0 0-1 0l-6 3.577a1 1 0 0 0-.5.866v6.846a1 1 0 0 0 .5.866l6 3.577a1 1 0 0 0 1 0l6-3.577a1 1 0 0 0 .5-.866V4.577a1 1 0 0 0-.5-.866L8.5.134z">
+    </path>
   </g>
 </svg>
-
 
 @code {
   [Parameter]
@@ -21,18 +24,20 @@
   public int Col { get; set; }
   [Parameter]
   public int Dimension { get; set; }
-  private int X;
-  private int Y;
+  private double X;
+  private double Y;
   private double xPercent;
   private double yPercent;
   double width;
+
+  string stroke = "";
   protected override void OnParametersSet()
   {
     width = 100 * 1 / (double)Dimension;
 
 
-    X = (int)(DisplayConstants.Dimension * (DisplayConstants.Root3 * Col + DisplayConstants.Root3 / 2.0 * (Row % 2)));
-    Y = (int)(DisplayConstants.Dimension * ((3.0 / 2) * Row));
+    X = (DisplayConstants.Dimension * (DisplayConstants.Root3 * Col + DisplayConstants.Root3 / 2.0 * (Row % 2)));
+    Y = (DisplayConstants.Dimension * ((3.0 / 2) * Row));
 
     xPercent = 100 * X / (double)DisplayConstants.MapWidth;
     yPercent = 100 * Y / (double)DisplayConstants.MapHeight;

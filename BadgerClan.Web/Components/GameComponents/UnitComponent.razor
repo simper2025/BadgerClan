@@ -1,14 +1,18 @@
 <div style="
     position: absolute; 
-    width: 20px; 
-    height: 20px; 
+    width: @(width)px; 
+    height: @(width)px; 
     top: @(yPercent)%; 
     left: @(xPercent)%; 
+    transform: translate(-50%, -50%);
+
     background-image: url('@(iconLookup[Unit.Type])');
     background-size: cover;
     background-repeat: no-repeat;
-    border: solid @Team.Color;
     transition: all .1s;
+
+    border: 2px solid @Team.Color;
+    border-radius: 3px;
 ">
 </div>
 
@@ -17,29 +21,32 @@
 
     [Parameter]
     public Unit Unit { get; set; }
-
     [Parameter]
     public Team Team { get; set; }
-
-    private int X;
-    private int Y;
+    [Parameter]
+    public int Dimension { get; set; }
     private double xPercent;
     private double yPercent;
+    private double width;
 
     private Dictionary<string, string> iconLookup = new Dictionary<string, string>
-    {
-        {"Knight", "/images/pikeman.svg"},
-        {"Archer", "/images/archer.svg"}
-    };
+{
+{"Knight", "/images/pikeman.svg"},
+{"Archer", "/images/archer.svg"}
+};
 
 
     protected override void OnParametersSet()
     {
-        X = (int)(DisplayConstants.Dimension * (DisplayConstants.Root3 * Unit.Location.Q + DisplayConstants.Root3 / 2.0 *
-        Unit.Location.R));
-        Y = (int)(DisplayConstants.Dimension * ((3.0 / 2) * Unit.Location.R));
 
-        xPercent = 100 * X / (double) DisplayConstants.MapWidth;
-        yPercent = 100 * Y / (double) DisplayConstants.MapHeight;
+        double X = (int)(DisplayConstants.Dimension * (DisplayConstants.Root3 * Unit.Location.Q + DisplayConstants.Root3 / 2.0 *
+        Unit.Location.R));
+        double Y = (int)(DisplayConstants.Dimension * ((3.0 / 2) * Unit.Location.R));
+
+        xPercent = 100 * X / (double)DisplayConstants.MapWidth;
+        yPercent = 100 * Y / (double)DisplayConstants.MapHeight;
+
+        double scalarValue = 0.8;
+        width = scalarValue * ((double)DisplayConstants.MapWidth / Dimension);
     }
 }

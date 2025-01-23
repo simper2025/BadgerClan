@@ -1,9 +1,9 @@
 <style>
   .battle-field {
     position: relative;
-    @* width: @(DisplayConstants.MapWidth)px;
-    height: @(DisplayConstants.MapHeight)px; *@
-    height: 100%;
+    @* width: @(DisplayConstants.MapWidth)px; *@
+    height: @(DisplayConstants.MapHeight)px;
+    @* height: 100%; *@
 
     aspect-ratio: 997 / 860;
     background-color: lightblue;
@@ -21,7 +21,7 @@
   }
   @foreach (var u in State.Units)
   {
-    <UnitComponent Unit=u Team=Teams[u.Team] @key=u.Id />
+    <UnitComponent Unit=u Team=Teams[u.Team] Dimension=State.Dimension  @key=u.Id />
   }
 </div>
 
