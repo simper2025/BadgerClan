@@ -6,7 +6,7 @@
 
 <button @onclick="RunTurns">Run</button>
 
-<BoardComponent State=state Teams=teams />
+<BoardComponent State=state Teams=teams TickInterval=TickInterval />
 
 <div>@status</div>
 
@@ -17,6 +17,7 @@
     private GameEngine engine = new GameEngine();
     private GameState state = new GameState();
     private string status = "";
+    private int TickInterval = 50;
 
 
     private CancellationTokenSource source = new CancellationTokenSource();
@@ -30,7 +31,7 @@
 
     protected override Task OnInitializedAsync()
     {
-        MakeTeam("red", new RunAndGun());
+        MakeTeam("red", new Turtle());
         MakeTeam("blue", new Turtle());
         MakeTeam("green", new Turtle());
         MakeTeam("yellow", new Turtle(2, 2));
@@ -84,7 +85,7 @@
 
             InvokeAsync(StateHasChanged);
 
-            Thread.Sleep(30);
+            Thread.Sleep(TickInterval);
         }
     }
 
