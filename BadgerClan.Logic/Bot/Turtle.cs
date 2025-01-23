@@ -57,8 +57,10 @@ public class Turtle : IBot
 
         var enemies = state.Units.Where(u => u.Team != Team);
         var active = ShouldGoActive(enemies);
+        
+        var squad = state.Units.Where(u => u.Team == Team);
 
-        foreach (var unit in state.Units.Where(u => u.Team == Team))
+        foreach (var unit in squad)
         {
             if (active) break;
             var closest = enemies.OrderBy(u => u.Location.Distance(unit.Location)).FirstOrDefault();
@@ -70,7 +72,20 @@ public class Turtle : IBot
         }
 
         var moves = new List<Move>();
-        foreach (var unit in state.Units.Where(u => u.Team == Team && u.Type == "Knight"))
+
+        //Don't split up
+        var pointman = squad.OrderBy(u => u.Id).FirstOrDefault();
+        foreach (var unit in squad){
+            if (pointman != null && unit.Id != pointman.Id &&
+                unit.Location.Distance(pointman.Location) > 5){
+                    var toward = unit.Location.Toward(pointman.Location);
+                    moves.Add(new Move(MoveType.Walk, unit.Id, toward));
+                    moves.Add(new Move(MoveType.Walk, unit.Id, toward.Toward(pointman.Location)));
+            }
+        }
+
+        //Move knights
+        foreach (var unit in squad.Where(u => u.Type == "Knight"))
         {
             var closest = enemies.OrderBy(u => u.Location.Distance(unit.Location)).FirstOrDefault();
             if (active && closest != null)
@@ -90,11 +105,15 @@ public class Turtle : IBot
                 }
             }
         }
-        foreach (var unit in state.Units.Where(u => u.Team == Team && u.Type == "Archer"))
+
+        //Move archers
+        foreach (var unit in squad.Where(u => u.Type == "Archer"))
         {
             var closest = enemies.OrderBy(u => u.Location.Distance(unit.Location)).FirstOrDefault();
+            
             if (active && closest != null)
             {
+                // Run away and shoot at knights
                 if (closest.Location.Distance(unit.Location) == 1)
                 {
                     var target = unit.Location.Away(closest.Location);
