@@ -64,8 +64,9 @@ public class GameState
         }
         else if (TurnNumber > 0)
         {
-            var team = Units.FirstOrDefault()?.Team ?? 0;
-            status = $"GameOver; Team #{team} wins";
+            var teamid = Units.FirstOrDefault()?.Team ?? 0;
+            var team = TeamList.FirstOrDefault(team => team.Id == teamid)?.Name?? "empty";
+            status = $"GameOver: {team} wins";
         }
         //status += " Medpacs" + TeamList.Sum(t => t.Medpacs);
         return status;
