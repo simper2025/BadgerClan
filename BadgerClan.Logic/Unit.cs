@@ -63,11 +63,12 @@ public class Unit
         return unit;
     }
 
-    public static Unit Factory(string type, int attack, int attackDistance, int health, int maxHealth, double moves, double maxMoves, Coordinate location, int team)
+    public static Unit Factory(string type, int id, int attack, int attackDistance, int health, int maxHealth, double moves, double maxMoves, Coordinate location, int team)
     {
         var unit = new Unit
         {
             Type = type,
+            Id = id,
             Attack = attack,
             AttackDistance = attackDistance,
             Health = health,

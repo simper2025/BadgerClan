@@ -33,7 +33,10 @@ app.MapRazorComponents<App>()
 
 app.MapPost("/bots/runandgun", async (MoveRequest request, ILogger<Program> logger, RunAndGun runAndGun) =>
 {
-    logger.LogInformation("runandgun moved in game {gameId}", request.GameId);
+    logger.LogInformation("runandgun moved in game {gameId} Turn #{TurnNumber}", request.GameId, request.TurnNumber);
+    var first = request.Units.First();
+	logger.LogInformation("Total Units: {Count}; Unit: {Id} ({Q},{R})", 
+        request.Units.Count(), first.Id, first.Location.Q, first.Location.R);
     var currentTeam = new Team(request.YourTeamId)
     {
         Medpacs = request.Medpacs
@@ -49,6 +52,7 @@ Unit FromDto(UnitDto dto)
 {
     return Unit.Factory(
         dto.Type,
+        dto.Id,
         dto.Attack,
         dto.AttackDistance,
         dto.Health,
@@ -65,7 +69,7 @@ Unit FromDto(UnitDto dto)
 public record JoinGameResponse(string playerName);
 public record MoveRequest(IEnumerable<UnitDto> Units, IEnumerable<int> TeamIds, int YourTeamId, int TurnNumber, string GameId, int BoardSize, int Medpacs);
 public record MoveResponse(List<Move> Moves);
-public record UnitDto(string Type, int Attack, int AttackDistance, int Health, int MaxHealth, double Moves, double MaxMoves, Coordinate Location, int Team);
+public record UnitDto(string Type, int Id, int Attack, int AttackDistance, int Health, int MaxHealth, double Moves, double MaxMoves, Coordinate Location, int Team);
 
 public class NetworkBot : IBot
 {
@@ -79,6 +83,7 @@ public class NetworkBot : IBot
     {
         return new UnitDto(
             unit.Type,
+            unit.Id,
             unit.Attack,
             unit.AttackDistance,
             unit.Health,

@@ -30,7 +30,7 @@ public class Lobby(ILogger<Lobby> logger)
     }
     private async Task ProcessTurnAsync(GameState game, CancellationToken ct)
     {
-        while (true)
+        while (game.Running || game.TurnNumber == 0)
         {
             ct.ThrowIfCancellationRequested();
 
@@ -45,7 +45,6 @@ public class Lobby(ILogger<Lobby> logger)
                 logger.LogError(ex, "Error getting moves for {team}", game.CurrentTeam.Name);
                 return;
             }
-
 
             Thread.Sleep(TickInterval);
         }
