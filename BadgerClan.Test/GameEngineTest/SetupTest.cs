@@ -145,9 +145,10 @@ public class SetupTest
     public void TestGameOver()
     {
         var state = new GameState();
-        state.AddTeam(new Team(1));
+        var winner = new Team("Winner", "red", "url");
+        state.AddTeam(winner);
         state.AddTeam(new Team(2));
-        var knight1 = Unit.Factory("Knight", 1, Coordinate.Offset(6, 6));
+        var knight1 = Unit.Factory("Knight", winner.Id, Coordinate.Offset(6, 6));
         var knight2 = Unit.Factory("Knight", 2, Coordinate.Offset(6, 5));
         state.AddUnit(knight1);
         knight2.Health = 1;
@@ -160,6 +161,7 @@ public class SetupTest
 
         Assert.Single(state.Units);
         Assert.False(state.Running);
+        Assert.Contains("Winner", state.ToString());
     }
 
     [Fact]
