@@ -1,13 +1,8 @@
 ﻿@page "/testgame"
 @using BadgerClan.Web.Components.GameComponents
 @rendermode InteractiveServer
-@inject IJSRuntime JSRuntime
 
 <PageTitle>Home</PageTitle>
-
-
-<script src="/lib/site.js"></script>
-
 
 <button @onclick="RunTurns">Run</button>
 
@@ -15,22 +10,23 @@
 
 <div>@status</div>
 
-@* <div>@(Running ? "Running" : "Stopped")</div> *@
+
 
 @code {
 
     private GameEngine engine = new GameEngine();
     private GameState state = new GameState();
+    private string status = "";
 
 
     private CancellationTokenSource source = new CancellationTokenSource();
     private CancellationToken ShouldStop => source.Token;
     private bool Running = false;
-    private string status = "";
 
+    private List<string> squadUnits = new List<string> { "Knight", "Knight", "Archer", "Archer", "Knight", "Knight" };
+
+    //Remove this eventually
     private Dictionary<int, Team> teams = new Dictionary<int, Team>();
-
-    private List<string> teamUnits = new List<string> { "Knight", "Knight", "Archer", "Archer", "Knight", "Knight" };
 
     protected override Task OnInitializedAsync()
     {
@@ -41,20 +37,19 @@
         MakeTeam(5, "orange", new RunAndGun());
         MakeTeam(6, "black", new Turtle());
 
-        state.StartGame(teamUnits);
+        state.StartGame(squadUnits);
 
         @* state.AddTeam(1, Coordinate.Offset(0, 0), new List<string> { "Archer" });
         state.AddTeam(1, Coordinate.Offset(0, 1), new List<string> { "Archer" });
 
-        state.AddTeam(1, Coordinate.Offset(70, 0), new List<string> { "Archer" });
-        state.AddTeam(1, Coordinate.Offset(70, 1), new List<string> { "Archer" });
+        state.AddTeam(1, Coordinate.Offset(state.Dimension, 0), new List<string> { "Archer" });
+        state.AddTeam(1, Coordinate.Offset(state.Dimension, 1), new List<string> { "Archer" });
 
-        state.AddTeam(1, Coordinate.Offset(0, 70), new List<string> { "Archer" });
-        state.AddTeam(1, Coordinate.Offset(0, 69), new List<string> { "Archer" });
+        state.AddTeam(1, Coordinate.Offset(0, state.Dimension), new List<string> { "Archer" });
+        state.AddTeam(1, Coordinate.Offset(0, state.Dimension-1), new List<string> { "Archer" });
 
-        state.AddTeam(1, Coordinate.Offset(70, 70), new List<string> { "Archer" });
-        state.AddTeam(1, Coordinate.Offset(70, 69), new List<string> { "Archer" }); *@
-
+        state.AddTeam(1, Coordinate.Offset(state.Dimension, state.Dimension), new List<string> { "Archer" });
+        state.AddTeam(1, Coordinate.Offset(state.Dimension, state.Dimension-1), new List<string> { "Archer" }); *@
 
         return Task.CompletedTask;
     }
@@ -101,8 +96,5 @@
 
             Thread.Sleep(30);
         }
-
     }
-
-
 }
