@@ -4,6 +4,8 @@
 
 <PageTitle>@state.Name</PageTitle>
 
+@* I think I created this page in error. Jonathan seems to already have made this. *@
+
 <button @onclick="RunTurns">Run</button>
 
 <BoardComponent State=state Teams=teams />
@@ -31,7 +33,7 @@
     protected override Task OnInitializedAsync()
     {
         MakeTeam(1, "red", new RunAndGun());
-        MakeTeam(2, "blue", new Turtle());
+        MakeTeam(2, "blue", new Turtle(), "/api/");
         MakeTeam(3, "green", new Turtle());
         MakeTeam(4, "yellow", new Turtle(2, 2));
         MakeTeam(5, "orange", new RunAndGun());
@@ -54,10 +56,13 @@
         return Task.CompletedTask;
     }
 
-    private void MakeTeam(int id, string color, IBot bot)
+    private void MakeTeam(int id, string color, IBot bot, string url = "")
     {
         bot.Team = id;
-        var team = new Team(id, $"Team {id}", color, bot);
+
+        var team = !string.IsNullOrEmpty(url)
+            ? new Team(id, $"Team {id}", color, url)
+            : new Team(id, $"Team {id}", color, bot);
         state.AddTeam(team);
         teams.Add(id, team);
     }
@@ -82,8 +87,15 @@
         {
             ShouldStop.ThrowIfCancellationRequested();
 
-            var moves = teams[state.CurrentTeam]?.Bot?.PlanMoves(state) 
-                ?? new List<Move>();
+            var moves = new List<Move>();
+            var team = teams[state.CurrentTeam];
+            if (team != null)
+            {
+                if (!string.IsNullOrEmpty(team.BotEndpoint))
+                    moves = CallEndPoint(team.BotEndpoint, state);
+                else if (team.Bot != null)
+                    moves = team.Bot.PlanMoves(state);
+            }
 
             state = engine.ProcessTurn(state, moves);
             var man = state.Units.FirstOrDefault();
@@ -96,5 +108,10 @@
 
             Thread.Sleep(30);
         }
+    }
+
+    private static List<Move> CallEndPoint(string url, GameState state)
+    {
+        return new List<Move>();
     }
 }
