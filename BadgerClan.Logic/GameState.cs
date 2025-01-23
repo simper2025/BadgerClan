@@ -1,6 +1,4 @@
-
 namespace BadgerClan.Logic;
-
 
 public class GameState
 {
@@ -76,7 +74,6 @@ public class GameState
     public void IncrementTurn()
     {
         currentTeamId = AdvanceTeam();
-
         TurnNumber++;
     }
 

@@ -39,17 +39,7 @@
 
         state.StartGame(squadUnits);
 
-        @* state.AddTeam(1, Coordinate.Offset(0, 0), new List<string> { "Archer" });
-        state.AddTeam(1, Coordinate.Offset(0, 1), new List<string> { "Archer" });
-
-        state.AddTeam(1, Coordinate.Offset(state.Dimension, 0), new List<string> { "Archer" });
-        state.AddTeam(1, Coordinate.Offset(state.Dimension, 1), new List<string> { "Archer" });
-
-        state.AddTeam(1, Coordinate.Offset(0, state.Dimension), new List<string> { "Archer" });
-        state.AddTeam(1, Coordinate.Offset(0, state.Dimension-1), new List<string> { "Archer" });
-
-        state.AddTeam(1, Coordinate.Offset(state.Dimension, state.Dimension), new List<string> { "Archer" });
-        state.AddTeam(1, Coordinate.Offset(state.Dimension, state.Dimension-1), new List<string> { "Archer" }); *@
+        @* AddBorderUnits(state); *@
 
         return Task.CompletedTask;
     }
@@ -82,8 +72,8 @@
         {
             ShouldStop.ThrowIfCancellationRequested();
 
-            var moves = teams[state.CurrentTeamId]?.Bot?.PlanMoves(state) 
-                ?? new List<Move>();
+            var moves = teams[state.CurrentTeamId]?.Bot?.PlanMoves(state)
+            ?? new List<Move>();
 
             state = engine.ProcessTurn(state, moves);
             var man = state.Units.FirstOrDefault();
@@ -96,5 +86,18 @@
 
             Thread.Sleep(30);
         }
+    }
+
+    private static void AddBorderUnits(GameState stat)
+    {
+        var teamid = stat.TeamList[0].Id;
+        stat.AddUnits(teamid, Coordinate.Offset(0, 0), new List<string> { "Archer" });
+        stat.AddUnits(teamid, Coordinate.Offset(0, 1), new List<string> { "Archer" });
+        stat.AddUnits(teamid, Coordinate.Offset(stat.Dimension, 0), new List<string> { "Archer" });
+        stat.AddUnits(teamid, Coordinate.Offset(stat.Dimension, 1), new List<string> { "Archer" });
+        stat.AddUnits(teamid, Coordinate.Offset(0, stat.Dimension), new List<string> { "Archer" });
+        stat.AddUnits(teamid, Coordinate.Offset(0, stat.Dimension-1), new List<string> { "Archer" });
+        stat.AddUnits(teamid, Coordinate.Offset(stat.Dimension, stat.Dimension), new List<string> { "Archer" });
+        stat.AddUnits(teamid, Coordinate.Offset(stat.Dimension, stat.Dimension-1), new List<string> { "Archer" });
     }
 }
