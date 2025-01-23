@@ -4,6 +4,8 @@ namespace BadgerClan.Logic;
 
 public class GameState
 {
+    private static int NextId = 1;
+    public string Name { get; set; }
     public int Dimension = 70;
 
     public List<Unit> Units { get; set; }
@@ -32,11 +34,12 @@ public class GameState
         }
     }
 
-    public GameState()
+    public GameState(string? name = null)
     {
         Units = new List<Unit>();
         Teams = new List<int>();
         Turn = 0;
+        Name = name ?? $"Game{NextId++}";
     }
 
     public override string ToString()
