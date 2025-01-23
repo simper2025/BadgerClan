@@ -1,0 +1,44 @@
+using System.Runtime.InteropServices;
+using BadgerClan.Logic;
+
+namespace BadgerClan.Test.GameEngineTest;
+
+public class TeamTest
+{
+    private GameEngine engine;
+
+    public TeamTest()
+    {
+        engine = new GameEngine();
+    }
+
+    [Fact]
+    public void TeamsExist()
+    {
+        var state = new GameState();
+        state.AddTeam(new Team(1));
+        state.AddTeam(new Team(2));
+        var knight = Unit.Factory("Knight", 1, Coordinate.Offset(6, 6));
+        var knight2 = Unit.Factory("Knight", 2, Coordinate.Offset(6, 6));
+        state.AddUnit(knight);
+        state.AddUnit(knight2);
+        Assert.Equal(2, state.Units.Count);
+    }
+
+    [Fact]
+    public void CantAddTeamAfterStart()
+    {
+        var state = new GameState();
+        state.AddTeam(new Team(1));
+        state.AddTeam(new Team(2));
+        var knight1 = Unit.Factory("Knight", 1, Coordinate.Offset(6, 6));
+        var knight2 = Unit.Factory("Knight", 2, Coordinate.Offset(60, 60));
+        state.AddUnit(knight1);
+        state.AddUnit(knight2);
+        state = engine.ProcessTurn(state, new List<Move>());
+        var knight3 = Unit.Factory("Knight", 3, Coordinate.Offset(40, 40));
+        state.AddUnit(knight3);
+        Assert.Equal(2, state.Units.Count);
+    }
+
+}

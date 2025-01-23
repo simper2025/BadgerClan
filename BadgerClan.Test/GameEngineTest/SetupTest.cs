@@ -66,19 +66,6 @@ public class SetupTest
     }
 
     [Fact]
-    public void TeamsExist()
-    {
-        var state = new GameState();
-        state.AddTeam(new Team(1));
-        state.AddTeam(new Team(2));
-        var knight = Unit.Factory("Knight", 1, Coordinate.Offset(6, 6));
-        var knight2 = Unit.Factory("Knight", 2, Coordinate.Offset(6, 6));
-        state.AddUnit(knight);
-        state.AddUnit(knight2);
-        Assert.Equal(2, state.Units.Count);
-    }
-
-    [Fact]
     public void AddNextToTeammates()
     {
         var state = new GameState();
@@ -155,22 +142,6 @@ public class SetupTest
     }
 
     [Fact]
-    public void CantAddTeamAfterStart()
-    {
-        var state = new GameState();
-        state.AddTeam(new Team(1));
-        state.AddTeam(new Team(2));
-        var knight1 = Unit.Factory("Knight", 1, Coordinate.Offset(6, 6));
-        var knight2 = Unit.Factory("Knight", 2, Coordinate.Offset(60, 60));
-        state.AddUnit(knight1);
-        state.AddUnit(knight2);
-        state = engine.ProcessTurn(state, new List<Move>());
-        var knight3 = Unit.Factory("Knight", 3, Coordinate.Offset(40, 40));
-        state.AddUnit(knight3);
-        Assert.Equal(2, state.Units.Count);
-    }
-
-    [Fact]
     public void TestGameOver()
     {
         var state = new GameState();
@@ -192,7 +163,7 @@ public class SetupTest
     }
 
     [Fact]
-    public void AddWholeTeam()
+    public void AddWholeSquad()
     {
         var state = new GameState();
         var team = new List<string> { "Knight", "Knight", "Knight", "Knight", "Archer", "Archer" };
@@ -218,7 +189,7 @@ public class SetupTest
     [InlineData(180, 35, 60)] //player 2 of 2
     [InlineData(120, 56, 47)] // 2 of 3
     [InlineData(2400, 14, 47)] // 3 of 3
-    public void FirstTeamIsAtTop(int deg, int col, int row)
+    public void LayoutSquadsInCircle(int deg, int col, int row)
     {
         var loc =  GameSetupHelper.GetCircleCoordinate(deg, 70);
         var expected = Coordinate.Offset(col, row);
