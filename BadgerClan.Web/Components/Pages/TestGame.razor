@@ -62,13 +62,8 @@
     private void MakeTeam(int id, string color, IBot bot)
     {
         bot.Team = id;
-
-        state.AddTeam(id, $"Team {id}", loc, teamUnits);
-
-        var team = new Team(id, color, bot);
+        var team = new Team(id, $"Team {id}", color, bot);
         state.AddTeam(team);
-        @* state.AddUnits(id, loc, teamUnits); *@
-
         teams.Add(id, team);
     }
 

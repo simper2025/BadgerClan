@@ -16,9 +16,9 @@ public class GameState
     private List<int> TurnOrder;
 
     public List<Team> TeamList { get; private set; }
-
+    private Dictionary<int, string> teamNames = new(); 
     public int TeamCount { get { return TeamList.Count(); } }
-
+    public IEnumerable<string> TeamNames => teamNames.Values;
     public int Turn { get; private set; }
 
     private int currentTeam = 0;
