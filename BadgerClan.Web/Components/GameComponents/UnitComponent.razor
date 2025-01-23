@@ -43,6 +43,10 @@
         Unit.Location.R));
         double Y = (int)(DisplayConstants.Dimension * ((3.0 / 2) * Unit.Location.R));
 
+        @* xPercent = DisplayUtils.CalculateXPercent(Unit.Location.Q, Unit.Location.R);
+        yPercent = DisplayUtils.CalculateYPercent(Unit.Location.R); *@
+
+
         xPercent = 100 * X / (double)DisplayConstants.MapWidth;
         yPercent = 100 * Y / (double)DisplayConstants.MapHeight;
 

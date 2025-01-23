@@ -36,10 +36,7 @@
     width = 100 * 1 / (double)Dimension;
 
 
-    X = (DisplayConstants.Dimension * (DisplayConstants.Root3 * Col + DisplayConstants.Root3 / 2.0 * (Row % 2)));
-    Y = (DisplayConstants.Dimension * ((3.0 / 2) * Row));
-
-    xPercent = 100 * X / (double)DisplayConstants.MapWidth;
-    yPercent = 100 * Y / (double)DisplayConstants.MapHeight;
+    xPercent = DisplayUtils.CalculateXPercent(Col, Row, modHack: true);
+    yPercent = DisplayUtils.CalculateYPercent(Row);
   }
 }
