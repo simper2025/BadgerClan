@@ -12,6 +12,23 @@ public class SetupTest
         engine = new GameEngine();
     }
 
+        [Fact]
+    public void CreateGameWithName()
+    {
+        string expected = "Party Time";
+        var state = new GameState(expected);
+        Assert.Equal(expected, state.Name);
+    }
+
+    [Fact]
+    public void CreateGameNoName()
+    {
+        string expected = "Game-";
+        var state = new GameState();
+        Assert.StartsWith(expected, state.Name);
+        Assert.Equal(expected.Length + 4, state.Name.Length);
+    }
+
     [Fact]
     public void CantAddSameUnitTwice()
     {
@@ -203,7 +220,7 @@ public class SetupTest
     [InlineData(2400, 14, 47)] // 3 of 3
     public void FirstTeamIsAtTop(int deg, int col, int row)
     {
-        var loc = GameState.GetCircleCoordinate(deg, 70);
+        var loc =  GameSetupHelper.GetCircleCoordinate(deg, 70);
         var expected = Coordinate.Offset(col, row);
         Assert.Equal(expected, loc);
     }

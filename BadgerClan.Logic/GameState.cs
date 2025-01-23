@@ -50,7 +50,7 @@ public class GameState
         TurnOrder = new List<int>();
         TeamList = new List<Team>();
         TurnNumber = 0;
-        Name = name ?? $"Game{Id.ToString().Substring(32)}";
+        Name = name ?? $"Game-{Id.ToString().Substring(32)}";
     }
 
     public override string ToString()
@@ -106,25 +106,11 @@ public class GameState
 
         foreach (var team in TeamList)
         {
-            var loc = GetCircleCoordinate(degrees * i, Dimension);
+            var loc = GameSetupHelper.GetCircleCoordinate(degrees * i, Dimension);
             AddUnits(team.Id, loc, units);
             i++;
         }
         GameChanged?.Invoke(this);
-    }
-
-    public static Coordinate GetCircleCoordinate(int deg, int size)
-    {
-        var radius = size / 2 - 10;
-        var center = Coordinate.Offset(size / 2, size / 2);
-
-        double radians = (deg-90) * (Math.PI / 180);
-
-        double x = radius * Math.Cos(radians);
-        double y = radius * Math.Sin(radians);
-
-        var loc = center + Coordinate.Offset((int)x, (int)y);
-        return loc;
     }
 
     public void AddUnits(int team, Coordinate loc, List<string> units)
