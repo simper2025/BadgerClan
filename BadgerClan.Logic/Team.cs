@@ -21,6 +21,8 @@ public record Team
     public Team(int teamId)
     {
         Id = teamId;
+        if (Id > NextId)
+            NextId = Id + 1;
         Name = $"Team {teamId}";
         Color = "black";
         Bot = new NothingBot();

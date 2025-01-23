@@ -53,6 +53,6 @@ public class TeamTest
     {
         var team = new Team(14);
         var team2 = new Team("team", "red", new NothingBot());
-        Assert.True(team2.Id > 14);
+        Assert.True(team2.Id > team.Id);
     }
 }
