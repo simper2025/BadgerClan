@@ -30,12 +30,12 @@
 
     protected override Task OnInitializedAsync()
     {
-        MakeTeam(1, "red", new RunAndGun());
-        MakeTeam(2, "blue", new Turtle());
-        MakeTeam(3, "green", new Turtle());
-        MakeTeam(4, "yellow", new Turtle(2, 2));
-        MakeTeam(5, "orange", new RunAndGun());
-        MakeTeam(6, "black", new Turtle());
+        MakeTeam("red", new RunAndGun());
+        MakeTeam("blue", new Turtle());
+        MakeTeam("green", new Turtle());
+        MakeTeam("yellow", new Turtle(2, 2));
+        MakeTeam("orange", new RunAndGun());
+        MakeTeam("black", new Turtle());
 
         state.StartGame(squadUnits);
 
@@ -54,12 +54,12 @@
         return Task.CompletedTask;
     }
 
-    private void MakeTeam(int id, string color, IBot bot)
+    private void MakeTeam(string color, IBot bot)
     {
-        bot.Team = id;
-        var team = new Team(id, $"Team {id}", color, bot);
+        var team = new Team($"Team {color}", color, bot);
+        bot.Team = team.Id;
         state.AddTeam(team);
-        teams.Add(id, team);
+        teams.Add(team.Id, team);
     }
 
     private void RunTurns()
@@ -82,7 +82,7 @@
         {
             ShouldStop.ThrowIfCancellationRequested();
 
-            var moves = teams[state.CurrentTeam]?.Bot?.PlanMoves(state) 
+            var moves = teams[state.CurrentTeamId]?.Bot?.PlanMoves(state) 
                 ?? new List<Move>();
 
             state = engine.ProcessTurn(state, moves);

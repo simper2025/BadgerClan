@@ -21,16 +21,16 @@ public class GameState
     public int TeamCount { get { return TeamList.Count(); } }
     public IEnumerable<string> TeamNames => TeamList.Select(t => t.Name);
 
-    private int currentTeam = 0;
-    public int CurrentTeam
+    private int currentTeamId = 0;
+    public int CurrentTeamId
     {
         get
         {
-            if (currentTeam == 0 && TurnOrder.Count > 0)
+            if (currentTeamId == 0 && TurnOrder.Count > 0)
             {
-                currentTeam = TurnOrder[0];
+                currentTeamId = TurnOrder[0];
             }
-            return currentTeam;
+            return currentTeamId;
         }
     }
 
@@ -58,30 +58,31 @@ public class GameState
         string status = "Turn #" + TurnNumber + "; ";
         if (Running)
         {
-            foreach (int team in TurnOrder)
+            foreach (Team team in TeamList)
             {
-                status += "Team " + team + ": " + Units.Count(u => u.Team == team) + "; ";
+                var unitCount = Units.Count(u => u.Team == team.Id);
+                status += $"{team.Name}: {unitCount}; ";
             }
         }
         else if (TurnNumber > 0)
         {
             var team = Units.FirstOrDefault()?.Team ?? 0;
-            status = "GameOver; Team #" + team + " wins";
+            status = $"GameOver; Team #{team} wins";
         }
-        status += " Medpacs" + TeamList.Sum(t => t.Medpacs);
+        //status += " Medpacs" + TeamList.Sum(t => t.Medpacs);
         return status;
     }
 
     public void IncrementTurn()
     {
-        currentTeam = AdvanceTeam();
+        currentTeamId = AdvanceTeam();
 
         TurnNumber++;
     }
 
     private int AdvanceTeam()
     {
-        var teamIndex = TurnOrder.IndexOf(currentTeam);
+        var teamIndex = TurnOrder.IndexOf(currentTeamId);
         // possibly change
         if (teamIndex < 0)
             return 0;

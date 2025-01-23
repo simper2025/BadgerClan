@@ -53,7 +53,8 @@
             //make a request to the server to join the game
             var response = await httpClient.GetFromJsonAsync<JoinGameResponse>($"{joinUrl}?gameId={Game.Id}");
             logger.LogInformation("{playerName} joined game {gameId}", response?.playerName, Game.Id);
-            //Game.AddTeam(response?.playerName);
+            var team = new Team(response?.playerName??"Player", "red", joinUrl);
+            Game.AddTeam(team);
             //figure out how to join the new player to the game
             joinUrl = null;
         }

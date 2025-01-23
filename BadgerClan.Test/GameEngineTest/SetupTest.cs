@@ -93,17 +93,17 @@ public class SetupTest
         state.AddUnit(knight);
         state.AddUnit(knight2);
         Assert.Equal(0, state.TurnNumber);
-        Assert.Equal(1, state.CurrentTeam);
+        Assert.Equal(1, state.CurrentTeamId);
         Assert.False(state.Running);
 
         state = engine.ProcessTurn(state, new List<Move>());
         Assert.Equal(1, state.TurnNumber);
-        Assert.Equal(2, state.CurrentTeam);
+        Assert.Equal(2, state.CurrentTeamId);
         Assert.True(state.Running);
 
         state = engine.ProcessTurn(state, new List<Move>());
         Assert.Equal(2, state.TurnNumber);
-        Assert.Equal(1, state.CurrentTeam);
+        Assert.Equal(1, state.CurrentTeamId);
     }
 
 

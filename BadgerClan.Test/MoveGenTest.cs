@@ -34,14 +34,21 @@ public class MoveGenTest
     public void OneTurn()
     {
         var state = new GameState();
-        var bot = new RunAndGun(1);
-        var team = new List<string> { "Knight", "Knight", "Knight", "Knight", "Archer", "Archer" };
-        state.AddTeam(new Team(1, "Team 1", "red", bot));
-        state.AddTeam(new Team(2, "Team 2", "blue", bot));
-        state.AddUnits(1, Coordinate.Offset(10, 10), team);
-        state.AddUnits(2, Coordinate.Offset(30, 30), team);
+        
+        var bot1 = new RunAndGun();
+        var team1 = new Team("Team 1", "red", bot1);
+        bot1.Team = team1.Id;
+        state.AddTeam(team1);
 
-        var moves = bot.PlanMoves(state);
+        var bot2 = new RunAndGun();
+        var team2 = new Team("Team 2", "red", bot2);
+        bot2.Team = team2.Id;
+        state.AddTeam(team2);
+
+        var squad = new List<string> { "Knight", "Knight", "Knight", "Knight", "Archer", "Archer" };
+        state.StartGame(squad);
+
+        var moves = bot1.PlanMoves(state);
         Assert.Equal(6, moves.Count);
         state = engine.ProcessTurn(state, moves);
     }
@@ -51,19 +58,25 @@ public class MoveGenTest
     public void TwoTurns()
     {
         var state = new GameState();
-        var bot1 = new RunAndGun(1);
-        var bot2 = new RunAndGun(2);
-        state.AddTeam(new Team(1, "Team 1", "red", bot1));
-        state.AddTeam(new Team(2, "Team 2", "blue", bot1));
-        var team = new List<string> { "Knight", "Knight", "Knight", "Knight", "Archer", "Archer" };
-        state.AddUnits(1, Coordinate.Offset(10, 10), team);
-        state.AddUnits(2, Coordinate.Offset(30, 30), team);
+
+        var bot1 = new RunAndGun();
+        var team1 = new Team("Team 1", "red", bot1);
+        bot1.Team = team1.Id;
+        state.AddTeam(team1);
+
+        var bot2 = new RunAndGun();
+        var team2 = new Team("Team 1", "red", bot2);
+        bot2.Team = team2.Id;
+        state.AddTeam(team2);
+
+        var squad = new List<string> { "Knight", "Knight", "Knight", "Knight", "Archer", "Archer" };
+        state.StartGame(squad);
 
         var moves = bot1.PlanMoves(state);
         Assert.Equal(6, moves.Count);
         state = engine.ProcessTurn(state, moves);
 
-        //Incomplete and unnecessary
+        //Incomplete and possibly unnecessary
         // moves = bot2.PlanMoves(state);
         // Assert.Equal(6, moves.Count);
         // state = engine.ProcessTurn(state, moves);

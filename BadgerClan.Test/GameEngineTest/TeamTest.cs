@@ -41,4 +41,18 @@ public class TeamTest
         Assert.Equal(2, state.Units.Count);
     }
 
+    [Fact]
+    public void SpecifyId()
+    {
+        var team = new Team(13);
+        Assert.Equal(13, team.Id);
+    }
+
+    [Fact]
+    public void IdIncrementsNextId()
+    {
+        var team = new Team(14);
+        var team2 = new Team("team", "red", "url");
+        Assert.True(team2.Id > 14);
+    }
 }

@@ -7,13 +7,13 @@ public class GameEngine
 
     public GameState ProcessTurn(GameState state, List<Move> moves)
     {
-        var team = state.TeamList.FirstOrDefault(t => t.Id == state.CurrentTeam);
+        var team = state.TeamList.FirstOrDefault(t => t.Id == state.CurrentTeamId);
         if (team is null)
         {
             state.IncrementTurn();
             return state;
         }
-        foreach (var unit in state.Units.Where(u => u.Team == state.CurrentTeam))
+        foreach (var unit in state.Units.Where(u => u.Team == state.CurrentTeamId))
         {
             unit.Moves = unit.MaxMoves;
         }
@@ -21,7 +21,7 @@ public class GameEngine
         foreach (var move in moves)
         {
             var unit = state.Units.FirstOrDefault(u => u.Id == move.unitId);
-            if (unit == null || unit.Team != state.CurrentTeam)
+            if (unit == null || unit.Team != state.CurrentTeamId)
             {
                 continue;
             }
