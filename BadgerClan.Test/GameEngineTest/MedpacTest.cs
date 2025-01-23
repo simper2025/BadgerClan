@@ -87,6 +87,17 @@ public class MedpacTest
     }
 
     //Just test the medpac generator function directlyy
+    [Theory]
+    [InlineData (49, 50, 5)]
+    [InlineData (48, 50, 5)]
+    [InlineData (47, 50, 5)]
+    [InlineData (3, 50, 0)]
+    [InlineData (2, 50, 0)]
+    [InlineData (1, 50, 0)]
+    public void TestMedpac(int remaining, int start, int expected)
+    {
+        var meds = GameEngine.CalculateMeds(remaining, start);
+        Assert.Equal(expected, meds);
+    }    
 
-    
 }

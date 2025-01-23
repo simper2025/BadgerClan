@@ -91,8 +91,8 @@ public class GameEngine
         return state;
     }
 
-    private int CalculateMeds(int unitsLeft, int totalUnits)
+    public static int CalculateMeds(int unitsLeft, int totalUnits)
     {
-        return (unitsLeft + 1) / 2;
+        return (unitsLeft + 5) / 10;
     }
 }
