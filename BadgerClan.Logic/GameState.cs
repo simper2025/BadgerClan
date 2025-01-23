@@ -4,6 +4,9 @@ namespace BadgerClan.Logic;
 
 public class GameState
 {
+    public DateTime Created { get; } = DateTime.Now;
+    public Guid Id { get; } = Guid.NewGuid();
+    public event Action<GameState> GameChanged;
     private static int NextId = 1;
     public string Name { get; set; }
     public int Dimension = 70;
@@ -129,6 +132,7 @@ public class GameState
         {
             AddUnit(Unit.Factory(unit, team, loc));
         }
+        GameChanged?.Invoke(this);
     }
 
     public void AddUnit(Unit unit)

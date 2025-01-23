@@ -1,0 +1,71 @@
+﻿@using Humanizer
+@inject HttpClient httpClient
+@inject Lobby lobby
+@inject ILogger<GameCard> logger
+
+<div class="col-md-4">
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5 class="card-title">@Game.Name</h5>
+            <div style="background-color: azure; padding: 5px;">
+                <label for="serverAddress" class="form-label fs-6 mb-0">Your server's address</label>
+                <div class="d-flex">
+                    <input type="text"
+                    id="serverAddress"
+                    class="form-control me-2"
+                    style="width: auto;"
+                    @bind="joinUrl"
+                    placeholder="https://yourserver:1234" />
+                    <button class="btn btn-primary" @onclick=joinGame>Join</button>
+                </div>
+            </div>
+            <div class="d-flex justify-content-between">
+                <p class="card-text">Players: @Game.TeamCount.ToString("n0")</p>
+                <p class="card-text">Created: @Game.Created.Humanize()</p>
+            </div>
+            @if (Game.TeamNames.Any())
+            {
+                <ul>
+                    @foreach (var team in Game.TeamNames)
+                    {
+                        <li>@team</li>
+                    }
+                </ul>
+            }
+            <div class="text-bg-warning">
+                @error
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public GameState Game { get; set; }
+
+    string joinUrl;
+    string? error = null;
+
+    private async Task joinGame()
+    {
+        try
+        {
+            //make a request to the server to join the game
+            var response = await httpClient.GetFromJsonAsync<JoinGameResponse>($"{joinUrl}?gameId={Game.Id}");
+            logger.LogInformation("{playerName} joined game {gameId}", response?.playerName, Game.Id);
+            //Game.AddTeam(response?.playerName);
+            //figure out how to join the new player to the game
+            joinUrl = null;
+        }
+        catch (Exception ex)
+        {
+            error = ex.ToString();
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        lobby.LobbyChanged += (e) => InvokeAsync(StateHasChanged);
+        Game.GameChanged += (e) => InvokeAsync(StateHasChanged);
+    }
+}

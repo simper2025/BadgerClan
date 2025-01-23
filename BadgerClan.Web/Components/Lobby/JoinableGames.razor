@@ -1,4 +1,6 @@
-﻿@inject Lobby lobby
+﻿@using Humanizer
+@inject Lobby lobby
+@inject HttpClient httpClient
 
 @if (lobby.Games.Any())
 {
@@ -6,40 +8,12 @@
     <div class="row">
         @foreach (var game in lobby.Games)
         {
-            <div class="col-md-4">
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title">@game.Name</h5>
-                        <div style="background-color: azure; padding: 5px;">
-                            <label for="serverAddress" class="form-label fs-6 mb-0">Your server's address</label>
-                            <div class="d-flex">
-                                <input type="text"
-                                       id="serverAddress"
-                                       class="form-control me-2"
-                                       style="width: auto;"
-                                       @bind="joinUrl"
-                                       placeholder="https://yourserver:1234" />
-                                <button class="btn btn-primary" @onclick="joinGame">Join</button>
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-between">
-                            <p class="card-text">Players: 4</p>
-                            <p class="card-text">Created: just now</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <GameCard Game="game" />
         }
     </div>
 }
 
 @code {
-    string joinUrl;
-
-    private void joinGame()
-    {
-        joinUrl = null;
-    }
 
     protected override void OnInitialized()
     {

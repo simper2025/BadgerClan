@@ -63,6 +63,8 @@
     {
         bot.Team = id;
 
+        state.AddTeam(id, $"Team {id}", loc, teamUnits);
+
         var team = new Team(id, color, bot);
         state.AddTeam(team);
         @* state.AddUnits(id, loc, teamUnits); *@
