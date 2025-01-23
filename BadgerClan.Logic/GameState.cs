@@ -92,6 +92,34 @@ public class GameState
         TeamList.Add(team);
         TurnOrder.Add(team.Id);
     }
+
+    public void StartGame(List<string> units)
+    {
+        var degrees = 360 / TeamList.Count;
+        int i = 0;
+
+        foreach (var team in TeamList)
+        {
+            var loc = GetCircleCoordinate(degrees * i, Dimension);
+            AddUnits(team.Id, loc, units);
+            i++;
+        }
+    }
+
+    public static Coordinate GetCircleCoordinate(int deg, int size)
+    {
+        var radius = size / 2 - 10;
+        var center = Coordinate.Offset(size / 2, size / 2);
+
+        double radians = (deg-90) * (Math.PI / 180);
+
+        double x = radius * Math.Cos(radians);
+        double y = radius * Math.Sin(radians);
+
+        var loc = center + Coordinate.Offset((int)x, (int)y);
+        return loc;
+    }
+
     public void AddUnits(int team, Coordinate loc, List<string> units)
     {
         foreach (var unit in units)

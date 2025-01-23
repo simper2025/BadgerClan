@@ -63,6 +63,11 @@ public class Coordinate : IEquatable<Coordinate>
             return hashCode;
         }
     }
+
+    public static Coordinate operator +(Coordinate left, Coordinate right)
+    {
+        return Coordinate.Offset(left.Col + right.Col, left.Row + right.Row);
+    }
     #endregion
 
     public Coordinate MoveWest(int distance) => MoveEast(-1 * distance);

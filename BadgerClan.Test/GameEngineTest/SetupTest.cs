@@ -1,4 +1,5 @@
-﻿using BadgerClan.Logic;
+﻿using System.Runtime.InteropServices;
+using BadgerClan.Logic;
 
 namespace BadgerClan.Test.GameEngineTest;
 
@@ -182,6 +183,29 @@ public class SetupTest
         state.AddUnits(1, Coordinate.Offset(10, 10), team);
         Assert.Contains(state.Units, u => u.Location == Coordinate.Offset(10, 10));
         Assert.Equal(6, state.Units.Count);
+    }
+
+    [Fact]
+    public void StartGameWithUnits()
+    {
+        var state = new GameState();
+        state.AddTeam(new Team(1));
+        state.AddTeam(new Team(2));
+        var team = new List<string> { "Knight", "Knight", "Knight", "Knight", "Archer", "Archer" };
+        state.StartGame(team);
+        Assert.Equal(team.Count * 2, state.Units.Count);
+    }
+
+    [Theory]
+    [InlineData(0, 35, 10)]
+    [InlineData(180, 35, 60)] //player 2 of 2
+    [InlineData(120, 56, 47)] // 2 of 3
+    [InlineData(2400, 14, 47)] // 3 of 3
+    public void FirstTeamIsAtTop(int deg, int col, int row)
+    {
+        var loc = GameState.GetCircleCoordinate(deg, 70);
+        var expected = Coordinate.Offset(col, row);
+        Assert.Equal(expected, loc);
     }
 
 }

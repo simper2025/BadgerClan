@@ -48,14 +48,14 @@
 
     protected override Task OnInitializedAsync()
     {
+        MakeTeam(1, "red", new RunAndGun());
+        MakeTeam(2, "blue", new Turtle());
+        MakeTeam(3, "green", new Turtle());
+        MakeTeam(4, "yellow", new Turtle(2, 2));
+        MakeTeam(5, "orange", new RunAndGun());
+        MakeTeam(6, "black", new Turtle());
 
-
-        MakeTeam(1, 20, 10, "red", new RunAndGun());
-        MakeTeam(2, 30, 10, "blue", new Turtle());
-        MakeTeam(3, 60, 35, "green", new Turtle());
-        MakeTeam(4, 10, 30, "yellow", new Turtle(2, 2));
-        MakeTeam(5, 50, 20, "orange", new RunAndGun());
-        MakeTeam(6, 30, 40, "black", new Turtle());
+        state.StartGame(teamUnits);
 
         @* state.AddTeam(1, Coordinate.Offset(0, 0), new List<string> { "Archer" });
         state.AddTeam(1, Coordinate.Offset(0, 1), new List<string> { "Archer" });
@@ -73,14 +73,13 @@
         return Task.CompletedTask;
     }
 
-    private void MakeTeam(int id, int col, int row, string color, IBot bot)
+    private void MakeTeam(int id, string color, IBot bot)
     {
-        var loc = Coordinate.Offset(col, row);
         bot.Team = id;
 
         var team = new Team(id, color, bot);
         state.AddTeam(team);
-        state.AddUnits(id, loc, teamUnits);
+        @* state.AddUnits(id, loc, teamUnits); *@
 
         teams.Add(id, team);
     }
@@ -104,6 +103,11 @@
         while (Running)
         {
             ShouldStop.ThrowIfCancellationRequested();
+            if (state.Turn == 0)
+            {
+                @* state.StartGame(teamUnits); *@
+            }
+
             var moves = teams[state.CurrentTeam].Bot.PlanMoves(state);
 
             state = engine.ProcessTurn(state, moves);

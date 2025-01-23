@@ -86,5 +86,7 @@ public class MedpacTest
         Assert.Equal(2, team1.Medpacs);
     }
 
+    //Just test the medpac generator function directlyy
 
+    
 }
