@@ -1,0 +1,57 @@
+﻿@page "/httpclienttest"
+@using System.Text.Json.Serialization
+
+<PageTitle>Home</PageTitle>
+
+
+<button @onclick="CallApi">Call</button>
+
+<div>@Result</div>
+
+@code {
+
+    private string Result = "";
+
+
+    private void CallApi()
+    {
+        Result = "call: " + DateTime.Now.ToLongTimeString() + "; ";
+        var task = Thing();
+
+    }
+
+    private async Task Thing()
+    {
+        using var httpClient = new HttpClient();
+        Result += "start; ";
+        // URL of the Minimal API endpoint
+        var apiUrl = "http://localhost:5217/api/echo";
+
+        Result += "url; ";
+
+        var state = new GameState();
+        // Request payload
+        var payload = state;
+        Result += "payload; ";
+
+        // Make the POST request
+        var response = await httpClient.PostAsJsonAsync(apiUrl, payload);
+        Result += "await; ";
+
+        if (response.IsSuccessStatusCode)
+        {
+            Result += "success; ";
+            // Read the response as JSON
+            var result = await response.Content.ReadFromJsonAsync<dynamic>();
+            Result += result;
+            Console.WriteLine($"Server replied: {result?.reply}");
+        }
+        else
+        {
+            Result += "error; ";
+            Console.WriteLine($"Error: {response.StatusCode}");
+        }
+    }
+
+
+}

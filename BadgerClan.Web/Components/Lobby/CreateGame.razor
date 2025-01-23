@@ -1,0 +1,23 @@
+﻿@inject Lobby lobby
+
+<div style=@style>
+    <form @onsubmit="create">
+
+        <input type="text" @bind="gameName" placeholder="Game Name" />
+        <button type="submit">Create Game</button>
+    </form>
+</div>
+@code {
+    protected override void OnInitialized()
+    {
+        lobby.LobbyChanged += (e) => InvokeAsync(StateHasChanged);
+    }
+
+    string style => lobby.Games.Any() ? "float: right" : "";
+    string gameName;
+    private void create()
+    {
+        lobby.AddGame(gameName);
+        gameName = null;
+    }
+}

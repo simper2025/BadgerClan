@@ -1,15 +1,16 @@
-<div style="position: absolute; 
+<div style="
+    position: absolute; 
     width: 20px; 
     height: 20px; 
-    top: @(Y)px; 
-    left: @(X)px; 
+    top: @(yPercent)%; 
+    left: @(xPercent)%; 
     background-image: url('@(iconLookup[Unit.Type])');
     background-size: cover;
     background-repeat: no-repeat;
     border: solid @Team.Color;
-    transition: all .1s;">
-    
-    </div>
+    transition: all .1s;
+">
+</div>
 
 
 @code {
@@ -22,6 +23,8 @@
 
     private int X;
     private int Y;
+    private double xPercent;
+    private double yPercent;
 
     private Dictionary<string, string> iconLookup = new Dictionary<string, string>
     {
@@ -32,11 +35,11 @@
 
     protected override void OnParametersSet()
     {
-        X = (int)(DisplayConstants.Dimension * (DisplayConstants.Root3 * Unit.Location.Q + DisplayConstants.Root3 / 2.0 * Unit.Location.R));
+        X = (int)(DisplayConstants.Dimension * (DisplayConstants.Root3 * Unit.Location.Q + DisplayConstants.Root3 / 2.0 *
+        Unit.Location.R));
         Y = (int)(DisplayConstants.Dimension * ((3.0 / 2) * Unit.Location.R));
-        //var con = new Icon(image, x, y, 20, 20, color);
+
+        xPercent = 100 * X / (double) DisplayConstants.MapWidth;
+        yPercent = 100 * Y / (double) DisplayConstants.MapHeight;
     }
-
-
-
 }
