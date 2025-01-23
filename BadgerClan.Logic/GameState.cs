@@ -6,6 +6,7 @@ public class GameState
 {
     public int Dimension = 70;
 
+    public int TotalUnits = 0;
     public List<Unit> Units { get; set; }
     private List<int> TurnOrder;
 
@@ -112,7 +113,7 @@ public class GameState
         unit.Location = FitToBoard(unit, Units);
 
         Units.Add(unit);
-
+        TotalUnits++;
     }
 
     private Coordinate FitToBoard(Unit unit, List<Unit> units)

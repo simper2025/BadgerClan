@@ -1,4 +1,5 @@
 ﻿
+
 namespace BadgerClan.Logic;
 
 public class GameEngine
@@ -7,6 +8,11 @@ public class GameEngine
     public GameState ProcessTurn(GameState state, List<Move> moves)
     {
         var team = state.TeamList.FirstOrDefault(t => t.Id == state.CurrentTeam);
+        if (team is null)
+        {
+            state.IncrementTurn();
+            return state;
+        }
         foreach (var unit in state.Units.Where(u => u.Team == state.CurrentTeam))
         {
             unit.Moves = unit.MaxMoves;
@@ -55,12 +61,19 @@ public class GameEngine
                     break;
             }
             var deadunits = state.Units.Count(u => u.Health <= 0);
-            if (deadunits > 0){
-                team.Medpacs ++;
+            for (int i = 0; i < deadunits; i++)
+            {
+                int meds = CalculateMeds(state.Units.Count, state.TotalUnits);
+                team.Medpacs++;
             }
             state.Units.RemoveAll(u => u.Health <= 0);
         }
         state.IncrementTurn();
         return state;
+    }
+
+    private int CalculateMeds(int unitsLeft, int totalUnits)
+    {
+        return (unitsLeft + 1) / 2;
     }
 }
