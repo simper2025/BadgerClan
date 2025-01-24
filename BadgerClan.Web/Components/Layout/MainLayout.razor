@@ -1,13 +1,18 @@
 ﻿@inherits LayoutComponentBase
 
 <div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
-
     <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
+        <div class="top-row d-flex justify-content-between align-items-center py-2">
+            <!-- Left-aligned links -->
+            <div>
+                <NavLink class="nav-link me-3" href="" Match="NavLinkMatch.All">BadgerClan Lobby</NavLink>
+            </div>
+
+            <!-- Right-aligned links -->
+            <div>
+                <NavLink href="/info" class="text-decoration-none me-3">Info</NavLink>
+                <NavLink href="/testgame" class="text-decoration-none">Test Game</NavLink>
+            </div>
         </div>
 
         <article class="content px-4">

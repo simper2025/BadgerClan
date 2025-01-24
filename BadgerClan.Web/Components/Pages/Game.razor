@@ -4,6 +4,14 @@
 @inject NavigationManager NavigationManager
 
 <h3>Game: @game.Name</h3>
+@if (game.IsGameOver)
+{
+    <h2 class="text-success">@game.CurrentTeam.Name wins!</h2>
+}
+else
+{
+    <p>Turn: @game.TurnNumber</p>
+}
 
 <BoardComponent State=game />
 
