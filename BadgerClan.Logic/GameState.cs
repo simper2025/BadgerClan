@@ -5,6 +5,7 @@ public class GameState
     public DateTime Created { get; } = DateTime.Now;
     public Guid Id { get; } = Guid.NewGuid();
     public event Action<GameState> GameChanged;
+    public event Action<GameState> GameEnded;
     public string Name { get; set; }
 
     public int Dimension = 70;
@@ -18,6 +19,17 @@ public class GameState
 
     public int TeamCount { get { return TeamList.Count(); } }
     public IEnumerable<string> TeamNames => TeamList.Select(t => t.Name);
+    private bool isGameOver;
+    public bool IsGameOver
+    {
+        get => isGameOver;
+        set
+        {
+            isGameOver = value;
+            GameEnded?.Invoke(this);
+        }
+    }
+    public DateTime LastMove { get; set; } = DateTime.Now;
 
     private int currentTeamId = 0;
     public int CurrentTeamId
@@ -89,6 +101,9 @@ public class GameState
         currentTeamId = AdvanceTeam();
         TurnNumber++;
         GameChanged?.Invoke(this);
+        LastMove = DateTime.Now;
+
+        IsGameOver = Units.Select(u => u.Team).Distinct().Count() == 1;
     }
 
     private int AdvanceTeam()

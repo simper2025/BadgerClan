@@ -5,11 +5,11 @@ namespace BadgerClan.Logic;
 public record Team
 {
     private static int NextId = 1;
-    public int Id;
-    public string Color;
-    public string Name;
-    public IBot Bot;
-    public int Medpacs = 0;
+    public int Id { get; }
+    public string Color { get; }
+    public string Name { get; }
+    public IBot Bot { get; }
+    public int Medpacs { get; set; } = 0;
 
     public Team(string name, string color, IBot bot)
     {

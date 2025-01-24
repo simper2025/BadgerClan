@@ -13,6 +13,7 @@ public class Lobby(ILogger<Lobby> logger)
         var game = new GameState(gameName);
         games.Add(game);
         LobbyChanged?.Invoke(game);
+        game.GameEnded += (g) => LobbyChanged?.Invoke(g);
     }
     public ReadOnlyCollection<GameState> Games => games.AsReadOnly();
 

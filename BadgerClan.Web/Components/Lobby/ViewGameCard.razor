@@ -1,0 +1,12 @@
+﻿@inject Lobby lobby
+
+<h3>@Game.Name</h3>
+@foreach(var team in Game.TeamNames)
+{
+    <p>@team</p>
+}
+
+@code {
+    [Parameter]
+    public GameState Game { get; set; }
+}

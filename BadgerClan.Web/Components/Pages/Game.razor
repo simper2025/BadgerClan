@@ -1,8 +1,9 @@
 ﻿@page "/game/{GameId}"
 @using BadgerClan.Web.Components.GameComponents
 @inject Lobby lobby
+@inject NavigationManager NavigationManager
 
-<h3>Game @GameId</h3>
+<h3>Game: @game.Name</h3>
 
 <BoardComponent State=game />
 
@@ -14,6 +15,10 @@
 
     protected override void OnParametersSet()
     {
+        if (!lobby.Games.Any(g => g.Id == Guid.Parse(GameId)))
+        {
+            NavigationManager.NavigateTo("/");
+        }
         game = lobby.Games.First(g => g.Id == Guid.Parse(GameId));
     }
 }

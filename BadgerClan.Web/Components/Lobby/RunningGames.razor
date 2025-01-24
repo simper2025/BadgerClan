@@ -1,5 +1,21 @@
-﻿<h3>RunningGames</h3>
+﻿@inject Lobby lobby
+
+@if (runningGames.Any())
+{
+    <h4>Games In Progress</h4>
+    <div class="row">
+        @foreach (var game in runningGames)
+        {
+            <p><a href=@($"/game/{game.Id}")>Game: @game.Name</a></p>
+        }
+    </div>
+}
 
 @code {
+    IEnumerable<GameState> runningGames => lobby.Games.Where(g => g.TurnNumber > 0 && !g.IsGameOver);
 
+    override protected void OnInitialized()
+    {
+        lobby.LobbyChanged += (e) => InvokeAsync(StateHasChanged);
+    }
 }

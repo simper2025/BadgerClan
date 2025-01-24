@@ -84,7 +84,7 @@ public class Unit
     protected Unit()
     {
         Id = Next_Id++;
-        Type = "Peasent";
+        Type = "Peasant";
         Location = Coordinate.Offset(0, 0);
     }
 }

@@ -2,18 +2,20 @@
 @inject Lobby lobby
 @inject HttpClient httpClient
 
-@if (lobby.Games.Any())
+@if (gamesToJoin.Any())
 {
     <h4>Games to Join</h4>
     <div class="row">
-        @foreach (var game in lobby.Games.Where(g => g.TurnNumber == 0))
+        @foreach (var game in gamesToJoin)
         {
-            <GameCard Game="game" />
+            <JoinGameCard Game="game" />
         }
     </div>
 }
 
 @code {
+
+    IEnumerable<GameState> gamesToJoin => lobby.Games.Where(g => g.TurnNumber == 0);
 
     protected override void OnInitialized()
     {
