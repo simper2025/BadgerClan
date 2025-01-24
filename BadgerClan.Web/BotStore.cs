@@ -36,7 +36,7 @@ app.MapPost("/bots/turtle", async (MoveRequest request, ILogger<Program> logger,
 {
     logger.LogInformation("turtle moved in game {gameId} Turn #{TurnNumber}", request.GameId, request.TurnNumber);
     // var first = request.Units.First();
-    // logger.LogInformation("Total Units: {Count}; Unit: {Id} ({Q},{R})", 
+    // logger.LogInformation("Total Units: {Count}; Unit: {Id} ({Q},{R})",
     //     request.Units.Count(), first.Id, first.Location.Q, first.Location.R);
     var currentTeam = new Team(request.YourTeamId)
     {
@@ -53,7 +53,7 @@ app.MapPost("/bots/runandgun", async (MoveRequest request, ILogger<Program> logg
 {
     logger.LogInformation("runandgun moved in game {gameId} Turn #{TurnNumber}", request.GameId, request.TurnNumber);
     // var first = request.Units.First();
-    // logger.LogInformation("Total Units: {Count}; Unit: {Id} ({Q},{R})", 
+    // logger.LogInformation("Total Units: {Count}; Unit: {Id} ({Q},{R})",
     //     request.Units.Count(), first.Id, first.Location.Q, first.Location.R);
     var currentTeam = new Team(request.YourTeamId)
     {
@@ -130,3 +130,9 @@ public class NetworkBot : IBot
     }
 }
 
+public class BotStore
+{
+    private readonly Dictionary<(Guid GameId, int TeamId), IBot> bots = new();
+    public void AddBot(Guid GameId, int TeamId, IBot bot) => bots[(GameId, TeamId)] = bot;
+    public IBot GetBot(Guid GameId, int TeamId) => bots[(GameId, TeamId)];
+}
