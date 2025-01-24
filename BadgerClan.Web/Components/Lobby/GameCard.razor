@@ -74,7 +74,8 @@
     private void addRunAndGun()
     {
         var networkBot = new NetworkBot(new Uri($"{navManager.BaseUri}bots/runandgun"));
-        var team = new Team(newBotName, "red", networkBot);
+        var newColor = PlayerHelpers.GetRandomColor();
+        var team = new Team(newBotName, newColor, networkBot);
         Game.AddTeam(team);
         newBotName = PlayerHelpers.GetRandomPlayerName();
     }
