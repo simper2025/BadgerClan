@@ -3,15 +3,13 @@ namespace BadgerClan.Logic.Bot;
 
 public class Turtle : IBot
 {
-	public int ActiveRange = 6;
-	public int ActiveEnemyCount = 10;
-	public int TurnsOfDelay = 1;
-	public int TurnsOfAction = 1;
+	public int Level;
 
-	private int LastEnemyCount = 0;
-	private int TurnsSinceDeath = 0;
-	private int ActionsLeft = 0;
+	private int activeRange = 4;
 
+	public int ActiveEnemyCount { get; private set; }
+	public int LastEnemyCount { get; private set; }
+	public int TurnsSinceDeath { get; private set; }
 
 	public static IBot Make()
 	{
@@ -19,28 +17,23 @@ public class Turtle : IBot
 	}
 	public Turtle()
 	{
-		// TurnsOfAction = 5;
-		// TurnsOfDelay = 10;
-
 		Random rnd = new Random();
-		TurnsOfAction = rnd.Next(1, 5) + 0;
-		TurnsOfDelay = rnd.Next(1, 10) + 5;
+		Level = rnd.Next(1, 3);
 	}
 
-	public Turtle(int action, int delay)
+	public Turtle(int level)
 	{
-		TurnsOfAction = action;
-		TurnsOfDelay = delay;
+		Level = level;
 	}
 
 	public async Task<List<Move>> PlanMovesAsync(GameState state)
 	{
 		var myteam = state.TeamList.FirstOrDefault(t => t.Id == state.CurrentTeamId);
 		if (myteam is null)
-            return new List<Move>();
+			return new List<Move>();
 
 		var enemies = state.Units.Where(u => u.Team != state.CurrentTeamId);
-		var active = ShouldGoActive(enemies);
+		var active = ShouldGoActive(enemies, enemies.Select(u => u.Team).Distinct().Count());
 
 		var squad = state.Units.Where(u => u.Team == state.CurrentTeamId);
 
@@ -48,7 +41,7 @@ public class Turtle : IBot
 		{
 			if (active) break;
 			var closest = enemies.OrderBy(u => u.Location.Distance(unit.Location)).FirstOrDefault();
-			if (closest != null && closest.Location.Distance(unit.Location) <= ActiveRange)
+			if (closest != null && closest.Location.Distance(unit.Location) <= activeRange + Level)
 			{
 				active = true;
 				break;
@@ -81,7 +74,7 @@ public class Turtle : IBot
 					moves.Add(new Move(MoveType.Walk, unit.Id, target));
 					moves.Add(SharedMoves.AttackClosest(unit, closest));
 				}
-				else if (active && closest.Location.Distance(unit.Location) <= unit.AttackDistance)
+				else if (closest.Location.Distance(unit.Location) <= unit.AttackDistance)
 				{
 					moves.Add(SharedMoves.AttackClosest(unit, closest));
 					moves.Add(SharedMoves.AttackClosest(unit, closest));
@@ -107,13 +100,9 @@ public class Turtle : IBot
         Stay active
             if you have active turns left
     */
-	private bool ShouldGoActive(IEnumerable<Unit> enemies)
+	private bool ShouldGoActive(IEnumerable<Unit> enemies, int teams)
 	{
-		if (enemies.Count() < ActiveEnemyCount)
-		{
-			ActionsLeft = TurnsOfAction;
-		}
-
+		var active = false;
 		if (enemies.Count() == LastEnemyCount)
 		{
 			TurnsSinceDeath++;
@@ -124,11 +113,30 @@ public class Turtle : IBot
 			TurnsSinceDeath = 0;
 		}
 
-		if (TurnsSinceDeath > TurnsOfDelay)
+		if (enemies.Count() < 12)
 		{
-			ActionsLeft = TurnsOfAction;
+			active = true;
 		}
+		if (TurnsSinceDeath > (2 * teams) * (3 - Level))
+		{
+			active = true;
 
-		return ActionsLeft > 0;
+		}
+		switch (Level)
+		{
+			case 1:
+
+
+				break;
+			case 2:
+
+
+				break;
+
+			case 3:
+
+				break;
+		}
+		return active;
 	}
 }
