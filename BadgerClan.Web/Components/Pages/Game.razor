@@ -28,5 +28,8 @@ else
             NavigationManager.NavigateTo("/");
         }
         game = lobby.Games.First(g => g.Id == Guid.Parse(GameId));
+
+        game.GameChanged += (_) => InvokeAsync(StateHasChanged);
+        game.GameEnded += (_) => InvokeAsync(StateHasChanged);
     }
 }

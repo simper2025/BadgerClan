@@ -9,24 +9,49 @@
         <div class="card-body">
             <h5 class="card-title">@Game.Name</h5>
             <div style="background-color: azure; padding: 5px;">
-                <label for="botName" class="form-label fs-6 mb-0">Your bot's name</label>
-                <div class="d-flex">
-                    <input type="text"
-                           id="botName"
-                           class="form-control me-2"
-                           style="width: auto;"
-                           @bind="newBotName" />
+                <div class="row">
+                    <div class="col">
+                        <label for="botName" class="form-label fs-6 mb-0">Bot Name</label>
+                    </div>
+                    <div class="col">
+                        <input type="text"
+                        id="botName"
+                        class="form-control me-2"
+                        style="width: auto;"
+                        @bind="newBotName" />
+                    </div>
                 </div>
-                <label for="serverAddress" class="form-label fs-6 mb-0">Your server's address</label>
-                <div class="d-flex">
-                    <input type="text"
-                           id="serverAddress"
-                           class="form-control me-2"
-                           style="width: auto;"
-                           @bind="joinUrl"
-                           placeholder="https://yourserver:1234" />
+                <div class="row">
+                    <span>Bot Engine</span>
                 </div>
-                <button class="btn btn-primary" @onclick=joinGame>Join</button>
+                <div class="row">
+                    <div class="form-check ms-4">
+                        <input class="form-check-input" type="radio" name="botEngine" value="custom" id="custom" checked @onchange=botEngineChange />
+                        <label for="custom" class="form-check-label">Custom</label>
+                        <input type="text" class="form-control" @bind="joinUrl" placeholder="https://yourserver:1234" style="width: 90%;" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-check ms-4">
+                        <input class="form-check-input" type="radio" name="botEngine" value="runAndGun" id="runAndGun" @onchange=botEngineChange />
+                        <label for="runAndGun" class="form-check-label">Run &amp; Gun</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-check ms-4">
+                        <input class="form-check-input" type="radio" name="botEngine" value="turtle" id="turtle" @onchange=botEngineChange />
+                        <label for="turtle" class="form-check-label">Turtle</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-check ms-4">
+                        <input class="form-check-input" type="radio" name="botEngine" value="nothing" id="nothing" @onchange=botEngineChange />
+                        <label for="nothing" class="form-check-label">Do-Nothing</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <button class="btn btn-primary mt-3 ms-3" style="width: 90%;" @onclick=joinGame>Join Game</button>
+                </div>
             </div>
             <div class="d-flex justify-content-between">
                 <p class="card-text">Players: @Game.TeamCount.ToString("n0")</p>
@@ -46,9 +71,6 @@
                     }
                 </div>
                 <div class="col">
-                    <button class="btn btn-outline-primary" @onclick=addRunAndGun>Add Run &amp; Gun Bot</button>
-                    <button class="btn btn-outline-primary" @onclick=turtle>Add Turtle Bot</button>
-                    <button class="btn btn-outline-primary" @onclick=nothing>Add Do Nothing Bot</button>
                 </div>
             </div>
             @if (Game.TeamList.Count > 1)
@@ -65,6 +87,7 @@
 </div>
 
 @code {
+    public string SelectedBotEngine { get; set; } = "custom";
     [Parameter]
     public GameState Game { get; set; }
 
@@ -102,6 +125,34 @@
 
     private async Task joinGame()
     {
+        error = null;
+        switch(SelectedBotEngine)
+        {
+            case "custom":
+                if (string.IsNullOrWhiteSpace(joinUrl))
+                {
+                    error = "You must provide a URL for the custom bot engine";
+                    return;
+                }
+                var networkBot = new NetworkBot(new Uri(joinUrl));
+                var newColor = PlayerHelpers.GetRandomColor();
+                var team = new Team(newBotName, newColor, networkBot);
+                Game.AddTeam(team);
+                newBotName = PlayerHelpers.GetRandomPlayerName();
+
+                break;
+            case "runAndGun":
+                addRunAndGun();
+                break;
+            case "turtle":
+                turtle();
+                break;
+            case "nothing":
+                nothing();
+                break;
+            default:
+                return;
+        }
         try
         {
             //make a request to the server to join the game
@@ -129,5 +180,9 @@
     {
         lobby.LobbyChanged += (e) => InvokeAsync(StateHasChanged);
         Game.GameChanged += (e) => InvokeAsync(StateHasChanged);
+    }
+    private void botEngineChange(ChangeEventArgs e)
+    {
+        SelectedBotEngine = e.Value.ToString();
     }
 }

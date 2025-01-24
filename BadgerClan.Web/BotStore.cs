@@ -8,9 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 builder.Services.AddSingleton<Lobby>();
-builder.Services.AddSingleton<RunAndGun>();
-builder.Services.AddSingleton<NothingBot>();
-builder.Services.AddSingleton<Turtle>();
+builder.Services.AddSingleton<BotStore>();
 builder.Services.AddHttpClient();
 
 var app = builder.Build();
@@ -33,49 +31,43 @@ app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
 
-app.MapPost("/bots/turtle", async (MoveRequest request, ILogger<Program> logger, Turtle turtle) =>
+app.MapPost("/bots/turtle", async (MoveRequest request, ILogger<Program> logger, BotStore botStore) =>
 {
     logger.LogInformation("turtle moved in game {gameId} Turn #{TurnNumber}", request.GameId, request.TurnNumber);
-    // var first = request.Units.First();
-    // logger.LogInformation("Total Units: {Count}; Unit: {Id} ({Q},{R})",
-    //     request.Units.Count(), first.Id, first.Location.Q, first.Location.R);
     var currentTeam = new Team(request.YourTeamId)
     {
         Medpacs = request.Medpacs
     };
     var gameState = new GameState(request.GameId, request.BoardSize, request.TurnNumber, request.Units.Select(FromDto), request.TeamIds, currentTeam);
+    var turtle = botStore.GetBot<Turtle>(gameState.Id, currentTeam.Id);
 
     return new MoveResponse(await turtle.PlanMovesAsync(gameState));
 });
 
 
-app.MapPost("/bots/nothing", async (MoveRequest request, ILogger<Program> logger, NothingBot donothing) =>
+app.MapPost("/bots/nothing", async (MoveRequest request, ILogger<Program> logger, BotStore botStore) =>
 {
     logger.LogInformation("runandgun moved in game {gameId} Turn #{TurnNumber}", request.GameId, request.TurnNumber);
-    // var first = request.Units.First();
-    // logger.LogInformation("Total Units: {Count}; Unit: {Id} ({Q},{R})", 
-    //     request.Units.Count(), first.Id, first.Location.Q, first.Location.R);
     var currentTeam = new Team(request.YourTeamId)
     {
         Medpacs = request.Medpacs
     };
     var gameState = new GameState(request.GameId, request.BoardSize, request.TurnNumber, request.Units.Select(FromDto), request.TeamIds, currentTeam);
+    var donothing = botStore.GetBot<NothingBot>(gameState.Id, currentTeam.Id);
 
     return new MoveResponse(await donothing.PlanMovesAsync(gameState));
 });
 
 
-app.MapPost("/bots/runandgun", async (MoveRequest request, ILogger<Program> logger, RunAndGun runAndGun) =>
+app.MapPost("/bots/runandgun", async (MoveRequest request, ILogger<Program> logger, BotStore botStore) =>
 {
     logger.LogInformation("runandgun moved in game {gameId} Turn #{TurnNumber}", request.GameId, request.TurnNumber);
-    // var first = request.Units.First();
-    // logger.LogInformation("Total Units: {Count}; Unit: {Id} ({Q},{R})",
-    //     request.Units.Count(), first.Id, first.Location.Q, first.Location.R);
     var currentTeam = new Team(request.YourTeamId)
     {
         Medpacs = request.Medpacs
     };
     var gameState = new GameState(request.GameId, request.BoardSize, request.TurnNumber, request.Units.Select(FromDto), request.TeamIds, currentTeam);
+    var runAndGun = botStore.GetBot<RunAndGun>(gameState.Id, currentTeam.Id);
 
     return new MoveResponse(await runAndGun.PlanMovesAsync(gameState));
 });
@@ -148,7 +140,17 @@ public class NetworkBot : IBot
 
 public class BotStore
 {
+    private readonly IBot nothingBot = new NothingBot();
     private readonly Dictionary<(Guid GameId, int TeamId), IBot> bots = new();
     public void AddBot(Guid GameId, int TeamId, IBot bot) => bots[(GameId, TeamId)] = bot;
-    public IBot GetBot(Guid GameId, int TeamId) => bots[(GameId, TeamId)];
+    public IBot GetBot<T>(Guid GameId, int TeamId) where T : IBot, new()
+    {
+        if (!bots.ContainsKey((GameId, TeamId)))
+        {
+            T bot = new();
+            bots[(GameId, TeamId)] = bot;
+        }
+
+        return bots[(GameId, TeamId)];
+    }
 }
