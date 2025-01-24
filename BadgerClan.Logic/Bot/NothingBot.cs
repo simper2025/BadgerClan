@@ -5,8 +5,8 @@ public class NothingBot : IBot
 {
     public int Team { get; set; }
 
-    public Task<List<Move>> PlanMovesAsync(GameState state)
+	public async Task<List<Move>> PlanMovesAsync(GameState state)
     {
-        return Task.FromResult(new List<Move>());
+        return new List<Move>();
     }
 }

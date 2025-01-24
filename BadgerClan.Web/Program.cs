@@ -9,6 +9,7 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 builder.Services.AddSingleton<Lobby>();
 builder.Services.AddSingleton<RunAndGun>();
+builder.Services.AddSingleton<NothingBot>();
 builder.Services.AddSingleton<Turtle>();
 builder.Services.AddHttpClient();
 
@@ -32,7 +33,7 @@ app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
 
-app.MapPost("/bots/turtle", async (MoveRequest request, ILogger<Program> logger, Turtle runAndGun) =>
+app.MapPost("/bots/turtle", async (MoveRequest request, ILogger<Program> logger, Turtle turtle) =>
 {
     logger.LogInformation("turtle moved in game {gameId} Turn #{TurnNumber}", request.GameId, request.TurnNumber);
     // var first = request.Units.First();
@@ -44,9 +45,24 @@ app.MapPost("/bots/turtle", async (MoveRequest request, ILogger<Program> logger,
     };
     var gameState = new GameState(request.GameId, request.BoardSize, request.TurnNumber, request.Units.Select(FromDto), request.TeamIds, currentTeam);
 
-    return new MoveResponse(await runAndGun.PlanMovesAsync(gameState));
+    return new MoveResponse(await turtle.PlanMovesAsync(gameState));
 });
 
+
+app.MapPost("/bots/nothing", async (MoveRequest request, ILogger<Program> logger, NothingBot donothing) =>
+{
+    logger.LogInformation("runandgun moved in game {gameId} Turn #{TurnNumber}", request.GameId, request.TurnNumber);
+    // var first = request.Units.First();
+    // logger.LogInformation("Total Units: {Count}; Unit: {Id} ({Q},{R})", 
+    //     request.Units.Count(), first.Id, first.Location.Q, first.Location.R);
+    var currentTeam = new Team(request.YourTeamId)
+    {
+        Medpacs = request.Medpacs
+    };
+    var gameState = new GameState(request.GameId, request.BoardSize, request.TurnNumber, request.Units.Select(FromDto), request.TeamIds, currentTeam);
+
+    return new MoveResponse(await donothing.PlanMovesAsync(gameState));
+});
 
 
 app.MapPost("/bots/runandgun", async (MoveRequest request, ILogger<Program> logger, RunAndGun runAndGun) =>
