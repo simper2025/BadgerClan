@@ -10,19 +10,21 @@ public static class DisplayConstants
 
 public static class PlayerHelpers
 {
+	private static Queue<string> playerColorsQueue = new Queue<string>([]);
 	public static string GetRandomColor()
 	{
+		if (playerColorsQueue.Count < 1)
+		{
+			playerColorsQueue = new Queue<string>(new List<string>([
+				"red", "blue", "green", "yellow", "orange", "purple", "cyan", "magenta", "lime", "teal",
+				"black", "white", "gray", "pink", "navy", "gold", "maroon", "aqua", "olive", "indigo",
+				"crimson", "turquoise", "beige", "lavender", "salmon", "violet", "chartreuse", "coral", "khaki", "plum",
+				"orchid", "sienna", "azure", "ivory", "mintcream", "slategray", "goldenrod", "lightseagreen", "peachpuff", "darkorchid",
+				"peru", "darkcyan", "firebrick", "rosybrown", "seagreen", "mediumvioletred", "deepskyblue", "darkolivegreen", "dodgerblue", "mediumaquamarine"
+			]).OrderBy(i => Random.Shared.Next()));
+		}
 		return playerColorsQueue.Dequeue();
 	}
-
-	private static Queue<string> playerColorsQueue = new Queue<string>(new List<string>([
-		"red", "blue", "green", "yellow", "orange", "purple", "cyan", "magenta", "lime", "teal",
-"black", "white", "gray", "pink", "navy", "gold", "maroon", "aqua", "olive", "indigo",
-		"crimson", "turquoise", "beige", "lavender", "salmon", "violet", "chartreuse", "coral", "khaki", "plum",
-"orchid", "sienna", "azure", "ivory", "mintcream", "slategray", "goldenrod", "lightseagreen", "peachpuff", "darkorchid",
-"peru", "darkcyan", "firebrick", "rosybrown", "seagreen", "mediumvioletred", "deepskyblue", "darkolivegreen", "dodgerblue", "mediumaquamarine"
-	]).OrderBy(i => Random.Shared.Next()));
-
 
 	public static string GetRandomPlayerName()
 	{

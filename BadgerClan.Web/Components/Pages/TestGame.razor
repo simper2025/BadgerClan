@@ -17,7 +17,7 @@
     private GameEngine engine = new GameEngine();
     private GameState state = new GameState();
     private string status = "";
-    private int TickInterval = 50;
+    private int TickInterval = 30;
 
 
     private CancellationTokenSource source = new CancellationTokenSource();
@@ -31,22 +31,26 @@
 
     protected override Task OnInitializedAsync()
     {
-        MakeTeam("red", new Turtle());
-        MakeTeam("blue", new Turtle());
-        MakeTeam("green", new Turtle());
-        MakeTeam("yellow", new Turtle(2, 2));
-        MakeTeam("orange", new RunAndGun());
-        MakeTeam("black", new Turtle());
+        var newColor = PlayerHelpers.GetRandomColor();
+
+        MakeTeam(new Turtle());
+        MakeTeam(new Turtle());
+        MakeTeam(new Turtle());
+        MakeTeam(new Turtle(2, 2));
+        MakeTeam(new RunAndGun());
+        MakeTeam(new Turtle());
 
         state.LayoutStartingPositions(squadUnits);
 
-        AddBorderUnits(state);
+        //AddBorderUnits(state);
 
         return Task.CompletedTask;
     }
 
-    private void MakeTeam(string color, IBot bot)
+    private void MakeTeam(IBot bot)
     {
+        var color = PlayerHelpers.GetRandomColor();
+
         var team = new Team($"Team {color}", color, bot);
         state.AddTeam(team);
         teams.Add(team.Id, team);
