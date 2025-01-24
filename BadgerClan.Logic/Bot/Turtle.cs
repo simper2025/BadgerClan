@@ -33,11 +33,11 @@ public class Turtle : IBot
 		TurnsOfDelay = delay;
 	}
 
-	public Task<List<Move>> PlanMovesAsync(GameState state)
+	public async Task<List<Move>> PlanMovesAsync(GameState state)
 	{
 		var myteam = state.TeamList.FirstOrDefault(t => t.Id == state.CurrentTeamId);
 		if (myteam is null)
-			return Task.FromResult(new List<Move>());
+            return new List<Move>();
 
 		var enemies = state.Units.Where(u => u.Team != state.CurrentTeamId);
 		var active = ShouldGoActive(enemies);
@@ -97,7 +97,7 @@ public class Turtle : IBot
 			}
 		}
 
-		return Task.FromResult(moves);
+		return moves;
 	}
 
 	/*

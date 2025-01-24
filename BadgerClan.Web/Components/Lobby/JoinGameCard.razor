@@ -47,6 +47,7 @@
                 </div>
                 <div class="col">
                     <button class="btn btn-outline-primary" @onclick=addRunAndGun>Add Run &amp; Gun Bot</button>
+                    <button class="btn btn-outline-primary" @onclick=turtle>Add Turtle Bot</button>
                 </div>
             </div>
             @if (Game.TeamList.Count > 1)
@@ -74,6 +75,15 @@
     private void addRunAndGun()
     {
         var networkBot = new NetworkBot(new Uri($"{navManager.BaseUri}bots/runandgun"));
+        var newColor = PlayerHelpers.GetRandomColor();
+        var team = new Team(newBotName, newColor, networkBot);
+        Game.AddTeam(team);
+        newBotName = PlayerHelpers.GetRandomPlayerName();
+    }
+
+    private void turtle()
+    {
+        var networkBot = new NetworkBot(new Uri($"{navManager.BaseUri}bots/turtle"));
         var newColor = PlayerHelpers.GetRandomColor();
         var team = new Team(newBotName, newColor, networkBot);
         Game.AddTeam(team);
