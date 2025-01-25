@@ -38,7 +38,7 @@ else
     {
         var newColor = PlayerHelpers.GetRandomColor();
 
-        MakeTeam(new Turtle());
+        MakeTeam(new DevBot(), "red");
         MakeTeam(new Turtle());
         MakeTeam(new Turtle());
         MakeTeam(new Turtle(2));
@@ -52,9 +52,10 @@ else
         return Task.CompletedTask;
     }
 
-    private void MakeTeam(IBot bot)
+    private void MakeTeam(IBot bot, string color = "")
     {
-        var color = PlayerHelpers.GetRandomColor();
+        if (string.IsNullOrEmpty(color))
+            color = PlayerHelpers.GetRandomColor();
 
         var team = new Team($"Team {color}", color, bot);
         state.AddTeam(team);

@@ -35,4 +35,10 @@ public class SharedMoves
         return move;
     }
 
+
+    public static bool CanAttack(Unit mine, Unit closest)
+    {
+        return closest.Location.Distance(mine.Location) <= mine.Attack;
+    }
+
 }
