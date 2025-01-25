@@ -20,18 +20,18 @@ public class GameEngine
 
         foreach (var move in moves)
         {
-            var unit = state.Units.FirstOrDefault(u => u.Id == move.unitId);
+            var unit = state.Units.FirstOrDefault(u => u.Id == move.UnitId);
             if (unit == null || unit.Team != state.CurrentTeamId)
             {
                 continue;
             }
-            var distance = unit.Location.Distance(move.target);
+            var distance = unit.Location.Distance(move.Target);
             var defender = state.Units.FirstOrDefault(u =>
-                u.Location == move.target && u.Id != unit.Id);
+                u.Location == move.Target && u.Id != unit.Id);
             switch (move.Type)
             {
                 case MoveType.Walk:
-                    var movedLocation = new Coordinate(move.target.Q, move.target.R);
+                    var movedLocation = new Coordinate(move.Target.Q, move.Target.R);
                     var canMove = distance <= unit.Moves;
                     if (!canMove)
                     {
