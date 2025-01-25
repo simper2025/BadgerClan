@@ -4,12 +4,17 @@
 
 <PageTitle>@state.Name</PageTitle>
 
-<button @onclick="RunTurns">Run</button>
+@if (state.IsGameOver)
+{
+    <h2 class="text-success">@state.CurrentTeam.Name wins!</h2>
+}
+else
+{
+    <p>Turn: @state.TurnNumber <button @onclick="RunTurns">Run</button></p>
+}
 
 <BoardComponent State=state />
-
 <div>@status</div>
-
 
 
 @code {
