@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="
-    height: 100%; 
+    height: 100%;
     width: 100%;
   ">
   <path d="M0 0h512v512H0z" fill="@(TeamColor)" fill-opacity="1"></path>
@@ -13,7 +13,7 @@
 
 @code {
   [Parameter]
-  public string TeamColor { get; set; }
+  public required string TeamColor { get; set; }
 
   protected override void OnParametersSet()
   {

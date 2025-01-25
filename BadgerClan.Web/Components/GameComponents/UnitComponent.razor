@@ -1,37 +1,36 @@
 @using BadgerClan.Web.Components.GameComponents.UnitIcons
 
 <div style="
-    position: absolute; 
-    width: @(width)px; 
-    height: @(width)px; 
-    top: @(yPercent)%; 
-    left: @(xPercent)%; 
+    position: absolute;
+    width: @(width)px;
+    height: @(width)px;
+    top: @(yPercent)%;
+    left: @(xPercent)%;
     transform: translate(-50%, -125%);
 
     transition: all @(Math.Clamp((TickInterval  * 0.8), 0, 100))ms;
 
-">
+        ">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="
-        height: 100%; 
+        height: 100%;
         width: 100%;
-    ">
+            ">
         <path d="M0 0h512v512H0z" fill="@(Team.Color)" fill-opacity="1"></path>
         <g class="" transform="translate(0,0)" style="">
-            <path  style="stroke: rgb(139, 139, 139); stroke-width: 15px"
-                d="@(iconLookup[Unit.Type])"
-                fill="#fff" fill-opacity="1">
+            <path style="stroke: rgb(139, 139, 139); stroke-width: 15px"
+                  d="@(iconLookup[Unit.Type])"
+                  fill="#fff" fill-opacity="1">
             </path>
         </g>
     </svg>
 </div>
 
-
 @code {
 
     [Parameter]
-    public Unit Unit { get; set; }
+    public required Unit Unit { get; set; }
     [Parameter]
-    public Team Team { get; set; }
+    public required Team Team { get; set; }
     [Parameter]
     public int Dimension { get; set; }
     [Parameter]
@@ -49,7 +48,6 @@
 
     protected override void OnParametersSet()
     {
-
         xPercent = DisplayUtils.CalculateXPercent(Unit.Location.Q, Unit.Location.R, Dimension);
         yPercent = DisplayUtils.CalculateYPercent(Unit.Location.R, Dimension);
 

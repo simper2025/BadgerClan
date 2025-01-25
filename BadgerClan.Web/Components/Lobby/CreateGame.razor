@@ -7,6 +7,7 @@
         <button type="submit">Create Game</button>
     </form>
 </div>
+
 @code {
     protected override void OnInitialized()
     {
@@ -14,10 +15,11 @@
     }
 
     string style => lobby.Games.Any() ? "float: right" : "";
-    string gameName;
+    string gameName = string.Empty;
+
     private void create()
     {
         lobby.AddGame(gameName);
-        gameName = null;
+        gameName = string.Empty;
     }
 }

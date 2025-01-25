@@ -89,11 +89,11 @@
 @code {
     public string SelectedBotEngine { get; set; } = "custom";
     [Parameter]
-    public GameState Game { get; set; }
+    public required GameState Game { get; set; }
 
     string newBotName = PlayerHelpers.GetRandomPlayerName();
 
-    string joinUrl;
+    string joinUrl = string.Empty;
     string? error = null;
 
     private void addRunAndGun()
@@ -123,46 +123,38 @@
         newBotName = PlayerHelpers.GetRandomPlayerName();
     }
 
-    private async Task joinGame()
+    private void joinGame()
     {
-        error = null;
-        switch(SelectedBotEngine)
-        {
-            case "custom":
-                if (string.IsNullOrWhiteSpace(joinUrl))
-                {
-                    error = "You must provide a URL for the custom bot engine";
-                    return;
-                }
-                var networkBot = new NetworkBot(new Uri(joinUrl));
-                var newColor = PlayerHelpers.GetRandomColor();
-                var team = new Team(newBotName, newColor, networkBot);
-                Game.AddTeam(team);
-                newBotName = PlayerHelpers.GetRandomPlayerName();
-
-                break;
-            case "runAndGun":
-                addRunAndGun();
-                break;
-            case "turtle":
-                turtle();
-                break;
-            case "nothing":
-                nothing();
-                break;
-            default:
-                return;
-        }
         try
         {
-            //make a request to the server to join the game
-            // var response = await httpClient.GetFromJsonAsync<JoinGameResponse>($"{joinUrl}?gameId={Game.Id}");
-            // logger.LogInformation("{playerName} joined game {gameId}", response?.playerName, Game.Id);
-            // var team = new Team(response?.playerName??"Player", "red", joinUrl);
-            // Game.AddTeam(team);
-            // figure out how to join the new player to the game
-            // joinUrl = null;
-            // newBotName = PlayerHelpers.GetRandomPlayerName();
+            error = null;
+            switch (SelectedBotEngine)
+            {
+                case "custom":
+                    if (string.IsNullOrWhiteSpace(joinUrl))
+                    {
+                        error = "You must provide a URL for the custom bot engine";
+                        return;
+                    }
+                    var networkBot = new NetworkBot(new Uri(joinUrl));
+                    var newColor = PlayerHelpers.GetRandomColor();
+                    var team = new Team(newBotName, newColor, networkBot);
+                    Game.AddTeam(team);
+                    newBotName = PlayerHelpers.GetRandomPlayerName();
+
+                    break;
+                case "runAndGun":
+                    addRunAndGun();
+                    break;
+                case "turtle":
+                    turtle();
+                    break;
+                case "nothing":
+                    nothing();
+                    break;
+                default:
+                    return;
+            }
         }
         catch (Exception ex)
         {
@@ -183,6 +175,6 @@
     }
     private void botEngineChange(ChangeEventArgs e)
     {
-        SelectedBotEngine = e.Value.ToString();
+        SelectedBotEngine = e?.Value?.ToString() ?? string.Empty;
     }
 }

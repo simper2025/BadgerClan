@@ -3,12 +3,12 @@ using BadgerClan.Logic.Bot;
 
 public class NetworkBot : IBot
 {
-
     HttpClient client = new();
     public NetworkBot(Uri endpoint)
     {
         client.BaseAddress = endpoint;
     }
+
     UnitDto MakeDto(Unit unit)
     {
         return new UnitDto(
@@ -38,6 +38,6 @@ public class NetworkBot : IBot
         );
         var response = await client.PostAsJsonAsync("", moveRequest);
         var moveResponse = await response.Content.ReadFromJsonAsync<MoveResponse>();
-        return moveResponse.Moves;
+        return moveResponse?.Moves ?? [];
     }
 }

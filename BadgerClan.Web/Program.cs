@@ -1,3 +1,5 @@
+// Ignore Spelling: Dto
+
 using BadgerClan.Logic;
 using BadgerClan.Logic.Bot;
 using BadgerClan.Web.Components;

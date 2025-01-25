@@ -1,10 +1,10 @@
 <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" style="
-    position: absolute; 
-    width: @(width)%; 
+    position: absolute;
+    width: @(width)%;
     aspect-ratio: 1 / 1;
 
     top: @(yPercent)%;
-    left: @(xPercent)%; 
+    left: @(xPercent)%;
     transform: translate(-50%, -50%);
     fill: @(fill);
   ">
@@ -24,8 +24,6 @@
   public int Col { get; set; }
   [Parameter]
   public int Dimension { get; set; }
-  private double X;
-  private double Y;
   private double xPercent;
   private double yPercent;
   double width;

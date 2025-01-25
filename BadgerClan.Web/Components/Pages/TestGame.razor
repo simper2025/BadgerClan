@@ -10,8 +10,6 @@
 
 <div>@status</div>
 
-
-
 @code {
 
     private GameEngine engine = new GameEngine();
@@ -76,8 +74,8 @@
         {
             ShouldStop.ThrowIfCancellationRequested();
 
-            var moves = (await teams[state.CurrentTeamId]?.Bot?.PlanMovesAsync(state))
-                ?? new List<Move>();
+            var bot = teams[state.CurrentTeamId].Bot;
+            var moves = (await bot.PlanMovesAsync(state)) ?? [];
 
             GameEngine.ProcessTurn(state, moves);
 

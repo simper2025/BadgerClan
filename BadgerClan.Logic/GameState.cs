@@ -4,8 +4,8 @@ public class GameState
 {
     public DateTime Created { get; } = DateTime.Now;
     public Guid Id { get; } = Guid.NewGuid();
-    public event Action<GameState> GameChanged;
-    public event Action<GameState> GameEnded;
+    public event Action<GameState>? GameChanged;
+    public event Action<GameState>? GameEnded;
     public string Name { get; set; }
 
     public int Dimension = 70;
@@ -44,7 +44,7 @@ public class GameState
         }
     }
 
-    public Team CurrentTeam => TeamList.FirstOrDefault(t => t.Id == CurrentTeamId);
+    public Team CurrentTeam => TeamList.First(t => t.Id == CurrentTeamId);
 
     public bool Running
     {
@@ -73,6 +73,7 @@ public class GameState
         Units = units?.ToList() ?? new List<Unit>();
         TeamList = [currentTeam];
         turnOrder = [currentTeam.Id];
+        Name = $"Game-{Id.ToString().Substring(32)}";
     }
 
     public override string ToString()
@@ -140,11 +141,11 @@ public class GameState
         GameChanged?.Invoke(this);
     }
 
-    public void AddUnits(int team, Coordinate loc, List<string> units)
+    public void AddUnits(int team, Coordinate location, List<string> units)
     {
         foreach (var unit in units)
         {
-            AddUnit(Unit.Factory(unit, team, loc));
+            AddUnit(Unit.Factory(unit, team, location));
         }
         GameChanged?.Invoke(this);
     }
@@ -202,10 +203,10 @@ public class GameState
         return retval;
     }
 
-    public bool IsOnBoard(Coordinate loc)
+    public bool IsOnBoard(Coordinate location)
     {
-        return loc.Col >= 0 && loc.Row >= 0 &&
-            loc.Col <= Dimension && loc.Row <= Dimension;
+        return location.Col >= 0 && location.Row >= 0 &&
+            location.Col <= Dimension && location.Row <= Dimension;
 
     }
 }

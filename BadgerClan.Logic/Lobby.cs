@@ -7,7 +7,7 @@ public class Lobby(ILogger<Lobby> logger)
 {
     public const int TickInterval = 50;
     private List<GameState> games { get; } = new();
-    public event Action<GameState> LobbyChanged;
+    public event Action<GameState>? LobbyChanged;
     public void AddGame(string gameName)
     {
         var game = new GameState(gameName);

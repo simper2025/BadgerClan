@@ -3,11 +3,11 @@ namespace BadgerClan.Logic.Bot;
 
 public class RunAndGun : IBot
 {
-    public async Task<List<Move>> PlanMovesAsync(GameState state)
+    public Task<List<Move>> PlanMovesAsync(GameState state)
     {
         var myteam = state.TeamList.FirstOrDefault(t => t.Id == state.CurrentTeamId);
         if (myteam is null)
-            return new List<Move>();
+            return Task.FromResult(new List<Move>());
 
         var moves = new List<Move>();
         foreach (var unit in state.Units.Where(u => u.Team == state.CurrentTeamId))
@@ -32,7 +32,7 @@ public class RunAndGun : IBot
                 }
             }
         }
-        return moves;
+        return Task.FromResult(moves);
     }
 
 }

@@ -17,9 +17,9 @@ else
 
 @code {
     [Parameter]
-    public string GameId { get; set; }
+    public required string GameId { get; set; }
 
-    private GameState game;
+    public required GameState game;
 
     protected override void OnParametersSet()
     {
@@ -27,6 +27,7 @@ else
         {
             NavigationManager.NavigateTo("/");
         }
+
         game = lobby.Games.First(g => g.Id == Guid.Parse(GameId));
 
         game.GameChanged += (_) => InvokeAsync(StateHasChanged);
