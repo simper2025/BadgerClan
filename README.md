@@ -6,7 +6,7 @@ A simple game of hexagonal tiles.
 1. If you are using Visual Studio
     1. Open the BadgerClan.sln file to load the solution.
     1. Select the "Client and Server" startup project
-        ![Build Config]("https://raw.githubusercontent.com/simper2025/badgerclan/main/docs/startupProject.png")
+        ![Build Config](docs/startupProject.png)
     1. Press F5 to run the game.
 1. Navigate to BadgerClan.Client and open its Program.cs file
 1. Look for the comment that says "Your code goes right here".
