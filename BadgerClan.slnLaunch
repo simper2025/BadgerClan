@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "Client and Server",
+    "Projects": [
+      {
+        "Path": "BadgerClan.Web\\BadgerClan.Web.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "BadgerClan.Client\\BadgerClan.Client.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]
