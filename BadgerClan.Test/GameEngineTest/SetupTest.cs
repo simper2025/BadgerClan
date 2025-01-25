@@ -187,8 +187,8 @@ public class SetupTest
     }
 
     [Theory]
-    [InlineData(0, 35, 10)]
-    [InlineData(180, 35, 60)] //player 2 of 2
+    [InlineData(0, 36, 10)]
+    [InlineData(180, 36, 60)] //player 2 of 2
     [InlineData(120, 56, 47)] // 2 of 3
     [InlineData(2400, 14, 47)] // 3 of 3
     public void LayoutSquadsInCircle(int deg, int col, int row)

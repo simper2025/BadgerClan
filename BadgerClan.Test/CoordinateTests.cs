@@ -97,20 +97,49 @@ public class CoordinateTests
     [Fact]
     public void TowardTest()
     {
-        var point = Coordinate.Offset(1,1);
-        var toward = point.Toward(Coordinate.Offset(3,4));
-        var expected = Coordinate.Offset(2,2);
+        var point = Coordinate.Offset(1, 1);
+        var toward = point.Toward(Coordinate.Offset(3, 4));
+        var expected = Coordinate.Offset(2, 2);
         Assert.Equal(expected, toward);
     }
 
     [Fact]
     public void AwayTest()
     {
-        var point = Coordinate.Offset(3,4);
-        var away = point.Away(Coordinate.Offset(1,1));
-        var expected = Coordinate.Offset(3,5);
+        var point = Coordinate.Offset(3, 4);
+        var away = point.Away(Coordinate.Offset(1, 1));
+        var expected = Coordinate.Offset(3, 5);
         Assert.Equal(expected, away);
     }
 
+    [Theory]
+    [InlineData(1, 0, 4, 3)]
+    [InlineData(0, -1, 3, 2)]
+    [InlineData(-1, 1, 3, 4)]
+    public void AddTest(int q, int r, int col, int row)
+    {
+        var start = Coordinate.Offset(3, 3);
+        var vector = new Coordinate(q, r);
+        var expected = Coordinate.Offset(col, row);
+
+        var result = start + vector;
+
+        Assert.Equal(expected, result);
+    }
+
+    [Theory]
+    [InlineData(-1, 0, 4, 3)]
+    [InlineData(0, 1, 3, 2)]
+    [InlineData(1, -1, 3, 4)]
+    public void SubtractTest(int q, int r, int col, int row)
+    {
+        var p1 = Coordinate.Offset(3, 3);
+        var p2 = Coordinate.Offset(col, row);
+        var expected = new Coordinate(q, r);
+
+        var result = p1 - p2;
+
+        Assert.Equal(expected, result);
+    }
 
 }

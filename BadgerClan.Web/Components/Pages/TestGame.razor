@@ -4,10 +4,16 @@
 
 <PageTitle>@state.Name</PageTitle>
 
-<button @onclick="RunTurns">Run</button>
+@if (state.IsGameOver)
+{
+    <h2 class="text-success">@state.CurrentTeam.Name wins!</h2>
+}
+else
+{
+    <p>Turn: @state.TurnNumber <button @onclick="RunTurns">Run</button></p>
+}
 
 <BoardComponent State=state />
-
 <div>@status</div>
 
 @code {
@@ -31,7 +37,7 @@
     {
         var newColor = PlayerHelpers.GetRandomColor();
 
-        MakeTeam(new Turtle());
+        MakeTeam(new DevBot(), "red");
         MakeTeam(new Turtle());
         MakeTeam(new Turtle());
         MakeTeam(new Turtle(2));
@@ -45,9 +51,10 @@
         return Task.CompletedTask;
     }
 
-    private void MakeTeam(IBot bot)
+    private void MakeTeam(IBot bot, string color = "")
     {
-        var color = PlayerHelpers.GetRandomColor();
+        if (string.IsNullOrEmpty(color))
+            color = PlayerHelpers.GetRandomColor();
 
         var team = new Team($"Team {color}", color, bot);
         state.AddTeam(team);

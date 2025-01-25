@@ -69,7 +69,11 @@ public class Coordinate : IEquatable<Coordinate>
 
     public static Coordinate operator +(Coordinate left, Coordinate right)
     {
-        return Coordinate.Offset(left.Col + right.Col, left.Row + right.Row);
+        return new Coordinate(left.Q + right.Q, left.R + right.R);
+    }
+    public static Coordinate operator -(Coordinate left, Coordinate right)
+    {
+        return new Coordinate(left.Q - right.Q, left.R - right.R);
     }
     #endregion
 

@@ -18,6 +18,6 @@ public class UnitTest
     [Fact]
     public void DefaultFactoryTest(){
         var unit = Unit.Factory("Unknown", 1, Coordinate.Offset(1,1));
-        Assert.Equal("Peasent", unit.Type);        
+        Assert.Equal("Peasant", unit.Type);        
     }
 }
