@@ -18,7 +18,7 @@ A simple game of hexagonal tiles.
 1. Open the directory in VS Code
 1. In one terminal window, cd into the BadgerClan.Web directory (`cd BadgerClan.Web`) and then run `dotnet run`
 1. Open a browser to http://localhost:5172 Type in a name for your game and click the "Create New Game" button.
-1. In another terminal window, get into the BadgerClan.Client directory and run `dotnet run`
+1. In another terminal window, cd into the BadgerClan.Client directory (`cd BadgerClan.Client`) and run `dotnet run`
 1. Go to "Running the game" below.
 
 ## Running the game
