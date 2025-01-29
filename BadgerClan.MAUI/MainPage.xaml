@@ -21,10 +21,19 @@
                 Style="{StaticResource SubHeadline}"
                 SemanticProperties.HeadingLevel="Level2" />
 
-                <Button
+            <Button
                 Text="Run and Gun" 
                 Command="{Binding ActivateRunAndGunCommand}"
-                HorizontalOptions="Fill" />
+                HorizontalOptions="Fill" >
+                <Button.Triggers>
+                    <DataTrigger
+                        TargetType="Button"
+                        Binding="{Binding ActiveMode}"
+                        Value="Run and Gun">
+                        <Setter Property="IsEnabled" Value="False" />
+                    </DataTrigger>
+                </Button.Triggers>
+            </Button>
         </VerticalStackLayout>
     </ScrollView>
 

@@ -16,7 +16,7 @@ namespace BadgerClan.MAUI
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
-            var env = "http://localhost:1000";
+            var env = "http://10.0.2.2:1000";
 
             builder.Services.AddSingleton<IApiService, ApiService>();
             builder.Services.AddHttpClient("ControllerApi", (o) =>
