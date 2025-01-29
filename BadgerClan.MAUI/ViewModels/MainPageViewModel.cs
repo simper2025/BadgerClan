@@ -16,4 +16,9 @@ public partial class MainPageViewModel(IApiService apiService) : ObservableObjec
     {
         ActiveMode = await apiService.ActivateRunAndGun();
     }
+    [RelayCommand]
+    public async void ActivateDoNothing()
+    {
+        ActiveMode = await apiService.ActivateDoNothing();
+    }
 }

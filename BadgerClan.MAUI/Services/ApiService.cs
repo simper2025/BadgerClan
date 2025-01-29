@@ -21,4 +21,14 @@ public class ApiService(IHttpClientFactory factory) : IApiService
             return "Run and Gun";
         else return "";
     }
+
+    public async Task<string> ActivateDoNothing()
+    {
+        HttpClient client = factory.CreateClient("ControllerApi");
+
+        var response = await client.GetAsync("/DoNothing");
+        if (response.IsSuccessStatusCode)
+            return "Do Nothing";
+        else return "";
+    }
 }

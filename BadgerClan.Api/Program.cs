@@ -30,6 +30,13 @@ app.MapGet("/RunAndGun", (HttpContext context) =>
     Strategies.Strategy = "runandgun";
 });
 
+
+app.MapGet("/DoNothing", (HttpContext context) =>
+{
+    app.Logger.LogInformation("Received Do Nothing Request");
+    Strategies.Strategy = "";
+});
+
 app.MapPost("/", (MoveRequest request) =>
 {
     app.Logger.LogInformation("Received move request for game {gameId} turn {turnNumber}", request.GameId, request.TurnNumber);
@@ -42,10 +49,10 @@ app.MapPost("/", (MoveRequest request) =>
             break;
         default:
             app.Logger.LogInformation("No strategie chose.");
+            moves = new List<Move>();
             break;
     }
     return new MoveResponse(moves);
-
 
 });
 

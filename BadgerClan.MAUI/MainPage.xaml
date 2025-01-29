@@ -34,6 +34,21 @@
                     </DataTrigger>
                 </Button.Triggers>
             </Button>
+
+
+            <Button
+                Text="Do Nothing" 
+                Command="{Binding ActivateDoNothingCommand}"
+                HorizontalOptions="Fill" >
+                <Button.Triggers>
+                    <DataTrigger
+                        TargetType="Button"
+                        Binding="{Binding ActiveMode}"
+                        Value="Do Nothing">
+                        <Setter Property="IsEnabled" Value="False" />
+                    </DataTrigger>
+                </Button.Triggers>
+            </Button>
         </VerticalStackLayout>
     </ScrollView>
 
