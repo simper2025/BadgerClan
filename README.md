@@ -80,4 +80,8 @@ Coordinate System: https://www.redblobgames.com/grids/hexagons/
 - [ ] Only the host should have the start game button
 - [ ] A bad response from the client crashes causes an exception that stops the server
 
-
+### Documentation
+- [ ] Example tutorial for moving around
+- [ ] Example tutorial for determining boundaries
+- [ ] Example tutorial for identifying nearest enemies
+- [ ] Example tutorial for a sample bot

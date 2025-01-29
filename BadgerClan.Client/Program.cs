@@ -19,7 +19,7 @@ Console.ForegroundColor = ConsoleColor.White;
 Console.WriteLine();
 Console.WriteLine("For the competition, start a DevTunnel for this port with the following commands:");
 Console.ForegroundColor = ConsoleColor.Green;
-Console.WriteLine("\t winget install Microsoft.devtunnel");
+Console.WriteLine("\t winget install Microsoft.devtunnel");//DevTunnel explanation: https://learn.microsoft.com/en-us/azure/developer/dev-tunnels/overview
 Console.WriteLine("\t [ restart your command line after installing devtunnel ]");
 Console.WriteLine("\t devtunnel user login");
 Console.WriteLine($"\t devtunnel host -p {port} --allow-anonymous");
@@ -32,9 +32,6 @@ app.MapGet("/", () => "Sample BadgerClan bot.  Modify the code in Program.cs to 
 
 app.MapPost("/", (MoveRequest request) =>
 {
-    app.Logger.LogInformation("Received move request for game {gameId} turn {turnNumber}", request.GameId, request.TurnNumber);
-    var myMoves = new List<Move>();
-
     // ***************************************************************************
     // ***************************************************************************
     // **
@@ -44,6 +41,9 @@ app.MapPost("/", (MoveRequest request) =>
     // **
     // ***************************************************************************
     // ***************************************************************************
+
+    var myMoves = SuperSimpleExampleBot.MakeMoves(request);//Very simple bot example.  Delete this line when you write your own bot.
+
     return new MoveResponse(myMoves);
 });
 
