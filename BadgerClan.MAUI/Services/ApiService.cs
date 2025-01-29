@@ -1,5 +1,4 @@
-﻿
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Net.Http;
 
 namespace BadgerClan.MAUI.Services;
@@ -29,6 +28,16 @@ public class ApiService(IHttpClientFactory factory) : IApiService
         var response = await client.GetAsync("/DoNothing");
         if (response.IsSuccessStatusCode)
             return "Do Nothing";
+        else return "";
+    }
+
+    public async Task<string> ActivateTurtle()
+    {
+        HttpClient client = factory.CreateClient("ControllerApi");
+
+        var response = await client.GetAsync("/Turtle");
+        if (response.IsSuccessStatusCode)
+            return "Turtle";
         else return "";
     }
 }

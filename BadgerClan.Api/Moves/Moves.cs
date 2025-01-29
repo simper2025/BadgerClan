@@ -1,4 +1,5 @@
 ﻿using BadgerClan.Logic;
+using System.Reflection.Emit;
 
 namespace BadgerClan.Api.Moves;
 
@@ -36,5 +37,4 @@ public static class Moves
         var attack = new Move(MoveType.Attack, unit.Id, closest.Location);
         return attack;
     }
-
 }

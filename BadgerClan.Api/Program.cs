@@ -37,6 +37,13 @@ app.MapGet("/DoNothing", (HttpContext context) =>
     Strategies.Strategy = "";
 });
 
+app.MapGet("/Turtle", (HttpContext context) =>
+{
+    app.Logger.LogInformation("Received Turtle Request");
+    Strategies.Strategy = "turtle";
+});
+
+
 app.MapPost("/", (MoveRequest request) =>
 {
     app.Logger.LogInformation("Received move request for game {gameId} turn {turnNumber}", request.GameId, request.TurnNumber);
@@ -46,6 +53,9 @@ app.MapPost("/", (MoveRequest request) =>
     {
         case "runandgun":
             Strategies.RunAndGun(request, moves);
+            break;
+        case "turtle":
+            Strategies.Turtle(request, moves);
             break;
         default:
             app.Logger.LogInformation("No strategie chose.");

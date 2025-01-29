@@ -4,21 +4,32 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace BadgerClan.MAUI.ViewModels;
 
-public partial class MainPageViewModel(IApiService apiService) : ObservableObject
+public partial class MainPageViewModel : ObservableObject
 {
     [ObservableProperty]
-    private string activeMode = "Do Nothing";
+    private string activeMode;
+    private readonly IApiService apiService;
 
+    public MainPageViewModel(IApiService apiService)
+    {
+        ActiveMode = "Do Nothing";
+        this.apiService = apiService;
+    }
     public string ApiUri { get => apiService.GetClientUri();}
 
     [RelayCommand]
-    public async void ActivateRunAndGun()
+    public async Task ActivateRunAndGun()
     {
         ActiveMode = await apiService.ActivateRunAndGun();
     }
     [RelayCommand]
-    public async void ActivateDoNothing()
+    public async Task ActivateDoNothing()
     {
         ActiveMode = await apiService.ActivateDoNothing();
+    }
+    [RelayCommand]
+    public async Task ActivateTurtle()
+    {
+        ActiveMode = await apiService.ActivateTurtle();
     }
 }
