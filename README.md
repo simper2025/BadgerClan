@@ -52,32 +52,32 @@ Coordinate System: https://www.redblobgames.com/grids/hexagons/
 
 ### Game Design
 - [ ] Improve effectiveness of Medpacs
-- After some rounds of no units dieing, every Unit loses one hitpoint
-- If everyone dies as the same time (stalemate) tiebreakers are
-    - Team with most kills
-    - Most units before final hitpoint loss
-- Track number of kills
+- [ ] After some rounds of no units dieing, every Unit loses one hitpoint
+- [ ] If everyone dies as the same time (stalemate) tiebreakers are
+    - [ ] Team with most kills
+    - [ ] Most units before final hitpoint loss
+- [ ] Track number of kills
 
 ### Features
-- Delete the weather and counter page
-- Limit the number of player
-- Ability to boot players from a game that hasn't started
-- Host can end the game from the game page
-- Timeout the calls to clients
-- Limit the size of the client move list
-- Don't make calls to dead teams
-- Ability for the host to restart the game with the same players
+- [ ] Delete the weather and counter page
+- [ ] Limit the number of player
+- [ ] Ability to boot players from a game that hasn't started
+- [ ] Host can end the game from the game page
+- [ ] Timeout the calls to clients
+- [ ] Limit the size of the client move list
+- [ ] Don't make calls to dead teams
+- [ ] Ability for the host to restart the game with the same players
 
 
-### Bugs
-- If you click the join button after start, the UI is odd
-- Units can be placed off the board, if there are lots of units
-- Validate the client endpoint with a request/response
-- Limit the characters for name and urls
-- If there are multiple games created but not started, the radio buttons don't work right
-- Game does not declare the correct winner
-- Create game componenet not properly listening to game state change, specifically if another person adds a new team
-- Only the host should have the start game button
-- A bad response from the client crashes causes an exception that stops the server
+##[ ] # Bugs
+- [ ] If you click the join button after start, the UI is odd
+- [ ] Units can be placed off the board, if there are lots of units
+- [ ] Validate the client endpoint with a request/response
+- [ ] Limit the characters for name and urls
+- [ ] If there are multiple games created but not started, the radio buttons don't work right
+- [ ] Game does not declare the correct winner
+- [ ] Create game componenet not properly listening to game state change, specifically if another person adds a new team
+- [ ] Only the host should have the start game button
+- [ ] A bad response from the client crashes causes an exception that stops the server
 
 
