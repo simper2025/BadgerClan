@@ -37,6 +37,19 @@
 
 
             <Button
+                Text="Turtle" 
+                Command="{Binding ActivateTurtleCommand}"
+                HorizontalOptions="Fill" >
+                <Button.Triggers>
+                    <DataTrigger
+                       TargetType="Button"
+                        Binding="{Binding ActiveMode}"
+                        Value="Turtle">
+                        <Setter Property="IsEnabled" Value="False" />
+                    </DataTrigger>
+                </Button.Triggers>
+            </Button>
+            <Button
                 Text="Do Nothing" 
                 Command="{Binding ActivateDoNothingCommand}"
                 HorizontalOptions="Fill" >
@@ -50,19 +63,6 @@
                 </Button.Triggers>
             </Button>
 
-            <Button
-     Text="Do Nothing" 
-     Command="{Binding ActivateTurtleCommand}"
-     HorizontalOptions="Fill" >
-                <Button.Triggers>
-                    <DataTrigger
-             TargetType="Button"
-             Binding="{Binding ActiveMode}"
-             Value="Turtle">
-                        <Setter Property="IsEnabled" Value="False" />
-                    </DataTrigger>
-                </Button.Triggers>
-            </Button>
         </VerticalStackLayout>
     </ScrollView>
 
