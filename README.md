@@ -28,6 +28,10 @@ A simple game of hexagonal tiles.
 1. Notice that the terminal window with your Sample BadgerClan Bot is starting to spit out logs. That shows the server is talking to the client.  
     ![Sample client bot output](docs/clientOutput.png)
 
+## Demo - How you can run this on your machine
+![Demo video](docs/BadgerClanDemo.gif)
+> Don't forget to set the startup project to "Client and Server" (not BadgerClan.Client or BadgerClan.Web)
+
 ## Customizing your bot
 1. Navigate to BadgerClan.Client and open its Program.cs file
 1. Look for the comment that says "Your code goes right here".

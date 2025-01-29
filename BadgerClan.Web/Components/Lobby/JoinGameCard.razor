@@ -4,20 +4,19 @@
 @inject ILogger<JoinGameCard> logger
 @inject NavigationManager navManager
 
-<div class="col-md-4">
+<div class="col-lg-3 col-md-4 col-sm-6">
     <div class="card mb-3">
         <div class="card-body">
             <h5 class="card-title">@Game.Name</h5>
             <div style="background-color: azure; padding: 5px;">
                 <div class="row">
-                    <div class="col">
+                    <div class="col-auto">
                         <label for="botName" class="form-label fs-6 mb-0">Bot Name</label>
                     </div>
-                    <div class="col">
+                    <div class="col-sm-12">
                         <input type="text"
                         id="botName"
                         class="form-control me-2"
-                        style="width: auto;"
                         @bind="newBotName" />
                     </div>
                 </div>
