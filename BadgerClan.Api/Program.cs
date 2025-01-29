@@ -1,3 +1,8 @@
+using BadgerClan.Api.Moves;
+using BadgerClan.Logic;
+using BadgerClan.Logic.Bot;
+using Microsoft.AspNetCore.Http.HttpResults;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -14,28 +19,35 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+string url = app.Configuration["ASPNETCORE_URLS"]?.Split(";").Last() ?? throw new Exception("Unable to find URL");
+int port = new Uri(url).Port;
 
-app.MapGet("/weatherforecast", () =>
+
+
+app.MapGet("/RunAndGun", (HttpContext context) =>
 {
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
+    app.Logger.LogInformation("Received Run and Gun Request");
+    Strategies.Strategy = "runandgun";
+});
+
+app.MapPost("/", (MoveRequest request) =>
+{
+    app.Logger.LogInformation("Received move request for game {gameId} turn {turnNumber}", request.GameId, request.TurnNumber);
+    var moves = new List<Move>();
+
+    switch (Strategies.Strategy)
+    {
+        case "runandgun":
+            Strategies.RunAndGun(request, moves);
+            break;
+        default:
+            app.Logger.LogInformation("No strategie chose.");
+            break;
+    }
+    return new MoveResponse(moves);
+
+
+});
 
 app.Run();
 
-internal record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

@@ -1,8 +1,13 @@
 {
-  "profiles": {
-    "Windows Machine": {
-      "commandName": "Project",
-      "nativeDebugging": false
+    "profiles": {
+        "Windows Machine": {
+            "commandName": "Project",
+            "nativeDebugging": false
+        },
+        "BadgerClan.MAUI": {
+            "commandName": "Project",
+            "environmentVariables": {
+                "ApiServiceUrl": "http://localhost:5183"
+            }
+        }
     }
-  }
-}
