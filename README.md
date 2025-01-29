@@ -51,7 +51,7 @@ Coordinate System: https://www.redblobgames.com/grids/hexagons/
 ## Development Work
 
 ### Game Design
-- Improve effectiveness of Medpacs
+- [ ] Improve effectiveness of Medpacs
 - After some rounds of no units dieing, every Unit loses one hitpoint
 - If everyone dies as the same time (stalemate) tiebreakers are
     - Team with most kills
