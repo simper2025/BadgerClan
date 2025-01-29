@@ -59,7 +59,6 @@ Coordinate System: https://www.redblobgames.com/grids/hexagons/
 - [ ] Track number of kills
 
 ### Features
-- [ ] Delete the weather and counter page
 - [ ] Limit the number of player
 - [ ] Ability to boot players from a game that hasn't started
 - [ ] Host can end the game from the game page
@@ -67,9 +66,10 @@ Coordinate System: https://www.redblobgames.com/grids/hexagons/
 - [ ] Limit the size of the client move list
 - [ ] Don't make calls to dead teams
 - [ ] Ability for the host to restart the game with the same players
+- [x] Delete the weather and counter page
 
 
-##[ ] # Bugs
+### Bugs
 - [ ] If you click the join button after start, the UI is odd
 - [ ] Units can be placed off the board, if there are lots of units
 - [ ] Validate the client endpoint with a request/response
