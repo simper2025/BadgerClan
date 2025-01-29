@@ -7,7 +7,7 @@ namespace BadgerClan.MAUI.ViewModels;
 public partial class MainPageViewModel(IApiService apiService) : ObservableObject
 {
     [ObservableProperty]
-    private string activeMode;
+    private string activeMode = "Do Nothing";
 
     public string ApiUri { get => apiService.GetClientUri();}
 
