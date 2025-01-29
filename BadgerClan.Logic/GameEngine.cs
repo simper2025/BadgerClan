@@ -90,8 +90,17 @@ public class GameEngine
         state.IncrementTurn();
     }
 
+    private const int MAX_HEALING = 15;
+    private const int SQUAD_SIZE = 6;
     public static int CalculateMeds(int unitsLeft, int totalUnits)
     {
-        return (unitsLeft + 5) / 10;
+        double units = unitsLeft - SQUAD_SIZE;
+        double total = totalUnits - SQUAD_SIZE;
+        double percentDead = units / total;
+
+        double healingFactor = Math.Sin((Math.PI / 2) * percentDead);
+        int healing = (int)(MAX_HEALING * healingFactor);
+
+        return healing > 0 ? healing : 0;
     }
 }
