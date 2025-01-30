@@ -65,7 +65,7 @@ Coordinate System: https://www.redblobgames.com/grids/hexagons/
 ### Features
 - [ ] Limit the number of players
 - [ ] Ability to boot players from a game that hasn't started
-- [ ] Host can end the game from the game page, in cases of stalemate or false start
+- [x] Host can end the game from the game page, in cases of stalemate or false start
 - [ ] Timeout the calls to clients
 - [ ] Limit the size of the client move list
 - [ ] Don't make calls to dead teams
@@ -82,16 +82,16 @@ Coordinate System: https://www.redblobgames.com/grids/hexagons/
 - [ ] Limit the characters for name and urls
 - [X] If there are multiple games created but not started, the radio buttons don't work right
 - [ ] Game does not declare the correct winner
-- [ ] Create game component not properly listening to game state change, specifically if another person adds a new team
+- [x] Create game component not properly listening to game state change, specifically if another person adds a new team
 - [X] Only the host should have the start game button
 - [ ] A bad response from the client crashes causes an exception that stops the server
 - [ ] Review GameEngine.ProcessTurn(), Attack does not have the same rounding benefit as Walk, is that intentional?
 
 ### Documentation
-- [ ] Example tutorial for moving around
+- [x] Example tutorial for moving around
 - [ ] Example tutorial for determining boundaries
-- [ ] Example tutorial for identifying nearest enemies
-- [ ] Example tutorial for a sample bot
+- [x] Example tutorial for identifying nearest enemies
+- [x] Example tutorial for a sample bot
 
 ### Code Quality
 - [ ] Rename Unit.Moves to ActionsRemainingThisTurn (or something similar)
