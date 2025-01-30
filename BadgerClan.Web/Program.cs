@@ -3,6 +3,7 @@
 using BadgerClan.Logic;
 using BadgerClan.Logic.Bot;
 using BadgerClan.Web.Components;
+using BadgerClan.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,8 @@ builder.Services.AddRazorComponents()
 builder.Services.AddSingleton<Lobby>();
 builder.Services.AddSingleton<BotStore>();
 builder.Services.AddHttpClient();
+builder.Services.AddScoped<CurrentUserService>();
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 

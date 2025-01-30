@@ -3,6 +3,7 @@
 @inject Lobby lobby
 @inject ILogger<JoinGameCard> logger
 @inject NavigationManager navManager
+@inject CurrentUserService CurrentUserService
 
 <div class="col-lg-3 col-md-6 col-sm-12">
     <div class="card mb-3">
@@ -59,7 +60,7 @@
                 <p class="card-text">Created: @Game.Created.Humanize()</p>
             </div>
             <div class="row">
-                <div class="col">
+                <div class="col-auto">
                     <h4>Current Players</h4>
                     @if (Game.TeamNames.Any())
                     {
@@ -74,11 +75,10 @@
                 <div class="col">
                 </div>
             </div>
-            @if (Game.TeamList.Count > 1)
+            @if (Game.TeamList.Count > 1 && lobby.UserCreatedGame(CurrentUserService.CurrentUserId, Game))
             {
                 <div class="row">
                     <button class="btn btn-warning" @onclick=startGame>Start Game</button>
-
                 </div>
             }
             <button class="btn btn-secondary" @onclick=@(()=> navManager.NavigateTo($"/game/{Game.Id}"))>View
@@ -170,7 +170,7 @@
 
     private void startGame()
     {
-        lobby.StartGame(Game);
+        lobby.StartGame(CurrentUserService.CurrentUserId, Game);
         navManager.NavigateTo($"/game/{Game.Id}");
     }
 

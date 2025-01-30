@@ -2,11 +2,12 @@
 @using BadgerClan.Web.Components.GameComponents
 @inject Lobby lobby
 @inject NavigationManager NavigationManager
+@inject CurrentUserService CurrentUserService
 
 <h3>Game: @game.Name</h3>
-@if (game != null && game.TeamList.Count > 1 && game.TurnNumber == 0)
+@if (game != null && game.TeamList.Count > 1 && game.TurnNumber == 0 && lobby.UserCreatedGame(CurrentUserService.CurrentUserId, game))
 {
-    <button class="btn btn-primary" @onclick=@(() => lobby.StartGame(game))>Start Game</button>
+    <button class="btn btn-primary" @onclick=@(() => lobby.StartGame(CurrentUserService.CurrentUserId, game))>Start Game</button>
 }
 @if (game.IsGameOver)
 {
