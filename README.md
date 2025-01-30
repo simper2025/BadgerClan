@@ -85,9 +85,14 @@ Coordinate System: https://www.redblobgames.com/grids/hexagons/
 - [ ] Create game componenet not properly listening to game state change, specifically if another person adds a new team
 - [ ] Only the host should have the start game button
 - [ ] A bad response from the client crashes causes an exception that stops the server
+- [ ] Review GameEngine.ProcessTurn(), Attack does not have the same rounding benefit as Walk, is that intentional?
 
 ### Documentation
 - [ ] Example tutorial for moving around
 - [ ] Example tutorial for determining boundaries
 - [ ] Example tutorial for identifying nearest enemies
 - [ ] Example tutorial for a sample bot
+
+### Code Quality
+- [ ] Rename Unit.Moves to ActionsRemainingThisTurn (or something similar)
+- [ ] Rename AttackCount to ActionsCostPerAttack (or something similar)
