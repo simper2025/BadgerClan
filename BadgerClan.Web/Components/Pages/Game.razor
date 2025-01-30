@@ -4,6 +4,10 @@
 @inject NavigationManager NavigationManager
 
 <h3>Game: @game.Name</h3>
+@if (game != null && game.TeamList.Count > 1 && game.TurnNumber == 0)
+{
+    <button class="btn btn-primary" @onclick=@(() => lobby.StartGame(game))>Start Game</button>
+}
 @if (game.IsGameOver)
 {
     <h2 class="text-success">@game.CurrentTeam.Name wins!</h2>

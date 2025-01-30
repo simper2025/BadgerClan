@@ -1,28 +1,35 @@
 ﻿@using Humanizer
 @inject Lobby lobby
 
-@if (pastGames.Any())
-{
-    <h3>Past Games</h3>
-    <div class="row">
-        @foreach (var game in pastGames)
-        {
-            <div class="col">
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <div class="card-title fs-3">
-                            <a href=@($"/game/{game.Id}")>@game.Name</a>
-                        </div>
-                        <div class="card-text">
-                            <p>Winner: @game.CurrentTeam.Name</p>
-                            <p>Ended: @game.LastMove.Humanize()</p>
+
+<div class="bg-body-secondary p-3 border rounded-3 mt-3">
+    <h3 class="text-center">Past Games</h3>
+    @if (pastGames.Any())
+    {
+        <div class="row">
+            @foreach (var game in pastGames)
+            {
+                <div class="col">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="card-title fs-3">
+                                <a href=@($"/game/{game.Id}")>@game.Name</a>
+                            </div>
+                            <div class="card-text">
+                                <p>Winner: @game.CurrentTeam.Name</p>
+                                <p>Ended: @game.LastMove.Humanize()</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        }
-    </div>
-}
+            }
+        </div>
+    }
+    else
+    {
+        <div class="text-secondary text-center">No Past Games</div>
+    }
+</div>
 
 @code {
     private IEnumerable<GameState> pastGames => lobby.Games.Where(g => g.IsGameOver);

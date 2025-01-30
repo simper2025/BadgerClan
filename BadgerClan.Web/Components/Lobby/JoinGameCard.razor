@@ -4,7 +4,7 @@
 @inject ILogger<JoinGameCard> logger
 @inject NavigationManager navManager
 
-<div class="col-lg-3 col-md-4 col-sm-6">
+<div class="col-lg-3 col-md-6 col-sm-12">
     <div class="card mb-3">
         <div class="card-body">
             <h5 class="card-title">@Game.Name</h5>
@@ -14,10 +14,7 @@
                         <label for="botName" class="form-label fs-6 mb-0">Bot Name</label>
                     </div>
                     <div class="col-sm-12">
-                        <input type="text"
-                        id="botName"
-                        class="form-control me-2"
-                        @bind="newBotName" />
+                        <input type="text" id="botName" class="form-control me-2" @bind="newBotName" />
                     </div>
                 </div>
                 <div class="row">
@@ -25,26 +22,31 @@
                 </div>
                 <div class="row">
                     <div class="form-check ms-4">
-                        <input class="form-check-input" type="radio" name="botEngine" value="custom" id="custom" checked @onchange=botEngineChange />
+                        <input class="form-check-input" type="radio" name="botEngine" value="custom" id="custom" checked
+                            @onchange=botEngineChange />
                         <label for="custom" class="form-check-label">Custom</label>
-                        <input type="text" class="form-control" @bind="joinUrl" placeholder="https://yourserver:1234" style="width: 90%;" />
+                        <input type="text" class="form-control" @bind="joinUrl" placeholder="https://yourserver:1234"
+                            style="width: 90%;" />
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-check ms-4">
-                        <input class="form-check-input" type="radio" name="botEngine" value="runAndGun" id="runAndGun" @onchange=botEngineChange />
+                        <input class="form-check-input" type="radio" name="botEngine" value="runAndGun" id="runAndGun"
+                            @onchange=botEngineChange />
                         <label for="runAndGun" class="form-check-label">Run &amp; Gun</label>
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-check ms-4">
-                        <input class="form-check-input" type="radio" name="botEngine" value="turtle" id="turtle" @onchange=botEngineChange />
+                        <input class="form-check-input" type="radio" name="botEngine" value="turtle" id="turtle"
+                            @onchange=botEngineChange />
                         <label for="turtle" class="form-check-label">Turtle</label>
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-check ms-4">
-                        <input class="form-check-input" type="radio" name="botEngine" value="nothing" id="nothing" @onchange=botEngineChange />
+                        <input class="form-check-input" type="radio" name="botEngine" value="nothing" id="nothing"
+                            @onchange=botEngineChange />
                         <label for="nothing" class="form-check-label">Do-Nothing</label>
                     </div>
                 </div>
@@ -76,8 +78,11 @@
             {
                 <div class="row">
                     <button class="btn btn-warning" @onclick=startGame>Start Game</button>
+                    
                 </div>
             }
+            <button class="btn btn-secondary" @onclick=@(()=> navManager.NavigateTo($"/game/{Game.Id}"))>View
+                        Game</button>
             <div class="text-bg-warning">
                 @error
             </div>

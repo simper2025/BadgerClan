@@ -1,9 +1,9 @@
 ﻿@inject Lobby lobby
 
-<div style=@style>
+<div class="bg-body-secondary p-3 border rounded-3">
     <form @onsubmit="create">
         <input type="text" class="form-control mb-1" @bind="gameName" placeholder="Game name" />
-        <button class="btn btn-secondary px-3" type="submit">Create New Game</button>
+        <button class="btn btn-secondary px-3 w-100" type="submit">Create New Game</button>
     </form>
 </div>
 
