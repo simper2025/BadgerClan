@@ -71,6 +71,7 @@ Coordinate System: https://www.redblobgames.com/grids/hexagons/
 - [ ] Don't make calls to dead teams
 - [ ] Ability for the host to restart the game with the same players
 - [ ] Add a game leader board
+- [ ] Game Log 
 
 - [x] Delete the weather and counter page
 
