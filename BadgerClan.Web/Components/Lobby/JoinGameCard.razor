@@ -22,7 +22,7 @@
                 </div>
                 <div class="row">
                     <div class="form-check ms-4">
-                        <input class="form-check-input" type="radio" name="botEngine" value="custom" id="custom" checked
+                        <input class="form-check-input" type="radio" name=@($"botEngine{thisInstanceId}") value="custom" id="custom" checked
                             @onchange=botEngineChange />
                         <label for="custom" class="form-check-label">Custom</label>
                         <input type="text" class="form-control" @bind="joinUrl" placeholder="https://yourserver:1234"
@@ -31,21 +31,21 @@
                 </div>
                 <div class="row">
                     <div class="form-check ms-4">
-                        <input class="form-check-input" type="radio" name="botEngine" value="runAndGun" id="runAndGun"
+                        <input class="form-check-input" type="radio" name=@($"botEngine{thisInstanceId}") value="runAndGun" id="runAndGun"
                             @onchange=botEngineChange />
                         <label for="runAndGun" class="form-check-label">Run &amp; Gun</label>
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-check ms-4">
-                        <input class="form-check-input" type="radio" name="botEngine" value="turtle" id="turtle"
+                        <input class="form-check-input" type="radio" name=@($"botEngine{thisInstanceId}") value="turtle" id="turtle"
                             @onchange=botEngineChange />
                         <label for="turtle" class="form-check-label">Turtle</label>
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-check ms-4">
-                        <input class="form-check-input" type="radio" name="botEngine" value="nothing" id="nothing"
+                        <input class="form-check-input" type="radio" name=@($"botEngine{thisInstanceId}") value="nothing" id="nothing"
                             @onchange=botEngineChange />
                         <label for="nothing" class="form-check-label">Do-Nothing</label>
                     </div>
@@ -78,7 +78,7 @@
             {
                 <div class="row">
                     <button class="btn btn-warning" @onclick=startGame>Start Game</button>
-                    
+
                 </div>
             }
             <button class="btn btn-secondary" @onclick=@(()=> navManager.NavigateTo($"/game/{Game.Id}"))>View
@@ -91,6 +91,8 @@
 </div>
 
 @code {
+    private static int nextInstanceId = 1;
+    private int thisInstanceId = 1;
     public string SelectedBotEngine { get; set; } = "custom";
     [Parameter]
     public required GameState Game { get; set; }
@@ -174,6 +176,7 @@
 
     protected override void OnInitialized()
     {
+        thisInstanceId = nextInstanceId++;
         lobby.LobbyChanged += (e) => InvokeAsync(StateHasChanged);
         Game.GameChanged += (e) => InvokeAsync(StateHasChanged);
     }

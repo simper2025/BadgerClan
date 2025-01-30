@@ -80,7 +80,7 @@ Coordinate System: https://www.redblobgames.com/grids/hexagons/
 - [ ] Units can be placed off the board, if there are lots of units
 - [ ] Validate the client endpoint with a request/response
 - [ ] Limit the characters for name and urls
-- [ ] If there are multiple games created but not started, the radio buttons don't work right
+- [X] If there are multiple games created but not started, the radio buttons don't work right
 - [ ] Game does not declare the correct winner
 - [ ] Create game componenet not properly listening to game state change, specifically if another person adds a new team
 - [ ] Only the host should have the start game button
