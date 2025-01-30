@@ -82,8 +82,8 @@ Coordinate System: https://www.redblobgames.com/grids/hexagons/
 - [ ] Limit the characters for name and urls
 - [X] If there are multiple games created but not started, the radio buttons don't work right
 - [ ] Game does not declare the correct winner
-- [ ] Create game componenet not properly listening to game state change, specifically if another person adds a new team
-- [ ] Only the host should have the start game button
+- [ ] Create game component not properly listening to game state change, specifically if another person adds a new team
+- [X] Only the host should have the start game button
 - [ ] A bad response from the client crashes causes an exception that stops the server
 - [ ] Review GameEngine.ProcessTurn(), Attack does not have the same rounding benefit as Walk, is that intentional?
 
