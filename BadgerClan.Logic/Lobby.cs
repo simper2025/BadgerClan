@@ -41,6 +41,16 @@ public class Lobby(ILogger<Lobby> logger)
             Task.Run(async () => await ProcessTurnAsync(game, source.Token), source.Token);
         }
     }
+
+    public void StopGame(Guid gameCreatorId, GameState game)
+    {
+        if (UserCreatedGame(gameCreatorId, game) && gameTokens.ContainsKey(game.Id))
+        {
+            gameTokens[game.Id].Cancel();
+            gameTokens.Remove(game.Id);
+        }
+    }
+
     private async Task ProcessTurnAsync(GameState game, CancellationToken ct)
     {
         while (game.Running || game.TurnNumber == 0)

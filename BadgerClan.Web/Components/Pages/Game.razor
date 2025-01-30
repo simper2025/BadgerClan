@@ -16,6 +16,10 @@
 else
 {
     <p>Turn: @game.TurnNumber</p>
+    @if(isGameOwner)
+    {
+        <button class="btn btn-outline-warning" @onclick=stopGame>Stop Game</button>
+    }
 }
 
 <BoardComponent State=game />
@@ -25,6 +29,8 @@ else
     public required string GameId { get; set; }
 
     public required GameState game;
+
+    bool isGameOwner => lobby.UserCreatedGame(CurrentUserService.CurrentUserId, game);
 
     protected override void OnParametersSet()
     {
@@ -38,4 +44,6 @@ else
         game.GameChanged += (_) => InvokeAsync(StateHasChanged);
         game.GameEnded += (_) => InvokeAsync(StateHasChanged);
     }
+
+    void stopGame() => lobby.StopGame(CurrentUserService.CurrentUserId, game);
 }

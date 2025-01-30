@@ -125,6 +125,7 @@ public class GameState
     {
         TeamList.Add(team);
         turnOrder.Add(team.Id);
+        GameChanged?.Invoke(this);
     }
 
     public void LayoutStartingPositions(List<string> units)
