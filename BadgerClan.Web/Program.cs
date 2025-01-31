@@ -36,46 +36,31 @@ app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
 
-app.MapPost("/bots/turtle", async (MoveRequest request, ILogger<Program> logger, BotStore botStore) =>
+app.MapPost("/bots/{botname}", 
+    async (string botname, MoveRequest request, ILogger<Program> logger, BotStore botStore) =>
 {
-    logger.LogInformation("turtle moved in game {gameId} Turn #{TurnNumber}", request.GameId, request.TurnNumber);
+    logger.LogInformation("{botname} moved in game {gameId} Turn #{TurnNumber}", 
+        botname, request.GameId, request.TurnNumber);
+
     var currentTeam = new Team(request.YourTeamId)
     {
         Medpacs = request.Medpacs
     };
     var gameState = new GameState(request.GameId, request.BoardSize, request.TurnNumber, request.Units.Select(FromDto), request.TeamIds, currentTeam);
-    var turtle = botStore.GetBot<Turtle>(gameState.Id, currentTeam.Id);
-
-    return new MoveResponse(await turtle.PlanMovesAsync(gameState));
-});
-
-
-app.MapPost("/bots/nothing", async (MoveRequest request, ILogger<Program> logger, BotStore botStore) =>
-{
-    logger.LogInformation("runandgun moved in game {gameId} Turn #{TurnNumber}", request.GameId, request.TurnNumber);
-    var currentTeam = new Team(request.YourTeamId)
+    
+    var ibot = botStore.GetBot<NothingBot>(gameState.Id, currentTeam.Id);
+    switch (botname)
     {
-        Medpacs = request.Medpacs
-    };
-    var gameState = new GameState(request.GameId, request.BoardSize, request.TurnNumber, request.Units.Select(FromDto), request.TeamIds, currentTeam);
-    var donothing = botStore.GetBot<NothingBot>(gameState.Id, currentTeam.Id);
-
-    return new MoveResponse(await donothing.PlanMovesAsync(gameState));
+        case "turtle":
+            ibot = botStore.GetBot<Turtle>(gameState.Id, currentTeam.Id);
+            break;
+        case "runandgun":
+            ibot = botStore.GetBot<RunAndGun>(gameState.Id, currentTeam.Id);
+            break;
+    }
+    return new MoveResponse(await ibot.PlanMovesAsync(gameState));
 });
 
-
-app.MapPost("/bots/runandgun", async (MoveRequest request, ILogger<Program> logger, BotStore botStore) =>
-{
-    logger.LogInformation("runandgun moved in game {gameId} Turn #{TurnNumber}", request.GameId, request.TurnNumber);
-    var currentTeam = new Team(request.YourTeamId)
-    {
-        Medpacs = request.Medpacs
-    };
-    var gameState = new GameState(request.GameId, request.BoardSize, request.TurnNumber, request.Units.Select(FromDto), request.TeamIds, currentTeam);
-    var runAndGun = botStore.GetBot<RunAndGun>(gameState.Id, currentTeam.Id);
-
-    return new MoveResponse(await runAndGun.PlanMovesAsync(gameState));
-});
 
 app.Run();
 
