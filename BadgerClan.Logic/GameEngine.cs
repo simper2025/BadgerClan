@@ -1,5 +1,7 @@
 ﻿
 
+using System.ComponentModel;
+
 namespace BadgerClan.Logic;
 
 public class GameEngine
@@ -43,12 +45,15 @@ public class GameEngine
                     if (canMove && defender == null &&
                         state.IsOnBoard(movedLocation))
                     {
+                        var startingLocation = unit.Location;
                         unit.Location = movedLocation;
                         unit.Moves -= distance;
                         state.Logs.Add(new GameLog(
                             TurnNumber: state.TurnNumber,
-                            Type: LogType.Moved
-
+                            Type: LogType.Moved,
+                            UnitId: unit.Id,
+                            SourceCoordinate: startingLocation,
+                            DestinationCoordinate: movedLocation
                         ));
                     }
                     break;

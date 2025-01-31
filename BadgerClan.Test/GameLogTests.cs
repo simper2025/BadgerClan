@@ -26,10 +26,21 @@ public class GameLogTests
 
 
     var moves = await bot1.PlanMovesAsync(state);
+    var unitStartingLocation = state.Units.First(u => u.Team == team1.Id).Location;
 
     GameEngine.ProcessTurn(state, moves);
 
     Assert.Single(state.Logs);
+    var log = state.Logs[0];
+    Assert.Equal(moves[0].UnitId, log.UnitId);
 
+    Assert.NotNull(log.SourceCoordinate);
+    Assert.Equal(unitStartingLocation.Q, log.SourceCoordinate!.Q);
+    Assert.Equal(unitStartingLocation.R, log.SourceCoordinate!.R);
+
+
+    Assert.NotNull(log.DestinationCoordinate);
+    Assert.Equal(moves[0].Target!.Q, log.DestinationCoordinate!.Q);
+    Assert.Equal(moves[0].Target!.R, log.DestinationCoordinate!.R);
   }
 }
