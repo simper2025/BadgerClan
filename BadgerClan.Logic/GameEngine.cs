@@ -45,6 +45,11 @@ public class GameEngine
                     {
                         unit.Location = movedLocation;
                         unit.Moves -= distance;
+                        state.Logs.Add(new GameLog(
+                            TurnNumber: state.TurnNumber,
+                            Type: LogType.Moved
+
+                        ));
                     }
                     break;
 
