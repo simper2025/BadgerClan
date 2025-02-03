@@ -16,7 +16,7 @@
                                 <a href=@($"/game/{game.Id}")>@game.Name</a>
                             </div>
                             <div class="card-text">
-                                <p>Winner: @game.CurrentTeam.Name</p>
+                                <p>Winner: @game.GetWinner().Name</p>
                                 <p>Ended: @game.LastMove.Humanize()</p>
                             </div>
                         </div>

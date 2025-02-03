@@ -11,7 +11,7 @@
 }
 @if (game.IsGameOver)
 {
-    <h2 class="text-success">@game.CurrentTeam.Name wins!</h2>
+    <h2 class="text-success">@game.GetWinner().Name wins!</h2>
 }
 else
 {

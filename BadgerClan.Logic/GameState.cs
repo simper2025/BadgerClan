@@ -31,6 +31,15 @@ public class GameState
             GameEnded?.Invoke(this);
         }
     }
+
+    public Team GetWinner()
+    {
+        if (IsGameOver)
+        {
+            return TeamList.FirstOrDefault(t => t.Id == Units.Select(u => u.Team).First());
+        }
+        return new Team(-1);
+    }
     public DateTime LastMove { get; set; } = DateTime.Now;
 
     private int currentTeamId = 0;

@@ -37,7 +37,16 @@ public class NetworkBot : IBot
             state.CurrentTeam.Medpacs
         );
         var response = await client.PostAsJsonAsync("", moveRequest);
-        var moveResponse = await response.Content.ReadFromJsonAsync<MoveResponse>();
+        MoveResponse moveResponse;
+        try
+        {
+            moveResponse = await response.Content.ReadFromJsonAsync<MoveResponse>();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            moveResponse = new MoveResponse(new List<Move>());
+        }
         return moveResponse?.Moves ?? [];
     }
 }
