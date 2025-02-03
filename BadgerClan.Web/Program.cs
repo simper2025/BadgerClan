@@ -47,8 +47,8 @@ app.MapPost("/bots/{botname}",
         Medpacs = request.Medpacs
     };
     var gameState = new GameState(request.GameId, request.BoardSize, request.TurnNumber, request.Units.Select(FromDto), request.TeamIds, currentTeam);
-    
-    var ibot = botStore.GetBot<NothingBot>(gameState.Id, currentTeam.Id);
+
+    IBot ibot;
     switch (botname)
     {
         case "turtle":
@@ -56,6 +56,9 @@ app.MapPost("/bots/{botname}",
             break;
         case "runandgun":
             ibot = botStore.GetBot<RunAndGun>(gameState.Id, currentTeam.Id);
+            break;
+        default:
+            ibot = botStore.GetBot<NothingBot>(gameState.Id, currentTeam.Id);
             break;
     }
     return new MoveResponse(await ibot.PlanMovesAsync(gameState));
