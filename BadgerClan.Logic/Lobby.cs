@@ -56,17 +56,18 @@ public class Lobby(ILogger<Lobby> logger)
         while (game.Running || game.TurnNumber == 0)
         {
             ct.ThrowIfCancellationRequested();
-
-            logger.LogInformation("Asking {team} for moves", game.CurrentTeam.Name);
             try
             {
+                logger.LogInformation("Asking {team} for moves", game.CurrentTeam.Name);
                 var moves = await game.CurrentTeam.PlanMovesAsync(game);
+
+                logger.LogInformation("Got {movecount} moves", moves.Count);
                 GameEngine.ProcessTurn(game, moves);
             }
             catch (Exception ex)
             {
                 logger.LogError(ex, "Error getting moves for {team}", game.CurrentTeam.Name);
-                return;
+                GameEngine.ProcessTurn(game, new());
             }
 
             Thread.Sleep(TickInterval);

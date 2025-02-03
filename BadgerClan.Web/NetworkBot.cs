@@ -3,7 +3,11 @@ using BadgerClan.Logic.Bot;
 
 public class NetworkBot : IBot
 {
-    HttpClient client = new();
+    HttpClient client = new()
+    { 
+        Timeout = TimeSpan.FromSeconds(.5)
+    };
+
     public NetworkBot(Uri endpoint)
     {
         client.BaseAddress = endpoint;
