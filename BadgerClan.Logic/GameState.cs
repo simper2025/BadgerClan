@@ -31,6 +31,15 @@ public class GameState
             GameEnded?.Invoke(this);
         }
     }
+
+    public Team GetWinner()
+    {
+        if (IsGameOver)
+        {
+            return TeamList.FirstOrDefault(t => t.Id == Units.Select(u => u.Team).First());
+        }
+        return new Team(-1);
+    }
     public DateTime LastMove { get; set; } = DateTime.Now;
 
     private int currentTeamId = 0;
@@ -55,6 +64,14 @@ public class GameState
             if (TurnNumber == 0)
                 return false;
             return Units.Select(u => u.Team).Distinct().Count() > 1;
+        }
+    }
+
+    public int NextMedpac
+    {
+        get
+        {
+            return GameEngine.CalculateMeds(Units.Count, TotalUnits);
         }
     }
 
@@ -101,7 +118,10 @@ public class GameState
 
     public void IncrementTurn()
     {
-        currentTeamId = AdvanceTeam();
+        do
+        {
+            currentTeamId = AdvanceTeam();
+        } while (Units.Count > 0 && !Units.Any(u => u.Team == currentTeamId));
         TurnNumber++;
         GameChanged?.Invoke(this);
         LastMove = DateTime.Now;
@@ -172,8 +192,30 @@ public class GameState
 
     private Coordinate FitToBoard(Unit unit, List<Unit> units)
     {
-        var retval = unit.Location.Copy();
+        var retval =  unit.Location.Copy();
+        if(!IsOnBoard(retval))
+            retval = teamMateLocationOrZero(unit, units);
 
+        var start = retval;
+        var neighbors = new List<Coordinate>();
+        var neighborDistance = 1;
+
+        while (units.Any(u => u.Location == retval) || !IsOnBoard(retval))
+        {
+            if (!neighbors.Any())
+            {
+                neighbors = start.Neighbors(neighborDistance++);
+            }
+            retval = neighbors[0];
+            neighbors.RemoveAt(0);
+        }
+
+        return retval;
+    }
+
+    private Coordinate teamMateLocationOrZero(Unit unit, List<Unit> units)
+    {
+        var retval = unit.Location.Copy();
         if (!IsOnBoard(unit.Location))
         {
             if (units.Any(u => u.Team == unit.Team))
@@ -182,27 +224,6 @@ public class GameState
             else
                 retval = Coordinate.Offset(0, 0);
         }
-
-        var start = retval.Copy();
-        var neighbors = retval.Neighbors();
-
-        while (units.Any(u => u.Location == retval))
-        {
-            var target = retval.MoveEast(1);
-
-            if (neighbors.Any())
-            {
-                target = neighbors[0];
-                neighbors.RemoveAt(0);
-            }
-
-            if (!IsOnBoard(target))
-            {
-                target = retval.MoveSouthWest(1);
-            }
-            retval = target;
-        }
-
         return retval;
     }
 

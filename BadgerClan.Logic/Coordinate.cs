@@ -35,7 +35,13 @@ public class Coordinate : IEquatable<Coordinate>
         this.R = R;
     }
 
+
     #region object methods
+    public override string ToString()
+    {
+        return $"Coordinate {{ Q = {Q}, R = {R}, Col = {Col}, Row = {Row} }}";
+    }
+
     public Coordinate Copy()
     {
         return new Coordinate(Q, R);
@@ -111,16 +117,19 @@ public class Coordinate : IEquatable<Coordinate>
     }
 
 
-    public List<Coordinate> Neighbors()
+    public List<Coordinate> Neighbors(int distance = 1)
     {
-        var neighbors = new List<Coordinate>{
-            new Coordinate(Q-1, R+0),
-            new Coordinate(Q+0, R-1),
-            new Coordinate(Q+1, R-1),
-            new Coordinate(Q+1, R+0),
-            new Coordinate(Q+0, R+1),
-            new Coordinate(Q-1, R+1),
-        };
+        var neighbors = new List<Coordinate>();
+
+        for (var q = -distance; q <= distance; q++)
+        {
+            for (var r = -distance; r <= distance; r++)
+            {
+                var tempLoc = new Coordinate(Q + q, R + r);
+                if (Distance(tempLoc) == distance)
+                    neighbors.Add(tempLoc);
+            }
+        }
 
         return neighbors;
     }

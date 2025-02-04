@@ -12,6 +12,19 @@ public class MedpacTest
     }
 
     [Fact]
+    public void GameStateTellMedpac()
+    {
+        var state = new GameState();
+        var team = new List<string> { "Knight", "Knight", "Knight", "Knight", "Archer", "Archer" };
+        state.AddTeam(new Team(1));
+        state.AddTeam(new Team(2));
+        state.AddUnits(1, Coordinate.Offset(10, 10), team);
+        state.AddUnits(2, Coordinate.Offset(20, 20), team);
+
+        Assert.Equal(10, state.NextMedpac);
+    }
+
+    [Fact]
     public void GetMedpacAfterKill()
     {
         var state = new GameState();
@@ -87,16 +100,19 @@ public class MedpacTest
     }
 
     [Theory]
-    [InlineData(49, 50, 0)]
+    [InlineData(49, 50, 9)]
     // [InlineData(47, 50, 14)]
-    // [InlineData(28, 50, 7)]
-    // [InlineData(7, 50, 0)]
-    // [InlineData(2, 50, 0)]
-    // [InlineData(1, 50, 0)]
+    // [InlineData(28, 50, 5)]
+    [InlineData(7, 50, 0)]
+    [InlineData(2, 50, 0)]
+    [InlineData(1, 50, 0)]
     public void TestMedpacDirectly(int remaining, int start, int expected)
     {
         var meds = GameEngine.CalculateMeds(remaining, start);
         Assert.Equal(expected, meds);
     }
+
+
+
 
 }

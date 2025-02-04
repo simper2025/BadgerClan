@@ -89,9 +89,39 @@ public class CoordinateTests
     [Fact]
     public void GetNeighbors()
     {
-        var p1 = new Coordinate(4, 4);
+        var p1 = Coordinate.Offset(4, 4);
         var neighbors = p1.Neighbors();
         Assert.Equal(6, neighbors.Count);
+
+        Assert.Contains(Coordinate.Offset(3, 3), neighbors);
+        Assert.Contains(Coordinate.Offset(4, 3), neighbors);
+        Assert.Contains(Coordinate.Offset(5, 4), neighbors);
+        Assert.Contains(Coordinate.Offset(4, 5), neighbors);
+        Assert.Contains(Coordinate.Offset(3, 5), neighbors);
+        Assert.Contains(Coordinate.Offset(3, 4), neighbors);
+    }
+
+    [Fact]
+    public void GetNeighborsTwo()
+    {
+        var p1 = Coordinate.Offset(4, 4);
+        var neighbors = p1.Neighbors(2);
+        Assert.Equal(12, neighbors.Count);
+
+        Assert.Contains(Coordinate.Offset(3, 2), neighbors);
+        Assert.Contains(Coordinate.Offset(4, 2), neighbors);
+        Assert.Contains(Coordinate.Offset(5, 2), neighbors);
+        Assert.Contains(Coordinate.Offset(5, 3), neighbors);
+        Assert.Contains(Coordinate.Offset(6, 4), neighbors);
+        Assert.Contains(Coordinate.Offset(5, 5), neighbors);
+
+        Assert.Contains(Coordinate.Offset(5, 6), neighbors);
+        Assert.Contains(Coordinate.Offset(4, 6), neighbors);
+        Assert.Contains(Coordinate.Offset(3, 6), neighbors);
+        Assert.Contains(Coordinate.Offset(2, 5), neighbors);
+        Assert.Contains(Coordinate.Offset(2, 4), neighbors);
+        Assert.Contains(Coordinate.Offset(2, 3), neighbors);
+
     }
 
     [Fact]

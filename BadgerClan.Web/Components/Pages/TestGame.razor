@@ -6,11 +6,11 @@
 
 @if (state.IsGameOver)
 {
-    <h2 class="text-success">@state.CurrentTeam.Name wins!</h2>
+	<h2 class="text-success">@state.GetWinner().Name wins!</h2>
 }
 else
 {
-    <p>Turn: @state.TurnNumber <button @onclick="RunTurns">Run</button></p>
+	<p>Turn: @state.TurnNumber <button @onclick="RunTurns">Run</button></p>
 }
 
 <BoardComponent State=state />
@@ -18,92 +18,112 @@ else
 
 @code {
 
-    private GameEngine engine = new GameEngine();
-    private GameState state = new GameState();
-    private string status = "";
-    private int TickInterval = 30;
+	private GameEngine engine = new GameEngine();
+	private GameState state = new GameState();
+	private string status = "";
+	private int TickInterval = 30;
 
 
-    private CancellationTokenSource source = new CancellationTokenSource();
-    private CancellationToken ShouldStop => source.Token;
-    private bool Running = false;
+	private CancellationTokenSource source = new CancellationTokenSource();
+	private CancellationToken ShouldStop => source.Token;
+	private bool Running = false;
 
-    private List<string> squadUnits = new List<string> { "Knight", "Knight", "Archer", "Archer", "Knight", "Knight" };
+	private List<string> squadUnits = new List<string> {
+		"Knight", "Knight", "Archer", "Archer", "Knight", "Knight",
+		// "Knight", "Knight", "Archer", "Archer", "Knight", "Knight",
+		// "Knight", "Knight", "Archer", "Archer", "Knight", "Knight",
+		// "Knight", "Knight", "Archer", "Archer", "Knight", "Knight",
+		// "Knight", "Knight", "Archer", "Archer", "Knight", "Knight",
+		// "Knight", "Knight", "Archer", "Archer", "Knight", "Knight",
+		// "Knight", "Knight", "Archer", "Archer", "Knight", "Knight",
+		// "Knight", "Knight", "Archer", "Archer", "Knight", "Knight",
+	};
 
-    //Remove this eventually, use state.TeamList instead
-    private Dictionary<int, Team> teams = new Dictionary<int, Team>();
+	//Remove this eventually, use state.TeamList instead
+	private Dictionary<int, Team> teams = new Dictionary<int, Team>();
 
-    protected override Task OnInitializedAsync()
-    {
-        var newColor = PlayerHelpers.GetRandomColor();
+	protected override Task OnInitializedAsync()
+	{
+		var newColor = PlayerHelpers.GetRandomColor();
 
-        MakeTeam(new DevBot(), "red");
-        MakeTeam(new Turtle());
-        MakeTeam(new Turtle());
-        MakeTeam(new Turtle(2));
-        MakeTeam(new RunAndGun());
-        MakeTeam(new Turtle());
+		MakeTeam(new DevBot(), "red");
+		MakeTeam(new Turtle(3));
+		MakeTeam(new RunAndGun(), "blue");
+		MakeTeam(new Turtle(1));
+		MakeTeam(new Turtle(2));
+		MakeTeam(new RunAndGun());
 
-        state.LayoutStartingPositions(squadUnits);
+		state.LayoutStartingPositions(squadUnits);
 
-        //AddBorderUnits(state);
+		// AddBorderUnits(state, 1);
+		// AddCircleUnits(state, 1, Coordinate.Offset(35, 35), 1);
+		// AddCircleUnits(state, 2, Coordinate.Offset(35, 35), 2);
+		// AddCircleUnits(state, 3, Coordinate.Offset(35, 35), 3);
+		// AddCircleUnits(state, 4, Coordinate.Offset(35, 35), 4);
 
-        return Task.CompletedTask;
-    }
+		return Task.CompletedTask;
+	}
 
-    private void MakeTeam(IBot bot, string color = "")
-    {
-        if (string.IsNullOrEmpty(color))
-            color = PlayerHelpers.GetRandomColor();
+	private void MakeTeam(IBot bot, string color = "")
+	{
+		if (string.IsNullOrEmpty(color))
+			color = PlayerHelpers.GetRandomColor();
 
-        var team = new Team($"Team {color}", color, bot);
-        state.AddTeam(team);
-        teams.Add(team.Id, team);
-    }
+		var team = new Team($"Team {color}", color, bot);
+		state.AddTeam(team);
+		teams.Add(team.Id, team);
+	}
 
-    private void RunTurns()
-    {
-        if (Running)
-        {
-            source.Cancel();
-            Running = false;
-            return;
-        }
-        Running = true;
-        source = new CancellationTokenSource();
+	private void RunTurns()
+	{
+		if (Running)
+		{
+			source.Cancel();
+			Running = false;
+			return;
+		}
+		Running = true;
+		source = new CancellationTokenSource();
 
-        Task.Run(() => ProcessTurn(), source.Token);
-    }
+		Task.Run(() => ProcessTurn(), source.Token);
+	}
 
-    private async Task ProcessTurn()
-    {
-        while (Running)
-        {
-            ShouldStop.ThrowIfCancellationRequested();
+	private async Task ProcessTurn()
+	{
+		while (Running)
+		{
+			ShouldStop.ThrowIfCancellationRequested();
 
-            var bot = teams[state.CurrentTeamId].Bot;
-            var moves = (await bot.PlanMovesAsync(state)) ?? [];
+			var bot = teams[state.CurrentTeamId].Bot;
+			var moves = (await bot.PlanMovesAsync(state)) ?? [];
 
-            GameEngine.ProcessTurn(state, moves);
+			GameEngine.ProcessTurn(state, moves);
 
-            Running = state.Running;
+			Running = state.Running;
 
-            await InvokeAsync(StateHasChanged);
+			await InvokeAsync(StateHasChanged);
 
-            Thread.Sleep(TickInterval);
-        }
-    }
+			Thread.Sleep(TickInterval);
+		}
+	}
 
-    private static void AddBorderUnits(GameState stat)
-    {
-        var teamid = stat.TeamList[0].Id;
-        stat.AddUnits(teamid, Coordinate.Offset(0, 0), new List<string> { "Archer" });
-        stat.AddUnits(teamid, Coordinate.Offset(0, 1), new List<string> { "Archer" });
-        stat.AddUnits(teamid, Coordinate.Offset(stat.Dimension, 0), new List<string> { "Archer" });
-        stat.AddUnits(teamid, Coordinate.Offset(stat.Dimension, 1), new List<string> { "Archer" });
-        stat.AddUnits(teamid, Coordinate.Offset(0, stat.Dimension), new List<string> { "Archer" });
-        stat.AddUnits(teamid, Coordinate.Offset(0, stat.Dimension-1), new List<string> { "Archer" });
-        stat.AddUnits(teamid, Coordinate.Offset(stat.Dimension, stat.Dimension), new List<string> { "Archer" });
-        stat.AddUnits(teamid, Coordinate.Offset(stat.Dimension, stat.Dimension-1), new List<string> { "Archer" });
-    }
+	private static void AddCircleUnits(GameState stat, int teamid, Coordinate center, int distance)
+	{
+		var circle = center.Neighbors(distance);
+		foreach(var loc in circle){
+			stat.AddUnits(teamid, loc, new List<string> { "Archer" });
+		}
+	}
+
+	private static void AddBorderUnits(GameState stat, int teamid)
+	{
+		stat.AddUnits(teamid, Coordinate.Offset(0, 0), new List<string> { "Archer" });
+		stat.AddUnits(teamid, Coordinate.Offset(0, 1), new List<string> { "Archer" });
+		stat.AddUnits(teamid, Coordinate.Offset(stat.Dimension, 0), new List<string> { "Archer" });
+		stat.AddUnits(teamid, Coordinate.Offset(stat.Dimension, 1), new List<string> { "Archer" });
+		stat.AddUnits(teamid, Coordinate.Offset(0, stat.Dimension), new List<string> { "Archer" });
+		stat.AddUnits(teamid, Coordinate.Offset(0, stat.Dimension - 1), new List<string> { "Archer" });
+		stat.AddUnits(teamid, Coordinate.Offset(stat.Dimension, stat.Dimension), new List<string> { "Archer" });
+		stat.AddUnits(teamid, Coordinate.Offset(stat.Dimension, stat.Dimension - 1), new List<string> { "Archer" });
+	}
 }
