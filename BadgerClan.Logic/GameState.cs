@@ -118,7 +118,10 @@ public class GameState
 
     public void IncrementTurn()
     {
-        currentTeamId = AdvanceTeam();
+        do
+        {
+            currentTeamId = AdvanceTeam();
+        } while (Units.Count > 0 && !Units.Any(u => u.Team == currentTeamId));
         TurnNumber++;
         GameChanged?.Invoke(this);
         LastMove = DateTime.Now;

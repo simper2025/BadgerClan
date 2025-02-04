@@ -57,5 +57,41 @@ public class TeamTest
         //Assert.True(team2.Id > team.Id);
     }
 
-    // dead teams get their turn skipped
+    [Fact]
+    public void DeadTeamsPlayNoMoves()
+    {
+        var state = new GameState();
+        state.AddTeam(new Team(1));
+        state.AddTeam(new Team(2));
+        state.AddTeam(new Team(3));
+        var knight1 = Unit.Factory("Knight", 1, Coordinate.Offset(3, 3));
+        var knight2 = Unit.Factory("Knight", 2, Coordinate.Offset(4, 3));
+        var knight3 = Unit.Factory("Knight", 3, Coordinate.Offset(10, 10));
+        state.AddUnit(knight1);
+        state.AddUnit(knight2);
+        state.AddUnit(knight3);
+        knight2.Health = 1;
+
+        Assert.Equal(1, state.CurrentTeamId);
+        Assert.Equal(1, state.CurrentTeam.Id);
+
+        GameEngine.ProcessTurn(state, new List<Move>());
+        Assert.Equal(2, state.CurrentTeamId);
+        
+        GameEngine.ProcessTurn(state, new List<Move>());
+        Assert.Equal(3, state.CurrentTeamId);
+        
+        GameEngine.ProcessTurn(state, new List<Move>());
+
+        var moves = new List<Move>
+        {
+            new Move(MoveType.Attack, knight1.Id, knight2.Location)
+        };
+        GameEngine.ProcessTurn(state, moves);
+
+        Assert.Equal(3, state.CurrentTeamId);
+        Assert.Equal(3, state.CurrentTeam.Id);
+
+
+    }
 }
