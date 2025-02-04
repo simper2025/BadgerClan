@@ -67,6 +67,14 @@ public class GameState
         }
     }
 
+    public int NextMedpac
+    {
+        get
+        {
+            return GameEngine.CalculateMeds(Units.Count, TotalUnits);
+        }
+    }
+
     public GameState(string? name = null)
     {
         Units = new List<Unit>();

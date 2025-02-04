@@ -15,12 +15,11 @@ public class LoopTest
     [Fact]
     public void TestName()
     {
-        output.WriteLine("write out some data");
-        var start = 50;
+        var start = 12;
         for (var i = start; i > 0; i--)
         {
             var meds = GameEngine.CalculateMeds(i, start);
-            //output.WriteLine($"For {i} players left you get {meds}.");
+            output.WriteLine($"For {i} players left you get {meds}.");
         }
     }
 }

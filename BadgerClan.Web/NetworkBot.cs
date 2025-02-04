@@ -38,7 +38,8 @@ public class NetworkBot : IBot
             state.TurnNumber,
             state.Id.ToString(),
             state.Dimension,
-            state.CurrentTeam.Medpacs
+            state.CurrentTeam.Medpacs,
+            state.NextMedpac
         );
         var response = await client.PostAsJsonAsync("", moveRequest);
         MoveResponse moveResponse;

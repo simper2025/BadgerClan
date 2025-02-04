@@ -100,7 +100,7 @@ public class GameEngine
         state.IncrementTurn();
     }
 
-    private const int MAX_HEALING = 15;
+    private const int MAX_HEALING = 10;
     private const int SQUAD_SIZE = 6;
     public static int CalculateMeds(int unitsLeft, int totalUnits)
     {
