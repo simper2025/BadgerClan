@@ -2,8 +2,8 @@
 
 <div style="
     position: absolute;
-    width: @(width)px;
-    height: @(width)px;
+    width: @(width * UnitScalar)px;
+    height: @(width* UnitScalar)px;
     top: @(yPercent)%;
     left: @(xPercent)%;
     transform: translate(-50%, -125%);
@@ -35,6 +35,9 @@
     public int Dimension { get; set; }
     [Parameter]
     public int TickInterval { get; set; } // in milliseconds
+    [Parameter]
+    public double UnitScalar { get; set; } = 1;
+
     private double xPercent;
     private double yPercent;
     private double width;

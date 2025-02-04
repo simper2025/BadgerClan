@@ -3,34 +3,68 @@
 <style>
     .battle-field {
         position: relative;
-        height: @(DisplayConstants.MapHeight) px;
+        width: @(relativeWidth ? "100%" : DisplayConstants.MapHeight + "px");
+        min-width: @(relativeWidth ? "100%" : DisplayConstants.MapHeight + "px");
         aspect-ratio: 997 / 860;
         background-image: linear-gradient(135deg, rgb(5, 39, 103) 0%, #3a0647 70%);
     }
 </style>
 
-@* width: @(DisplayConstants.MapWidth)px; *@
-@* height: 100%; *@
-@* background-color: rgb(16, 64, 81); *@
+<div>
+    <div class="form-check">
+        <input type="checkbox" class="form-check-input" id="relativeWidth" @bind=relativeWidth />
+        <label class="form-check-label" for="relativeWidth">Relative Board Width</label>
+    </div>
+    <div class="form-check">
+        <input type="checkbox" class="form-check-input" id="showHexagons" @bind=showHexagons />
+        <label class="form-check-label" for="showHexagons">Show Hexagons</label>
+    </div>
+    <div>
 
-<div id="square" class="battle-field" style="">
-    @foreach (var row in Enumerable.Range(0, State.Dimension + 1))
-    {
-        @foreach (var column in Enumerable.Range(0, State.Dimension + 1))
-        {
-            <HexagonSquare Row=row Col=column Dimension=State.Dimension />
-        }
+      <label for="unitScalar">
+        Icon Scalar @unitScalar
+        <br>
+        <input type="range" id="unitScalar" name="unitScalar" min="0.1" max="100" @bind:event="oninput" @bind=unitScalar />
+      </label>
+    </div>
+</div>
 
-    }
-    @foreach (var u in State.Units)
-    {
-        <UnitComponent Unit=u Team=teams?[u.Team] Dimension=State.Dimension @key=u.Id TickInterval=Lobby.TickInterval />
-    }
+<div class="row justify-content-around">
+    <div class="col-xl-3">
+        <div class="bg-body-secondary p-3 border rounded-3 mt-3 mb-3">
+            <h3 class="text-center">Leaderboard</h3>
+            <hr>
+        </div>
+    </div>
+    <div class=@((relativeWidth ? "col-xl-9" : "col-auto" )+ " d-flex")>
+        <div id="square" class="battle-field" style="">
+            @if(showHexagons)
+            {
+                @foreach (var row in Enumerable.Range(0, State.Dimension + 1))
+                {
+                    @foreach (var column in Enumerable.Range(0, State.Dimension + 1))
+                    {
+                        <HexagonSquare Row=row Col=column Dimension=State.Dimension />
+                    }
+
+                }
+            }
+            @foreach (var u in State.Units)
+            {
+                <UnitComponent Unit=u Team=teams?[u.Team] Dimension=State.Dimension @key=u.Id TickInterval=Lobby.TickInterval UnitScalar=@unitScalar />
+            }
+        </div>
+    </div>
 </div>
 
 @code {
     [Parameter]
     public required GameState State { get; set; }
+
+    private bool showHexagons = false;
+    private bool relativeWidth = false;
+
+    private double unitScalar = 1;
 
     private Dictionary<int, Team>? teams;
 
