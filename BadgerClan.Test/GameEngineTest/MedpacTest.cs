@@ -24,7 +24,7 @@ public class MedpacTest
         Assert.Equal(10, state.NextMedpac);
     }
 
-        [Fact]
+    [Fact]
     public void GetMedpacAfterKill()
     {
         var state = new GameState();

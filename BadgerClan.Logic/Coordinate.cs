@@ -35,7 +35,13 @@ public class Coordinate : IEquatable<Coordinate>
         this.R = R;
     }
 
+
     #region object methods
+    public override string ToString()
+    {
+        return $"Coordinate {{ Q = {Q}, R = {R}, Col = {Col}, Row = {Row} }}";
+    }
+
     public Coordinate Copy()
     {
         return new Coordinate(Q, R);

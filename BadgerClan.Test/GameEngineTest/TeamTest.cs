@@ -56,4 +56,6 @@ public class TeamTest
         //Why does this break half the time?
         //Assert.True(team2.Id > team.Id);
     }
+
+    // dead teams get their turn skipped
 }

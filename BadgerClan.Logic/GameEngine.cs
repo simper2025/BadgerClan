@@ -34,14 +34,16 @@ public class GameEngine
             {
                 case MoveType.Walk:
                     var movedLocation = new Coordinate(move.Target.Q, move.Target.R);
+
                     var canMove = distance <= unit.Moves;
                     if (!canMove)
                     {
-                        if (distance <= unit.Moves + (1 / 2.0 + 0.01))
+                        if (distance - 0.9 <= unit.Moves)
                         {
                             canMove = true;
                         }
                     }
+                    
                     if (canMove && defender == null &&
                         state.IsOnBoard(movedLocation))
                     {
@@ -64,7 +66,7 @@ public class GameEngine
                         continue;
                     }
                     var attackCost = unit.MaxMoves / unit.AttackCount;
-                    if (defender != null && unit.Moves > (attackCost / 2.0))
+                    if (defender != null && unit.Moves > 0.1)
                     {
                         defender.Health -= unit.Attack;
                         unit.Moves -= attackCost;
