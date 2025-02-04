@@ -95,6 +95,16 @@ public class CoordinateTests
     }
 
     [Fact]
+    public void GetNeighborsTwo()
+    {
+        var p1 = Coordinate.Offset(4, 4);
+        var neighbors = p1.Neighbors(2);
+        Assert.Contains(Coordinate.Offset(3, 2), neighbors);
+        Assert.Equal(12, neighbors.Count);
+        
+    }
+
+    [Fact]
     public void TowardTest()
     {
         var point = Coordinate.Offset(1, 1);
