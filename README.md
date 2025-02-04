@@ -66,9 +66,9 @@ Coordinate System: https://www.redblobgames.com/grids/hexagons/
 - [ ] Limit the number of players
 - [ ] Ability to boot players from a game that hasn't started
 - [x] Host can end the game from the game page, in cases of stalemate or false start
-- [ ] Timeout the calls to clients
+- [x] Timeout the calls to clients
 - [ ] Limit the size of the client move list
-- [ ] Don't make calls to dead teams
+- [x] Don't make calls to dead teams
 - [ ] Ability for the host to restart the game with the same players
 - [ ] Add a game leader board
 - [ ] Game Log 
@@ -85,7 +85,7 @@ Coordinate System: https://www.redblobgames.com/grids/hexagons/
 - [ ] Game does not declare the correct winner
 - [x] Create game component not properly listening to game state change, specifically if another person adds a new team
 - [X] Only the host should have the start game button
-- [ ] A bad response from the client crashes causes an exception that stops the server
+- [x] A bad response from the client crashes causes an exception that stops the server
 - [ ] Review GameEngine.ProcessTurn(), Attack does not have the same rounding benefit as Walk, is that intentional?
 
 ### Documentation
