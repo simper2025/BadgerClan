@@ -1,8 +1,4 @@
-﻿
-
-using System.ComponentModel;
-
-namespace BadgerClan.Logic;
+﻿namespace BadgerClan.Logic;
 
 public class GameEngine
 {

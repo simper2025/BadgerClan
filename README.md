@@ -60,6 +60,7 @@ Coordinate System: https://www.redblobgames.com/grids/hexagons/
     - [ ] Team with most kills
     - [ ] Most units before final hitpoint loss
 - [ ] Track number of kills
+- [x] Units can act if they have at least 0.1 moves remaining
 - [x] Improve effectiveness of Medpacs
 
 ### Features
