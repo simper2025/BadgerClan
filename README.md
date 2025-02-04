@@ -79,15 +79,15 @@ Coordinate System: https://www.redblobgames.com/grids/hexagons/
 
 ### Bugs
 - [ ] If you click the join button after start, the UI is odd
-- [x] Units can be placed off the board, if there are lots of units
 - [ ] Validate the client endpoint with a request/response
 - [ ] Limit the characters for name and urls
+- [x] Units can be placed off the board, if there are lots of units
 - [X] If there are multiple games created but not started, the radio buttons don't work right
-- [ ] Game does not declare the correct winner
+- [X] Game does not declare the correct winner
 - [x] Create game component not properly listening to game state change, specifically if another person adds a new team
 - [X] Only the host should have the start game button
 - [x] A bad response from the client crashes causes an exception that stops the server
-- [ ] Review GameEngine.ProcessTurn(), Attack does not have the same rounding benefit as Walk, is that intentional?
+- [X] Review GameEngine.ProcessTurn(), Attack does not have the same rounding benefit as Walk, is that intentional?
 
 ### Documentation
 - [x] Example tutorial for moving around
