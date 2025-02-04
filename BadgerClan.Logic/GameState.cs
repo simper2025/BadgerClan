@@ -14,7 +14,7 @@ public class GameState
     public int TurnNumber { get; private set; }
     public List<Unit> Units { get; set; }
 
-    public List<Team> TeamList { get; private set; }
+    public List<Team> TeamList { get; init; }
     private List<int> turnOrder;
 
     public int TeamCount { get { return TeamList.Count(); } }

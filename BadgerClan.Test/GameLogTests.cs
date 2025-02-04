@@ -11,14 +11,24 @@ public class GameLogTests
   [Fact]
   public async Task MovingProducesLog()
   {
-    var state = new GameState();
-
     var bot1 = new RunAndGun();
-    var team1 = new Team("Team 1", "red", bot1);
-    state.AddTeam(team1);
-
     var bot2 = new RunAndGun();
+    var team1 = new Team("Team 1", "red", bot1);
     var team2 = new Team("Team 2", "red", bot2);
+    var testState = new GameState()
+    {
+      Units = [
+        Unit.Factory("Knight", team1.Id, Coordinate.Offset(0, 0)),
+        Unit.Factory("Knight", team2.Id,  Coordinate.Offset(0, 0)),
+      ],
+      TeamList = [
+        team1, 
+        team2
+      ]
+    };
+
+    var state = new GameState();
+    state.AddTeam(team1);
     state.AddTeam(team2);
 
     var squad = new List<string> { "Knight" };
