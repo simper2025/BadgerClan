@@ -79,7 +79,7 @@ Coordinate System: https://www.redblobgames.com/grids/hexagons/
 
 ### Bugs
 - [ ] If you click the join button after start, the UI is odd
-- [ ] Units can be placed off the board, if there are lots of units
+- [x] Units can be placed off the board, if there are lots of units
 - [ ] Validate the client endpoint with a request/response
 - [ ] Limit the characters for name and urls
 - [X] If there are multiple games created but not started, the radio buttons don't work right

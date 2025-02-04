@@ -92,6 +92,7 @@ public class CoordinateTests
         var p1 = Coordinate.Offset(4, 4);
         var neighbors = p1.Neighbors();
         Assert.Equal(6, neighbors.Count);
+
         Assert.Contains(Coordinate.Offset(3, 3), neighbors);
         Assert.Contains(Coordinate.Offset(4, 3), neighbors);
         Assert.Contains(Coordinate.Offset(5, 4), neighbors);
@@ -106,6 +107,7 @@ public class CoordinateTests
         var p1 = Coordinate.Offset(4, 4);
         var neighbors = p1.Neighbors(2);
         Assert.Equal(12, neighbors.Count);
+
         Assert.Contains(Coordinate.Offset(3, 2), neighbors);
         Assert.Contains(Coordinate.Offset(4, 2), neighbors);
         Assert.Contains(Coordinate.Offset(5, 2), neighbors);

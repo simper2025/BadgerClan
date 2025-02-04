@@ -192,8 +192,30 @@ public class GameState
 
     private Coordinate FitToBoard(Unit unit, List<Unit> units)
     {
-        var retval = unit.Location.Copy();
+        var retval =  unit.Location.Copy();
+        if(!IsOnBoard(retval))
+            retval = teamMateLocationOrZero(unit, units);
 
+        var start = retval;
+        var neighbors = new List<Coordinate>();
+        var neighborDistance = 1;
+
+        while (units.Any(u => u.Location == retval) || !IsOnBoard(retval))
+        {
+            if (!neighbors.Any())
+            {
+                neighbors = start.Neighbors(neighborDistance++);
+            }
+            retval = neighbors[0];
+            neighbors.RemoveAt(0);
+        }
+
+        return retval;
+    }
+
+    private Coordinate teamMateLocationOrZero(Unit unit, List<Unit> units)
+    {
+        var retval = unit.Location.Copy();
         if (!IsOnBoard(unit.Location))
         {
             if (units.Any(u => u.Team == unit.Team))
@@ -202,27 +224,6 @@ public class GameState
             else
                 retval = Coordinate.Offset(0, 0);
         }
-
-        var start = retval.Copy();
-        var neighbors = retval.Neighbors();
-
-        while (units.Any(u => u.Location == retval))
-        {
-            var target = retval.MoveEast(1);
-
-            if (neighbors.Any())
-            {
-                target = neighbors[0];
-                neighbors.RemoveAt(0);
-            }
-
-            if (!IsOnBoard(target))
-            {
-                target = retval.MoveSouthWest(1);
-            }
-            retval = target;
-        }
-
         return retval;
     }
 

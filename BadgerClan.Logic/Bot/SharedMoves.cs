@@ -15,20 +15,18 @@ public class SharedMoves
 
         var target = unit.Location.Toward(closest.Location);
 
-        var neighbors = unit.Location.Neighbors();
+        var neighborcount = 1;
+        var neighbors = unit.Location.Neighbors(neighborcount++);
 
         while (state.Units.Any(u => u.Location == target))
         {
-            if (neighbors.Any())
+            if (!neighbors.Any())
             {
-                var i = rnd.Next(0, neighbors.Count() - 1);
-                target = neighbors[i];
-                neighbors.RemoveAt(i);
+                neighbors = unit.Location.Neighbors(neighborcount++);
             }
-            else
-            {
-                neighbors = unit.Location.MoveEast(1).Neighbors();
-            }
+            var i = rnd.Next(0, neighbors.Count() - 1);
+            target = neighbors[i];
+            neighbors.RemoveAt(i);
         }
 
         var move = new Move(MoveType.Walk, unit.Id, target);

@@ -28,17 +28,16 @@ else
 	private CancellationToken ShouldStop => source.Token;
 	private bool Running = false;
 
-	private List<string> squadUnits = new List<string> { "Knight", "Knight", "Archer", "Archer", "Knight", "Knight" };
-	// private List<string> squadUnits = new List<string> {
-	// 	"Knight", "Knight", "Archer", "Archer", "Knight", "Knight",
-	// 	"Knight", "Knight", "Archer", "Archer", "Knight", "Knight",
-	// 	"Knight", "Knight", "Archer", "Archer", "Knight", "Knight",
-	// 	"Knight", "Knight", "Archer", "Archer", "Knight", "Knight",
-	// 	"Knight", "Knight", "Archer", "Archer", "Knight", "Knight",
-	// 	"Knight", "Knight", "Archer", "Archer", "Knight", "Knight",
-	// 	"Knight", "Knight", "Archer", "Archer", "Knight", "Knight",
-	// 	"Knight", "Knight", "Archer", "Archer", "Knight", "Knight",
-	// };
+	private List<string> squadUnits = new List<string> {
+		"Knight", "Knight", "Archer", "Archer", "Knight", "Knight",
+		// "Knight", "Knight", "Archer", "Archer", "Knight", "Knight",
+		// "Knight", "Knight", "Archer", "Archer", "Knight", "Knight",
+		// "Knight", "Knight", "Archer", "Archer", "Knight", "Knight",
+		// "Knight", "Knight", "Archer", "Archer", "Knight", "Knight",
+		// "Knight", "Knight", "Archer", "Archer", "Knight", "Knight",
+		// "Knight", "Knight", "Archer", "Archer", "Knight", "Knight",
+		// "Knight", "Knight", "Archer", "Archer", "Knight", "Knight",
+	};
 
 	//Remove this eventually, use state.TeamList instead
 	private Dictionary<int, Team> teams = new Dictionary<int, Team>();
@@ -47,20 +46,20 @@ else
 	{
 		var newColor = PlayerHelpers.GetRandomColor();
 
-		MakeTeam(new RunAndGun(), "blue");
-		MakeTeam(new Turtle());
 		MakeTeam(new DevBot(), "red");
-		MakeTeam(new Turtle());
+		MakeTeam(new Turtle(3));
+		MakeTeam(new RunAndGun(), "blue");
+		MakeTeam(new Turtle(1));
 		MakeTeam(new Turtle(2));
-		MakeTeam(new Turtle());
+		MakeTeam(new RunAndGun());
 
 		state.LayoutStartingPositions(squadUnits);
 
-		//AddBorderUnits(state, 1);
-		AddCircleUnits(state, 1, Coordinate.Offset(35, 35), 1);
-		AddCircleUnits(state, 2, Coordinate.Offset(35, 35), 2);
-		AddCircleUnits(state, 3, Coordinate.Offset(35, 35), 3);
-		AddCircleUnits(state, 4, Coordinate.Offset(35, 35), 4);
+		// AddBorderUnits(state, 1);
+		// AddCircleUnits(state, 1, Coordinate.Offset(35, 35), 1);
+		// AddCircleUnits(state, 2, Coordinate.Offset(35, 35), 2);
+		// AddCircleUnits(state, 3, Coordinate.Offset(35, 35), 3);
+		// AddCircleUnits(state, 4, Coordinate.Offset(35, 35), 4);
 
 		return Task.CompletedTask;
 	}
