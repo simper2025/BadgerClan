@@ -6,13 +6,11 @@
     height: @(width* UnitScalar)px;
     top: @(yPercent)%;
     left: @(xPercent)%;
-    transform: translate(-50%, -50%);
-
     transition: all @(Math.Clamp((TickInterval  * 0.8), 0, 100))ms;
+    transform: translate(-@(width * UnitScalar * 0.5)px, -@(width * UnitScalar * 0.5)px);
 ">
+    @* things get a little weird when the hexagons get smaller than the svg's *@
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="
-        height: 100%;
-        width: 100%;
             ">
         <path d="M0 0h512v512H0z" fill="@(Team.Color)" fill-opacity="1"></path>
         <g class="" transform="translate(0,0)" style="">
@@ -50,10 +48,9 @@
 
     protected override void OnParametersSet()
     {
+        width = ((double)DisplayConstants.MapWidth / Dimension);
         xPercent = DisplayUtils.CalculateXPercent(Unit.Location.Q, Unit.Location.R, Dimension);
         yPercent = DisplayUtils.CalculateYPercent(Unit.Location.R, Dimension);
 
-        double scalarValue = 0.8;
-        width = scalarValue * ((double)DisplayConstants.MapWidth / Dimension);
     }
 }
