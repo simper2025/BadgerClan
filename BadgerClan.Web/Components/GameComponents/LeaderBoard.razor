@@ -1,0 +1,15 @@
+
+@foreach(var team in State.TeamList.OrderBy(t => t.Name)){
+	<div style="background-color: @team.Color;">
+	<span>@team.Name</span>
+	<span>@(State.Units.Where(u => u.Team == team.Id).Count())</span>
+	</div>
+}
+
+
+@code {
+	[Parameter]
+	public required GameState State { get; set; }
+
+
+}
