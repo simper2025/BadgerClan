@@ -46,7 +46,7 @@ A simple game of hexagonal tiles.
         }
     }
     ```
-### Warning: Friendly Fire is Turn On
+### Warning: Friendly Fire is On
 
 ## Further Information
 Coordinate System: https://www.redblobgames.com/grids/hexagons/
