@@ -72,15 +72,17 @@ Coordinate System: https://www.redblobgames.com/grids/hexagons/
 - [x] Don't make calls to dead teams
 - [X] Ability for the host to restart the game with the same players
 - [X] Add a game leader board
-- [ ] Game Log 
-
 - [x] Delete the weather and counter page
+- [ ] Game Log 
+- [ ] Second Leaderboard with number of kills
+- [ ] Ability for host to slow down the game, make tick interval variable 
 
 
 ### Bugs
 - [ ] If you click the join button after start, the UI is odd
 - [ ] Validate the client endpoint with a request/response
 - [ ] Limit the characters for name and urls
+- [ ] Websocket occasionally disconnects from server
 - [x] Units can be placed off the board, if there are lots of units
 - [X] If there are multiple games created but not started, the radio buttons don't work right
 - [X] Game does not declare the correct winner

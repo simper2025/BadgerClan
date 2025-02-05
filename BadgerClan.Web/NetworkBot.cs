@@ -49,6 +49,7 @@ public class NetworkBot : IBot
         }
         catch (Exception e)
         {
+            //TODO: Inject ilogger
             Console.WriteLine(e.Message);
             moveResponse = new MoveResponse(new List<Move>());
         }
