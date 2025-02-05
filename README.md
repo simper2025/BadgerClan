@@ -70,8 +70,8 @@ Coordinate System: https://www.redblobgames.com/grids/hexagons/
 - [x] Timeout the calls to clients
 - [ ] Limit the size of the client move list
 - [x] Don't make calls to dead teams
-- [ ] Ability for the host to restart the game with the same players
-- [ ] Add a game leader board
+- [X] Ability for the host to restart the game with the same players
+- [X] Add a game leader board
 - [ ] Game Log 
 
 - [x] Delete the weather and counter page
