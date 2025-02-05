@@ -56,6 +56,7 @@ Coordinate System: https://www.redblobgames.com/grids/hexagons/
 
 ### Game Design
 - [ ] After some rounds of no units dieing, every Unit loses one hitpoint
+    - [ ] Count the Rounds
 - [ ] If everyone dies as the same time (stalemate) tiebreakers are
     - [ ] Team with most kills
     - [ ] Most units before final hitpoint loss
