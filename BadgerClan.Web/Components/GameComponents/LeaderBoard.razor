@@ -1,8 +1,13 @@
 
-@foreach(var team in State.TeamList.OrderByDescending(t => State.Units.Where(u => u.Team == t.Id).Sum(u => u.Health) + t.Medpacs )){
+@foreach(var team in State.TeamList
+	.OrderByDescending(t => 
+		State.Units.ToList()
+		.Where(u => u != null && u.Team == t.Id).Sum(u => u.Health) + t.Medpacs )
+	.ToList())
+{
 	<div style="background-color: @team.Color;">
 	<span>@team.Name</span>
-	<span>Units: @(State.Units.Where(u => u.Team == team.Id).Count())</span>
+	<span>Units: @(State.Units.Where(u => u != null && u.Team == team.Id).Count())</span>
 	</div>
 }
 

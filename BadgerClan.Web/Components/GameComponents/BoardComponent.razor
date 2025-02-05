@@ -56,9 +56,16 @@
 
                 }
             }
-            @foreach (var u in State.Units)
+            @foreach (var u in State.Units.ToList())
             {
-                <UnitComponent Unit=u Team=teams?[u.Team] Dimension=State.Dimension @key=u.Id TickInterval=Lobby.TickInterval UnitScalar=boardScalar />
+                if (u is null) continue;
+                <UnitComponent 
+                    Unit=u 
+                    Team=teams?[u.Team] 
+                    Dimension=State.Dimension 
+                    @key=u.Id 
+                    TickInterval=Lobby.TickInterval 
+                    UnitScalar=boardScalar />
             }
         </div>
     </div>
