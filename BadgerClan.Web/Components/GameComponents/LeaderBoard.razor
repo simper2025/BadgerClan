@@ -1,13 +1,21 @@
 
 @foreach(var team in State.TeamList
-	.OrderByDescending(t => 
-		State.Units.ToList()
-		.Where(u => u != null && u.Team == t.Id).Sum(u => u.Health) + t.Medpacs )
-	.ToList())
+					.OrderByDescending(t => 
+						!ChartKills 
+						? (State.Units.ToList().Where(u => u != null && u.Team == t.Id).Sum(u => u.Health))
+						: (t.Kills))
+					.ToList())
 {
 	<div style="background-color: @team.Color;">
-	<span>@team.Name</span>
-	<span>Units: @(State.Units.Where(u => u != null && u.Team == team.Id).Count())</span>
+		<span>@team.Name</span>
+		@if (!ChartKills)
+		{
+			<span>Units: @(State.Units.Where(u => u != null && u.Team == team.Id).Count())</span>
+		}
+		else
+		{
+			<span>Kills: @(team.Kills)</span>
+		}
 	</div>
 }
 
@@ -15,6 +23,9 @@
 @code {
 	[Parameter]
 	public required GameState State { get; set; }
+	[Parameter]
+	public required bool ChartKills { get; set; }
+
 
 
 }

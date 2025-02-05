@@ -91,7 +91,9 @@ public class GameEngine
             for (int i = 0; i < deadunits; i++)
             {
                 int meds = CalculateMeds(state.Units.Count, state.TotalUnits);
-                team.Medpacs++;
+                team.Medpacs += meds;
+                team.Kills++;
+
             }
             state.Units.RemoveAll(u => u.Health <= 0);
         }

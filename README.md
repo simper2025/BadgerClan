@@ -46,7 +46,7 @@ A simple game of hexagonal tiles.
         }
     }
     ```
-
+### Warning: Friendly Fire is Turn On
 
 ## Further Information
 Coordinate System: https://www.redblobgames.com/grids/hexagons/
@@ -60,9 +60,9 @@ Coordinate System: https://www.redblobgames.com/grids/hexagons/
 - [ ] If everyone dies as the same time (stalemate) tiebreakers are
     - [ ] Team with most kills
     - [ ] Most units before final hitpoint loss
-- [ ] Track number of kills
+- [x] Track number of kills
 - [x] Units can act if they have at least 0.1 moves remaining
-- [x] Improve effectiveness of Medpacs
+- [x] Improve effectiveness of Medpacs, gameengine not giving enough medpacs
 
 ### Features
 - [ ] Limit the number of players
