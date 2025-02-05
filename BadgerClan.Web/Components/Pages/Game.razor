@@ -12,6 +12,10 @@
 @if (game.IsGameOver)
 {
     <h2 class="text-success">@game.GetWinner().Name wins!</h2>
+    @if (lobby.UserCreatedGame(CurrentUserService.CurrentUserId, game))
+    {
+        <button class="btn btn-outline-warning" @onclick=restartGame>Restart Game</button>
+    }
 }
 else
 {
@@ -46,4 +50,9 @@ else
     }
 
     void stopGame() => lobby.StopGame(CurrentUserService.CurrentUserId, game);
+
+    void restartGame() {
+        game.RestartGame();
+        lobby.StartGame(CurrentUserService.CurrentUserId, game);
+    }
 }
