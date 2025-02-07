@@ -3,6 +3,8 @@ A simple game of hexagonal tiles.
 
 > Note: This requires that you have the [.NET 9 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/9.0) installed on your machine.
 
+![BadgerClan Logo](docs/badgerClanLogo.png)
+
 ## Getting Started (using Visual Studio)
 1. Clone the repository.
 1. Open the BadgerClan.sln file to load the solution.
