@@ -11,6 +11,7 @@ public record Team
     public IBot Bot { get; }
     public int Kills { get; set; } = 0;
     public int Medpacs { get; set; } = 0;
+    public int DeathTurn { get; set; } = 0;
 
     public Team(string name, string color, IBot bot)
     {

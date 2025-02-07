@@ -116,7 +116,35 @@ public class TeamTest
 
         Assert.Equal(3, state.CurrentTeamId);
         Assert.Equal(3, state.CurrentTeam.Id);
+    }
 
+    [Fact]
+    public void DeathTurnIsRecorded()
+    {
+        var state = new GameState();
+        state.AddTeam(new Team(1));
+        Team team2 = new Team(2);
+        state.AddTeam(team2);
+        state.AddTeam(new Team(3));
+        var knight1 = Unit.Factory("Knight", 1, Coordinate.Offset(3, 3));
+        var knight2 = Unit.Factory("Knight", 2, Coordinate.Offset(4, 3));
+        var knight3 = Unit.Factory("Knight", 3, Coordinate.Offset(10, 10));
+        state.AddUnit(knight1);
+        state.AddUnit(knight2);
+        state.AddUnit(knight3);
+        knight2.Health = 1;
 
+        GameEngine.ProcessTurn(state, new List<Move>());
+        GameEngine.ProcessTurn(state, new List<Move>());
+        GameEngine.ProcessTurn(state, new List<Move>());
+
+        var moves = new List<Move>
+        {
+            new Move(MoveType.Attack, knight1.Id, knight2.Location)
+        };
+        GameEngine.ProcessTurn(state, moves);
+
+        //Assert.True(team2.DeathTurn > 0);
+        Assert.Equal(3, team2.DeathTurn);
     }
 }
