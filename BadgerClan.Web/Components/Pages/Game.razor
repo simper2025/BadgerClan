@@ -4,29 +4,35 @@
 @inject NavigationManager NavigationManager
 @inject CurrentUserService CurrentUserService
 
-<h3>Game: @game.Name</h3>
-@if (game != null && game.TeamList.Count > 1 && game.TurnNumber == 0 && lobby.UserCreatedGame(CurrentUserService.CurrentUserId, game))
-{
-    <button class="btn btn-primary" @onclick=@(() => lobby.StartGame(CurrentUserService.CurrentUserId, game))>Start Game</button>
-}
-@if (game.IsGameOver)
-{
-    <h2 class="text-success">@game.GetWinner().Name wins!</h2>
-    @if (lobby.UserCreatedGame(CurrentUserService.CurrentUserId, game))
-    {
-        <button class="btn btn-outline-warning" @onclick=restartGame>Restart Game</button>
-    }
-}
-else
-{
-    <p>Turn: @game.TurnNumber</p>
-    @if(isGameOwner)
-    {
-        <button class="btn btn-outline-warning" @onclick=stopGame>Stop Game</button>
-    }
-}
+<div class="row">
+    <div class="col-auto">
+        <h3>Game: @game.Name</h3>
+        @if (game != null && game.TeamList.Count > 1 && game.TurnNumber == 0 &&
+        lobby.UserCreatedGame(CurrentUserService.CurrentUserId, game))
+        {
+            <button class="btn btn-primary" @onclick=@(() => lobby.StartGame(CurrentUserService.CurrentUserId, game))>Start
+                Game</button>
+        }
+        @if (game.IsGameOver)
+        {
+            <h2 class="text-success">@game.GetWinner().Name wins!</h2>
+            @if (lobby.UserCreatedGame(CurrentUserService.CurrentUserId, game))
+            {
+                <button class="btn btn-outline-warning" @onclick=restartGame>Restart Game</button>
+            }
+        }
+        else
+        {
+            <p>Turn: @game.TurnNumber</p>
+            @if (isGameOwner)
+            {
+                <button class="btn btn-outline-warning" @onclick=stopGame>Stop Game</button>
+            }
+        }
+    </div>
+    <BoardComponent State=game />
+</div>
 
-<BoardComponent State=game />
 
 @code {
     [Parameter]
@@ -51,7 +57,8 @@ else
 
     void stopGame() => lobby.StopGame(CurrentUserService.CurrentUserId, game);
 
-    void restartGame() {
+    void restartGame()
+    {
         game.RestartGame();
         lobby.StartGame(CurrentUserService.CurrentUserId, game);
     }
