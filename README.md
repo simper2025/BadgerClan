@@ -3,6 +3,8 @@ A simple game of hexagonal tiles.
 
 > Note: This requires that you have the [.NET 9 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/9.0) installed on your machine.
 
+![BadgerClan Logo](docs/badgerClanLogo.png)
+
 ## Getting Started (using Visual Studio)
 1. Clone the repository.
 1. Open the BadgerClan.sln file to load the solution.
@@ -46,7 +48,7 @@ A simple game of hexagonal tiles.
         }
     }
     ```
-
+### Warning: Friendly Fire is On
 
 ## Further Information
 Coordinate System: https://www.redblobgames.com/grids/hexagons/
@@ -56,12 +58,14 @@ Coordinate System: https://www.redblobgames.com/grids/hexagons/
 
 ### Game Design
 - [ ] After some rounds of no units dieing, every Unit loses one hitpoint
+    - [ ] Count the Rounds
 - [ ] If everyone dies as the same time (stalemate) tiebreakers are
+    - [X] Keep track of when people die, to assign ranking
     - [ ] Team with most kills
     - [ ] Most units before final hitpoint loss
-- [ ] Track number of kills
+- [x] Track number of kills
 - [x] Units can act if they have at least 0.1 moves remaining
-- [x] Improve effectiveness of Medpacs
+- [x] Improve effectiveness of Medpacs, gameengine not giving enough medpacs
 
 ### Features
 - [ ] Limit the number of players
@@ -70,24 +74,26 @@ Coordinate System: https://www.redblobgames.com/grids/hexagons/
 - [x] Timeout the calls to clients
 - [ ] Limit the size of the client move list
 - [x] Don't make calls to dead teams
-- [ ] Ability for the host to restart the game with the same players
-- [ ] Add a game leader board
-- [ ] Game Log 
-
+- [X] Ability for the host to restart the game with the same players
+- [X] Add a game leader board
 - [x] Delete the weather and counter page
+- [ ] Game Log 
+- [ ] Second Leaderboard with number of kills
+- [ ] Ability for host to slow down the game, make tick interval variable 
 
 
 ### Bugs
 - [ ] If you click the join button after start, the UI is odd
-- [x] Units can be placed off the board, if there are lots of units
 - [ ] Validate the client endpoint with a request/response
 - [ ] Limit the characters for name and urls
+- [ ] Websocket occasionally disconnects from server
+- [x] Units can be placed off the board, if there are lots of units
 - [X] If there are multiple games created but not started, the radio buttons don't work right
-- [ ] Game does not declare the correct winner
+- [X] Game does not declare the correct winner
 - [x] Create game component not properly listening to game state change, specifically if another person adds a new team
 - [X] Only the host should have the start game button
 - [x] A bad response from the client crashes causes an exception that stops the server
-- [ ] Review GameEngine.ProcessTurn(), Attack does not have the same rounding benefit as Walk, is that intentional?
+- [X] Review GameEngine.ProcessTurn(), Attack does not have the same rounding benefit as Walk, is that intentional?
 
 ### Documentation
 - [x] Example tutorial for moving around

@@ -46,7 +46,8 @@ public class MedpacTest
         };
         GameEngine.ProcessTurn(state, moves);
         Assert.Equal(13, state.Units.Count);
-        Assert.True(state.TeamList[0].Medpacs > 0);
+        Assert.True(state.TeamList[0].Medpacs > 1);
+        Assert.Equal(10, state.TeamList[0].Medpacs);
     }
 
     [Fact]

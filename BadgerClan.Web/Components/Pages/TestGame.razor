@@ -30,13 +30,9 @@ else
 
 	private List<string> squadUnits = new List<string> {
 		"Knight", "Knight", "Archer", "Archer", "Knight", "Knight",
-		// "Knight", "Knight", "Archer", "Archer", "Knight", "Knight",
-		// "Knight", "Knight", "Archer", "Archer", "Knight", "Knight",
-		// "Knight", "Knight", "Archer", "Archer", "Knight", "Knight",
-		// "Knight", "Knight", "Archer", "Archer", "Knight", "Knight",
-		// "Knight", "Knight", "Archer", "Archer", "Knight", "Knight",
-		// "Knight", "Knight", "Archer", "Archer", "Knight", "Knight",
-		// "Knight", "Knight", "Archer", "Archer", "Knight", "Knight",
+	};
+	private List<string> archerUnits = new List<string> {
+		"Archer", "Archer", "Archer", "Archer", "Archer", "Archer",
 	};
 
 	//Remove this eventually, use state.TeamList instead
@@ -47,15 +43,16 @@ else
 		var newColor = PlayerHelpers.GetRandomColor();
 
 		MakeTeam(new DevBot(), "red");
-		MakeTeam(new Turtle(3));
 		MakeTeam(new RunAndGun(), "blue");
+		MakeTeam(new Turtle(3));
 		MakeTeam(new Turtle(1));
 		MakeTeam(new Turtle(2));
 		MakeTeam(new RunAndGun());
 
 		state.LayoutStartingPositions(squadUnits);
 
-		AddBorderUnits(state, state.TeamList.First().Id);
+		// AddBorderUnits(state, state.TeamList.First().Id);
+		
 		// AddCircleUnits(state, 1, Coordinate.Offset(35, 35), 1);
 		// AddCircleUnits(state, 2, Coordinate.Offset(35, 35), 2);
 		// AddCircleUnits(state, 3, Coordinate.Offset(35, 35), 3);

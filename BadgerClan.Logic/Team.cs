@@ -9,7 +9,9 @@ public record Team
     public string Color { get; }
     public string Name { get; }
     public IBot Bot { get; }
+    public int Kills { get; set; } = 0;
     public int Medpacs { get; set; } = 0;
+    public int DeathTurn { get; set; } = 0;
 
     public Team(string name, string color, IBot bot)
     {

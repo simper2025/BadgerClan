@@ -25,7 +25,9 @@ public class Lobby(ILogger<Lobby> logger)
     }
     public ReadOnlyCollection<GameState> Games => games.Values.SelectMany(g => g).ToList().AsReadOnly();
 
-    private List<string> startingUnits = new List<string> { "Knight", "Knight", "Archer", "Archer", "Knight", "Knight" };
+    private List<string> startingUnits = new List<string> { 
+        "Knight", "Knight", "Archer", "Archer", "Knight", "Knight",
+    };
 
     private Dictionary<Guid, CancellationTokenSource> gameTokens = new();
 

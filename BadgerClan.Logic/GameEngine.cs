@@ -39,7 +39,7 @@ public class GameEngine
                             canMove = true;
                         }
                     }
-                    
+
                     if (canMove && defender == null &&
                         state.IsOnBoard(movedLocation))
                     {
@@ -91,9 +91,19 @@ public class GameEngine
             for (int i = 0; i < deadunits; i++)
             {
                 int meds = CalculateMeds(state.Units.Count, state.TotalUnits);
-                team.Medpacs++;
+                team.Medpacs += meds;
+                team.Kills++;
+
             }
             state.Units.RemoveAll(u => u.Health <= 0);
+        }
+        foreach (var teamid in state.Units.Select(u => u.Team).Distinct())
+        {
+            var team1 = state.TeamList.FirstOrDefault(t => t.Id == teamid);
+            if (team1 != null)
+            {
+                team1.DeathTurn = state.TurnNumber+1;
+            }
         }
         state.IncrementTurn();
     }

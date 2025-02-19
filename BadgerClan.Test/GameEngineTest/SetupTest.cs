@@ -225,4 +225,36 @@ public class SetupTest
         Assert.Equal(expected, loc);
     }
 
+
+
+        [Fact]
+    public void ResetGameAfterOver()
+    {
+        var state = new GameState();
+        state.AddTeam(new Team(1));
+        state.AddTeam(new Team(2));
+        var knight1 = Unit.Factory("Knight", 1, Coordinate.Offset(6, 6));
+        var knight2 = Unit.Factory("Knight", 2, Coordinate.Offset(6, 5));
+        state.AddUnit(knight1);
+        knight2.Health = 1;
+        state.AddUnit(knight2);
+
+        var moves = new List<Move>{
+            new Move(MoveType.Attack, knight1.Id, knight2.Location)
+        };
+        GameEngine.ProcessTurn(state, moves);
+
+        state.RestartGame();
+        Assert.Empty(state.Units);
+        Assert.Equal(0, state.TotalUnits);
+
+        Assert.Equal(0, state.TurnNumber);
+        
+        Assert.False(state.Running);
+        Assert.Equal(0, state.TeamList[0].Medpacs);
+
+        Assert.Equal(1, state.CurrentTeamId);
+        
+    }
+
 }

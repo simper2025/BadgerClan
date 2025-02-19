@@ -95,6 +95,17 @@ public class GameState
         Name = $"Game-{Id.ToString().Substring(32)}";
     }
 
+    public void RestartGame() {
+        Units = new List<Unit>();
+        TotalUnits = 0;
+        TurnNumber = 0;
+        foreach (var team in TeamList)
+        {
+            team.Medpacs = 0;
+        }
+        currentTeamId = TeamList[0].Id;
+    }
+
     public override string ToString()
     {
         string status = "Turn #" + TurnNumber + "; ";
