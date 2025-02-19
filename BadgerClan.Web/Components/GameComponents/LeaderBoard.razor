@@ -4,7 +4,7 @@
 									.OrderByDescending(t => t.Kills)
 									.ToList())
 	{
-		<div style="background-color: @team.Color;">
+		<div style="background-color: @team.Color;" class="text-light ps-3">
 			<span>@team.Name</span>
 			<span>Kills: @(team.Kills)</span>
 		</div>
@@ -18,7 +18,7 @@ else
 			State.Units.ToList().Where(u => u != null && u.Team == t.Id).Sum(u => u.Health))
 			.ToList())
 	{
-		<div style="background-color: @team.Color;">
+		<div style="background-color: @team.Color;" class="text-light ps-3">
 			<span>@team.Name</span>
 			<span>Units: @(State.Units.Where(u => u != null && u.Team == team.Id).Count())</span>
 		</div>

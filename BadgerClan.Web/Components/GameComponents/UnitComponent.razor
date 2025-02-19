@@ -10,10 +10,16 @@
     transform: translate(-@(width * UnitScalar * 0.5)px, -@(width * UnitScalar * 0.5)px);
 ">
     @* things get a little weird when the hexagons get smaller than the svg's *@
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="opacity: @( Math.Max(0.2, (float)Unit.Health / Unit.MaxHealth) );">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" 
+    style="border-width: 2px; border-style: solid; border-color: @(Team.Color);" >
         <title>@($"{Unit.Type} {Unit.Health}/{Unit.MaxHealth} ({Team.Name})")</title>
-        <path d="M0 0h512v512H0z" fill="@(Team.Color)" fill-opacity="1"></path>
-        <g class="" transform="translate(0,0)" style="">
+        <path 
+            d="M0 0h512v512H0z" fill="@(Team.Color)" fill-opacity="1"
+            style="opacity: @( Math.Max(0.2, (float)Unit.Health / Unit.MaxHealth) );"
+        ></path>
+        <g 
+            class="" transform="translate(0,0)" 
+            style="opacity: @( Math.Max(0.2, (float)Unit.Health / Unit.MaxHealth) );">
             <path style="stroke: rgb(139, 139, 139); stroke-width: 15px"
                   d="@(iconLookup[Unit.Type])"
                   fill="#fff" fill-opacity="1">

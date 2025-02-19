@@ -10,19 +10,30 @@ public static class DisplayConstants
 
 public static class PlayerHelpers
 {
-	private static Queue<string> playerColorsQueue = new Queue<string>([]);
+	private static readonly string[] DarkColors = [
+		"#747b24",
+		"#005c03",
+		"#595959",
+		"#004644",
+		"#003955",
+		"#00277a",
+		"#000264",
+		"#26008f",
+		"#5a4078",
+		"#000000",
+		"#730068",
+		"#970088",
+		"#94002f",
+		"#5c0005",
+		"#7d3d00",
+		"#a07e00",
+	];
+	private static Queue<string> playerColorsQueue = new(DarkColors.OrderBy(i => Random.Shared.Next()));
 	public static string GetRandomColor()
 	{
 		if (playerColorsQueue.Count < 1)
-		{
-			playerColorsQueue = new Queue<string>(new List<string>([
-				"red", "blue", "green", "yellow", "orange", "purple", "cyan", "magenta", "lime", "teal",
-				"black", "white", "gray", "pink", "navy", "gold", "maroon", "aqua", "olive", "indigo",
-				"crimson", "turquoise", "beige", "lavender", "salmon", "violet", "chartreuse", "coral", "khaki", "plum",
-				"orchid", "sienna", "azure", "ivory", "mintcream", "slategray", "goldenrod", "lightseagreen", "peachpuff", "darkorchid",
-				"peru", "darkcyan", "firebrick", "rosybrown", "seagreen", "mediumvioletred", "deepskyblue", "darkolivegreen", "dodgerblue", "mediumaquamarine"
-			]).OrderBy(i => Random.Shared.Next()));
-		}
+			playerColorsQueue = new(DarkColors.OrderBy(i => Random.Shared.Next()));
+
 		return playerColorsQueue.Dequeue();
 	}
 

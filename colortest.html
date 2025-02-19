@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Squares with White Text</title>
+    <style>
+      :root {
+        --color-0: #747b24;
+        --color-1: #005c03;
+        --color-2: #595959;
+        --color-3: #004644;
+        --color-4: #003955;
+        --color-5: #00277a;
+        --color-6: #000264;
+        --color-7: #26008f;
+        --color-8: #5a4078;
+        --color-9: #000000;
+        --color-10: #730068;
+        --color-11: #970088;
+        --color-12: #94002f;
+        --color-13: #5c0005;
+        --color-14: #7d3d00;
+        --color-15: #a07e00;
+      }
+
+      .square {
+        width: 100px;
+        height: 100px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin: 5px;
+        color: white;
+        font-family: sans-serif;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      const colors = [];
+      for (let i = 0; i < 16; i++) {
+        const color = getComputedStyle(document.documentElement)
+          .getPropertyValue(`--color-${i}`)
+          .trim();
+        colors.push(color);
+      }
+
+      colors.forEach((color) => {
+        const square = document.createElement("div");
+        square.className = "square";
+        square.style.backgroundColor = color;
+        square.textContent = "white text";
+        document.body.appendChild(square);
+      });
+    </script>
+  </body>
+</html>
