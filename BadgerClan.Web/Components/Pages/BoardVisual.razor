@@ -1,0 +1,17 @@
+@page "/boardVisual"
+@using BadgerClan.Web.Components.GameComponents
+
+
+<div id="square" class="battle-field" style="">
+  @foreach (var row in Enumerable.Range(0, Dimension + 1))
+  {
+    @foreach (var column in Enumerable.Range(0, Dimension + 1))
+    {
+      <HexagonSquare Row=row Col=column Dimension=Dimension />
+    }
+
+  }
+</div>
+@code {
+  private int Dimension = 10;
+}
