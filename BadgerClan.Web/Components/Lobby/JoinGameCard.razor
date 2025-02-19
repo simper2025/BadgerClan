@@ -67,7 +67,14 @@
                         <ul>
                             @foreach (var team in Game.TeamNames)
                             {
-                                <li>@team</li>
+                                <li>
+                                    @team
+                                    @if (lobby.UserCreatedGame(CurrentUserService.CurrentUserId, Game))
+                                    {
+                                        <button class="btn btn-outline-danger btn-sm" @onclick=@(()=> Game.RemoveTeam(team))>Remove</button>
+                                    }
+                        </li>
+
                             }
                         </ul>
                     }

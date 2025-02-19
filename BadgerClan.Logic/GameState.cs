@@ -161,6 +161,15 @@ public class GameState
         GameChanged?.Invoke(this);
     }
 
+    public void RemoveTeam(string teamname)
+    {
+        if (TeamList.Any(t => t.Name == teamname))
+        {
+            TeamList.RemoveAll(t => t.Name == teamname);
+        }
+        GameChanged?.Invoke(this);
+    }
+
     public void LayoutStartingPositions(List<string> units)
     {
         var degrees = 360 / TeamList.Count;
