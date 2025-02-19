@@ -1,0 +1,7 @@
+services:
+  badgerclan:
+    build:
+      context: .
+      dockerfile: BadgerClan.Web/Dockerfile
+    ports:
+    - 8010:8080
