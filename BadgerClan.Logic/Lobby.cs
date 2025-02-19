@@ -5,7 +5,6 @@ namespace BadgerClan.Logic;
 
 public class Lobby(ILogger<Lobby> logger)
 {
-    public const int TickInterval = 50;
     private Dictionary<Guid, List<GameState>> games { get; } = new();
     private Dictionary<int, int> failCount = new();
     public event Action<GameState>? LobbyChanged;
@@ -82,8 +81,8 @@ public class Lobby(ILogger<Lobby> logger)
                 logger.LogWarning("Too many failed moves for {team}. Skipping to next player", game.CurrentTeam.Name);
             }
             GameEngine.ProcessTurn(game, moves);
-
-            Thread.Sleep(TickInterval);
+                        
+            Thread.Sleep(game.TickInterval);
         }
     }
 }

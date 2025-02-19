@@ -17,6 +17,8 @@ public class GameState
     public List<Team> TeamList { get; init; }
     private List<int> turnOrder;
 
+    public int TickInterval{ get; private set; }
+
     public int TeamCount { get { return TeamList.Count(); } }
     public IEnumerable<string> TeamNames => TeamList.Select(t => t.Name);
 
@@ -138,6 +140,9 @@ public class GameState
         LastMove = DateTime.Now;
 
         IsGameOver = Units.Select(u => u.Team).Distinct().Count() == 1;
+
+        var teamsInGame = Units.Select(u => u.Team).Distinct().Count();
+        TickInterval = 100 / teamsInGame;
     }
 
     private int AdvanceTeam()
