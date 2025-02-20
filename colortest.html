@@ -22,6 +22,8 @@
         --color-13: #5c0005;
         --color-14: #7d3d00;
         --color-15: #a07e00;
+        --color-16: #456f7b;
+        --color-17: #599960;
       }
 
       .square {
@@ -39,7 +41,7 @@
   <body>
     <script>
       const colors = [];
-      for (let i = 0; i < 16; i++) {
+      for (let i = 0; i < 18; i++) {
         const color = getComputedStyle(document.documentElement)
           .getPropertyValue(`--color-${i}`)
           .trim();
