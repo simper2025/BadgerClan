@@ -104,6 +104,7 @@ public class GameState
         foreach (var team in TeamList)
         {
             team.Medpacs = 0;
+            team.Kills = 0;
         }
         currentTeamId = TeamList[0].Id;
     }
