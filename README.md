@@ -63,6 +63,12 @@ Coordinate System: https://www.redblobgames.com/grids/hexagons/
     - [X] Keep track of when people die, to assign ranking
     - [ ] Team with most kills
     - [ ] Most units before final hitpoint loss
+- [ ] For long games either
+    - [ ] shrink the board, push or kill those on the boundries
+    - [ ] slowly kill the units by attrition
+- [ ] for Large games
+    - [ ] introduce fog of war
+    - [ ] allow for concurrent turns
 - [x] Track number of kills
 - [x] Units can act if they have at least 0.1 moves remaining
 - [x] Improve effectiveness of Medpacs, gameengine not giving enough medpacs
@@ -70,16 +76,22 @@ Coordinate System: https://www.redblobgames.com/grids/hexagons/
 ### Features
 - [ ] Limit the number of players
 - [ ] Ability to boot players from a game that hasn't started
+- [ ] Limit the size of the client move list
+- [ ] Game Log 
+- [ ] Ability for host to slow down the game, make tick interval variable 
+- [ ] Tournament system
+- [ ] Randomize start postions
+- [ ] Ability to increase board size for more players
+- [ ] Turn off default bots for game day, players must host bots
+- [ ] Hover over a team name to highlight thier units on the board
+- [ ] Pass team name so that you can add in friendly teams
 - [x] Host can end the game from the game page, in cases of stalemate or false start
 - [x] Timeout the calls to clients
-- [ ] Limit the size of the client move list
 - [x] Don't make calls to dead teams
 - [X] Ability for the host to restart the game with the same players
 - [X] Add a game leader board
 - [x] Delete the weather and counter page
-- [ ] Game Log 
-- [ ] Second Leaderboard with number of kills
-- [ ] Ability for host to slow down the game, make tick interval variable 
+- [X] Second Leaderboard with number of kills
 
 
 ### Bugs
@@ -96,8 +108,8 @@ Coordinate System: https://www.redblobgames.com/grids/hexagons/
 - [X] Review GameEngine.ProcessTurn(), Attack does not have the same rounding benefit as Walk, is that intentional?
 
 ### Documentation
-- [x] Example tutorial for moving around
 - [ ] Example tutorial for determining boundaries
+- [x] Example tutorial for moving around
 - [x] Example tutorial for identifying nearest enemies
 - [x] Example tutorial for a sample bot
 
