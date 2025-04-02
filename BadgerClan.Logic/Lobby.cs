@@ -6,8 +6,27 @@ namespace BadgerClan.Logic;
 public class Lobby(ILogger<Lobby> logger)
 {
     private Dictionary<Guid, List<GameState>> games { get; } = new();
+    private Dictionary<Guid, List<Tournament>> tournaments { get; } = new();
     private Dictionary<int, int> failCount = new();
     public event Action<GameState>? LobbyChanged;
+    public event Action<Tournament>? LobbyChangedTournament;
+
+    public void AddTournament(string tournamentName, Guid tournamentOwnerId)
+    {
+        var tourney = new Tournament(tournamentName);
+        if (tournaments.ContainsKey(tournamentOwnerId) && tournaments[tournamentOwnerId] != null)
+        {
+            tournaments[tournamentOwnerId].Add(tourney);
+        }
+        else
+        {
+            tournaments.Add(tournamentOwnerId, [tourney]);
+        }
+        LobbyChangedTournament?.Invoke(tourney);
+
+        //LobbyChanged?.Invoke(tourney);
+        //tourney.GameEnded += (g) => LobbyChanged?.Invoke(g);
+    }
     public void AddGame(string gameName, Guid gameOwnerId)
     {
         var game = new GameState(gameName);
@@ -23,6 +42,7 @@ public class Lobby(ILogger<Lobby> logger)
         game.GameEnded += (g) => LobbyChanged?.Invoke(g);
     }
     public ReadOnlyCollection<GameState> Games => games.Values.SelectMany(g => g).ToList().AsReadOnly();
+    public ReadOnlyCollection<Tournament> Tournaments => tournaments.Values.SelectMany(g => g).ToList().AsReadOnly();
 
     private List<string> startingUnits = new List<string> { 
         "Knight", "Knight", "Archer", "Archer", "Knight", "Knight",

@@ -1,0 +1,25 @@
+﻿@inject Lobby lobby
+@inject CurrentUserService CurrentUserService
+
+<div class="bg-body-secondary p-3 border rounded-3">
+    <form @onsubmit="create">
+        <input type="text" class="form-control mb-1" @bind="tournamentName" placeholder="Tournament name" />
+        <button class="btn btn-secondary px-3 w-100" type="submit">Create New Tournament</button>
+    </form>
+</div>
+
+@code {
+    protected override void OnInitialized()
+    {
+        lobby.LobbyChanged += (e) => InvokeAsync(StateHasChanged);
+    }
+
+    string style => lobby.Games.Any() ? "float: right" : "max-width: 250px";
+    string tournamentName = string.Empty;
+
+    private void create()
+    {
+        lobby.AddTournament(tournamentName, CurrentUserService.CurrentUserId);
+        tournamentName = string.Empty;
+    }
+}

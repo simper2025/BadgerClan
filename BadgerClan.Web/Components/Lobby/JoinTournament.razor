@@ -1,0 +1,64 @@
+﻿@using Humanizer
+
+<div class="col-lg-3 col-md-6 col-sm-12">
+	<div class="card mb-3">
+		<div class="card-body">
+			<h5 class="card-title">@Tournament.Name</h5>
+			<div style="background-color: azure; padding: 5px;">
+				<div class="row">
+					<div class="col-auto">
+						<label for="botName" class="form-label fs-6 mb-0">Bot Name</label>
+					</div>
+					<div class="col-sm-12">
+						<input type="text" id="botName" class="form-control me-2" @bind="newBotName" />
+					</div>
+				</div>
+				<div class="row">
+					<span>Bot Engine</span>
+				</div>
+				<div class="row">
+					<div class="form-check ms-4">
+						<input class="form-check-input" type="radio" name=@($"botEngine{thisInstanceId}") value="custom" id="custom" checked
+						@onchange=botEngineChange />
+						<label for="custom" class="form-check-label">Custom</label>
+						<input type="text" class="form-control" @bind="joinUrl" placeholder="https://yourserver:1234"
+						style="width: 90%;" />
+					</div>
+				</div>
+				<div class="row">
+					<button class="btn btn-primary mt-3 ms-3" style="width: 90%;" @onclick=joinGame>Join Game</button>
+				</div>
+			</div>
+
+			<div class="d-flex justify-content-between">
+				<p class="card-text">Players: @Tournament.TeamCount.ToString("n0")</p>
+				<p class="card-text">Created: @Tournament.Created.Humanize()</p>
+			</div>
+
+			<div class="text-bg-warning">
+				@error
+			</div>
+		</div>
+	</div>
+</div>
+
+@code {
+	[Parameter]
+	public required Tournament Tournament { get; set; }
+
+	private int thisInstanceId = 1;
+	public string SelectedBotEngine { get; set; } = "custom";
+	string newBotName = PlayerHelpers.GetRandomPlayerName();
+	string joinUrl = string.Empty;
+	string? error = null;
+
+	private void joinGame()
+	{
+		
+	}
+
+	private void botEngineChange(ChangeEventArgs e)
+	{
+		SelectedBotEngine = e?.Value?.ToString() ?? string.Empty;
+	}
+}

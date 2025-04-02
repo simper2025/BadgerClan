@@ -4,12 +4,16 @@
 
 <div class="bg-body-secondary p-3 border rounded-3 mt-3">
     <h4 class="text-center">Available Games</h4>
-    @if (gamesToJoin.Any())
+    @if (gamesToJoin.Any() || tournamentsToJoin.Any())
     {
         <div class="row">
             @foreach (var game in gamesToJoin)
             {
                 <JoinGameCard Game="game" />
+            }
+            @foreach (var tourney in tournamentsToJoin)
+            {
+                <JoinTournament Tournament="tourney" />
             }
         </div>
     }
@@ -22,9 +26,11 @@
 @code {
 
     IEnumerable<GameState> gamesToJoin => lobby.Games.Where(g => g.TurnNumber == 0);
+    IEnumerable<Tournament> tournamentsToJoin => lobby.Tournaments.Where(t => !t.Started);
 
     protected override void OnInitialized()
     {
         lobby.LobbyChanged += (e) => InvokeAsync(StateHasChanged);
+        lobby.LobbyChangedTournament += (e) => InvokeAsync(StateHasChanged);
     }
 }
