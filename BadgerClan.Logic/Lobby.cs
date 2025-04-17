@@ -50,7 +50,10 @@ public class Lobby(ILogger<Lobby> logger)
 
     private Dictionary<Guid, CancellationTokenSource> gameTokens = new();
 
-    public bool UserCreatedGame(Guid gameOwnerId, GameState game) => games.ContainsKey(gameOwnerId) && games[gameOwnerId].Any(g => g.Id == game.Id);
+    public bool UserCreatedGame(Guid gameOwnerId, GameState game) => 
+        games.ContainsKey(gameOwnerId) && games[gameOwnerId].Any(g => g.Id == game.Id);
+    public bool UserCreatedTournament(Guid gameOwnerId, Tournament tourney) => 
+        tournaments.ContainsKey(gameOwnerId) && tournaments[gameOwnerId].Any(g => g.Id == tourney.Id);
 
     public void StartGame(Guid gameOwnerId, GameState game)
     {

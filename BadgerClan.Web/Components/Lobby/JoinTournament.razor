@@ -1,5 +1,8 @@
 ﻿@using Humanizer
 
+@inject Lobby lobby
+@inject CurrentUserService CurrentUserService
+
 <div class="col-lg-3 col-md-6 col-sm-12">
 	<div class="card mb-3">
 		<div class="card-body">
@@ -34,7 +37,33 @@
 				<p class="card-text">Players: @Tournament.TeamCount.ToString("n0")</p>
 				<p class="card-text">Created: @Tournament.Created.Humanize()</p>
 			</div>
+			<div class="row">
+				<div class="col-auto">
+					<h4>Current Players</h4>
+					@if (Tournament.Teams.Any())
+					{
+						<ul>
+							@foreach (var team in Tournament.Teams)
+							{
+								<li>
+									@team.Name
+									@if (lobby.UserCreatedTournament(CurrentUserService.CurrentUserId, Tournament))
+									{
+										<button class="btn btn-outline-danger btn-sm" @onclick=@(()=> Tournament.RemoveTeam(team))>Remove</button>
+									}
+								</li>
 
+							}
+						</ul>
+					}
+				</div>
+			</div>
+			@if (Tournament.Teams.Count > 1 && lobby.UserCreatedTournament(CurrentUserService.CurrentUserId, Tournament))
+			{
+				<div class="row">
+					<button class="btn btn-warning" @onclick=CreateGames>Create Games</button>
+				</div>
+			}
 			<div class="text-bg-warning">
 				@error
 			</div>
@@ -52,6 +81,11 @@
 	string joinUrl = string.Empty;
 	string? error = null;
 
+	protected override void OnInitialized()
+	{
+		Tournament.TournamentChanged += (e) => InvokeAsync(StateHasChanged);
+	}
+
 	private void joinGame()
 	{
 		if (string.IsNullOrWhiteSpace(joinUrl))
@@ -64,10 +98,17 @@
 		var team = new Team(newBotName, newColor, networkBot);
 		Tournament.AddTeam(team);
 		newBotName = PlayerHelpers.GetRandomPlayerName();
+		InvokeAsync(StateHasChanged);
 	}
 
 	private void botEngineChange(ChangeEventArgs e)
 	{
 		SelectedBotEngine = e?.Value?.ToString() ?? string.Empty;
+	}
+
+	private void CreateGames()
+	{
+		// Tournament.
+		// lobby
 	}
 }

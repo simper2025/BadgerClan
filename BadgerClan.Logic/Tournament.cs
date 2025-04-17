@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,7 +11,11 @@ namespace BadgerClan.Logic
     {
         public bool Started = false;
         public string Name;
-        public int TeamCount;
+        public int TeamCount => Teams.Count;
+        public Guid Id { get; } = Guid.NewGuid();
+
+        public event Action<Tournament>? TournamentChanged;
+
         public DateTime Created { get; } = DateTime.Now;
         public List<Team> Teams { get; init; }
 
@@ -26,6 +31,15 @@ namespace BadgerClan.Logic
         public void AddTeam(Team team)
         {
             Teams.Add(team);
+            TournamentChanged?.Invoke(this);
+        }
+        public void RemoveTeam(Team team)
+        {
+            if (Teams.Any(t => t.Name == team.Name))
+            {
+                Teams.RemoveAll(t => t.Name == team.Name);
+            }
+            TournamentChanged?.Invoke(this);
         }
 
         public void Start()

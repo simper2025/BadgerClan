@@ -93,8 +93,9 @@
                     <button class="btn btn-warning" @onclick=startGame>Start Game</button>
                 </div>
             }
-            <button class="btn btn-secondary" @onclick=@(()=> navManager.NavigateTo($"/game/{Game.Id}"))>View
-                        Game</button>
+            <button class="btn btn-secondary" @onclick=@(()=> navManager.NavigateTo($"/game/{Game.Id}"))>
+                View Game
+            </button>
             <div class="text-bg-warning">
                 @error
             </div>
