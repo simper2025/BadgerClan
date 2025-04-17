@@ -30,11 +30,13 @@ namespace BadgerClan.Logic
 
         public void AddTeam(Team team)
         {
+            if(Started) return;
             Teams.Add(team);
             TournamentChanged?.Invoke(this);
         }
         public void RemoveTeam(Team team)
         {
+            if(Started) return;
             if (Teams.Any(t => t.Name == team.Name))
             {
                 Teams.RemoveAll(t => t.Name == team.Name);
@@ -50,8 +52,6 @@ namespace BadgerClan.Logic
             {
                 GameStates.Add(new GameState(Name + ": Game #" + (gameCount + 1)));
             }
-
-            
         }
     }
 }

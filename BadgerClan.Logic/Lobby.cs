@@ -27,7 +27,7 @@ public class Lobby(ILogger<Lobby> logger)
         //LobbyChanged?.Invoke(tourney);
         //tourney.GameEnded += (g) => LobbyChanged?.Invoke(g);
     }
-    public void AddGame(string gameName, Guid gameOwnerId)
+    public GameState AddGame(string gameName, Guid gameOwnerId)
     {
         var game = new GameState(gameName);
         if (games.ContainsKey(gameOwnerId) && games[gameOwnerId] != null)
@@ -40,6 +40,7 @@ public class Lobby(ILogger<Lobby> logger)
         }
         LobbyChanged?.Invoke(game);
         game.GameEnded += (g) => LobbyChanged?.Invoke(g);
+        return game;
     }
     public ReadOnlyCollection<GameState> Games => games.Values.SelectMany(g => g).ToList().AsReadOnly();
     public ReadOnlyCollection<Tournament> Tournaments => tournaments.Values.SelectMany(g => g).ToList().AsReadOnly();
