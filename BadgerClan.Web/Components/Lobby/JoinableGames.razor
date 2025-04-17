@@ -26,7 +26,7 @@
 @code {
 
     IEnumerable<GameState> gamesToJoin => lobby.Games.Where(g => g.TurnNumber == 0);
-    IEnumerable<Tournament> tournamentsToJoin => lobby.Tournaments.Where(t => !t.Started);
+    IEnumerable<Tournament> tournamentsToJoin => lobby.Tournaments.Where(t => !t.Ended);
 
     protected override void OnInitialized()
     {

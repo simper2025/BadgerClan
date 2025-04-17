@@ -63,6 +63,9 @@
 				<div class="row">
 					<button class="btn btn-warning" @onclick=CreateGames>Create Games</button>
 				</div>
+				<div class="row">
+					<button class="btn btn-warning" @onclick=EndTournament>End Tournament</button>
+				</div>
 			}
 			<div class="text-bg-warning">
 				@error
@@ -129,5 +132,11 @@
 
 			g = g + 1 >= games.Count ? 0 : g + 1;
 		}
+	}
+
+	private void EndTournament()
+	{
+		Tournament.Ended = true;
+		InvokeAsync(StateHasChanged);
 	}
 }

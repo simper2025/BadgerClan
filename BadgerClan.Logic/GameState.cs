@@ -44,6 +44,37 @@ public class GameState
     }
     public DateTime LastMove { get; set; } = DateTime.Now;
 
+    public List<Team> RankByLastStanding()
+    {
+        return TeamList.OrderByDescending(t => t.DeathTurn)
+            .ThenByDescending(t =>
+                Units.ToList().Where(u => u != null && u.Team == t.Id).Sum(u => u.Health))
+            .ToList();
+    }
+    public List<Team> RankByKills()
+    {
+        return TeamList.OrderByDescending(t => t.Kills).ToList();
+    }
+
+    public string Stats()
+    {
+        var retval = "";
+        retval += "Rank by Standing: \r\n";
+        int i = 1;
+        foreach (var item in RankByLastStanding())
+        {
+            retval += $"#{i} {item.Name} \r\n";
+            i++;
+        }
+        i = 1;
+        foreach (var item in RankByKills())
+        {
+            retval += $"#{i} {item.Name} \r\n";
+            i++;
+        }
+        return retval;
+    }
+
     private int currentTeamId = 0;
     public int CurrentTeamId
     {

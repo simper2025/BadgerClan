@@ -1,8 +1,6 @@
 @if (ChartKills)
 {
-	@foreach (var team in State.TeamList
-									.OrderByDescending(t => t.Kills)
-									.ToList())
+	@foreach (var team in State.RankByKills())
 	{
 		<div style="background-color: @team.Color;" class="text-light ps-3">
 			<span>@team.Name</span>
@@ -12,11 +10,7 @@
 }
 else
 {
-	@foreach (var team in State.TeamList
-			.OrderByDescending(t => t.DeathTurn)
-			.ThenByDescending(t =>
-			State.Units.ToList().Where(u => u != null && u.Team == t.Id).Sum(u => u.Health))
-			.ToList())
+	@foreach (var team in State.RankByLastStanding())
 	{
 		<div style="background-color: @team.Color;" class="text-light ps-3">
 			<span>@team.Name</span>

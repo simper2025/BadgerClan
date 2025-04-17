@@ -19,6 +19,12 @@
                                 <p>Winner: @game.GetWinner().Name</p>
                                 <p>Ended: @game.LastMove.Humanize()</p>
                             </div>
+                            <div class="card-text">
+                                Stats:
+                                <pre>
+                                    @game.Stats()
+                                </pre>
+                            </div>
                         </div>
                     </div>
                 </div>
