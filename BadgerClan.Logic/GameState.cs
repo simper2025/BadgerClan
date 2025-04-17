@@ -66,6 +66,8 @@ public class GameState
             retval += $"#{i} {item.Name} \r\n";
             i++;
         }
+
+        retval += "Rank by Kills: \r\n";
         i = 1;
         foreach (var item in RankByKills())
         {

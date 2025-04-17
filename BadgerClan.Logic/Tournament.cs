@@ -14,6 +14,8 @@ namespace BadgerClan.Logic
         public int TeamCount => Teams.Count;
         public Guid Id { get; } = Guid.NewGuid();
 
+        public const int MininumTeamCount = 4;
+
         public event Action<Tournament>? TournamentChanged;
 
         public DateTime Created { get; } = DateTime.Now;

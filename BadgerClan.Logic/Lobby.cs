@@ -109,4 +109,9 @@ public class Lobby(ILogger<Lobby> logger)
             Thread.Sleep(game.TickInterval);
         }
     }
+
+    public void Update(Tournament tourney)
+    {
+        LobbyChangedTournament?.Invoke(tourney);
+    }
 }

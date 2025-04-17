@@ -115,28 +115,26 @@
 		Random rng = new Random();
 		var games = new List<GameState>();
 
-		var gameCount = Tournament.Teams.Count / 4;
-		for (int i = 0; i < gameCount; i++)
+		var gameCount = Tournament.Teams.Count / Tournament.MininumTeamCount ;
+		for (int i = 1; i <= gameCount; i++)
 		{
-			var game = lobby.AddGame(Tournament.Name + ": Game #" + (i + 1), 
+			var game = lobby.AddGame(Tournament.Name + ": Game #" + (i), 
 				CurrentUserService.CurrentUserId);
 			games.Add(game);
 		}
 
 		var shuffled = Tournament.Teams.OrderBy(_ => rng.Next()).ToList();
 
-		int g = 0;
 		for (int i = 0; i < shuffled.Count; i++)
 		{
-			games[g].AddTeam(shuffled[i]);
-
-			g = g + 1 >= games.Count ? 0 : g + 1;
+			games[i % games.Count].AddTeam(shuffled[i]);
 		}
 	}
 
 	private void EndTournament()
 	{
 		Tournament.Ended = true;
+		lobby.Update(Tournament);
 		InvokeAsync(StateHasChanged);
 	}
 }
