@@ -2,6 +2,7 @@
 
 using BadgerClan.Logic;
 using BadgerClan.Logic.Bot;
+using BadgerClan.Web;
 using BadgerClan.Web.Components;
 using BadgerClan.Web.Services;
 
@@ -15,6 +16,10 @@ builder.Services.AddSingleton<BotStore>();
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<CurrentUserService>();
 builder.Services.AddHttpContextAccessor();
+
+builder.Services.Configure<AppSettings>(
+    builder.Configuration.GetSection("AppSettings"));
+
 
 var app = builder.Build();
 

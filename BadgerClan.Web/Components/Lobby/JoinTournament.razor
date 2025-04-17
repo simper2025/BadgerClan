@@ -54,7 +54,16 @@
 
 	private void joinGame()
 	{
-		
+		if (string.IsNullOrWhiteSpace(joinUrl))
+		{
+			error = "You must provide a URL for the custom bot engine";
+			return;
+		}
+		var networkBot = new NetworkBot(new Uri(joinUrl));
+		var newColor = PlayerHelpers.GetRandomColor();
+		var team = new Team(newBotName, newColor, networkBot);
+		Tournament.AddTeam(team);
+		newBotName = PlayerHelpers.GetRandomPlayerName();
 	}
 
 	private void botEngineChange(ChangeEventArgs e)

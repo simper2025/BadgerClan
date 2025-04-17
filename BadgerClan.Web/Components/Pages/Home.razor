@@ -1,4 +1,7 @@
 ﻿@page "/"
+@using Microsoft.Extensions.Options
+
+@inject IOptions<AppSettings> GameOptions
 
 <PageTitle>BadgerClan</PageTitle>
 
@@ -8,9 +11,12 @@
   <div class="col-md-4">
     <CreateGame />
   </div>
-  <div class="col-md-4">
-    <CreateTournament />
-  </div>
+    @if (GameOptions.Value.AllowTournaments) // only show if setting is true
+    {
+        <div class="col-md-4">
+            <CreateTournament />
+        </div>
+    }
 </div>
 <div>
   <JoinableGames />
